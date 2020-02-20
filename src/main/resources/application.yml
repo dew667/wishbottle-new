@@ -1,0 +1,87 @@
+spring:
+  datasource:
+    name: druidDataSource
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/wishbottle?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root #配置mysql数据库用户名
+    password: admin #配置mysql数据库密码
+    druid:
+      #监控统计拦截的过滤器 不加监控界面sql无法统计 wall用于防火墙
+      filters: stat,wall,log4j,config
+      #最大连接数
+      max-active: 15
+      #初始化大小
+      initial-size: 3
+      #获取连接最大等待时间
+      max-wait: 5000
+      min-idle: 3
+      #间隔多久检测一次需要关闭的空闲连接 毫秒
+      time-between-eviction-runs-millis: 90000
+      #连接在连接池中最小生存的时间，毫秒
+      min-evictable-idle-time-millis: 1800000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 50
+      max-pool-prepared-statement-per-connection-size: 20
+      web-stat-filter:
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        url-pattern: /*
+      stat-view-servlet:
+        #白名单IP
+        allow: 127.0.0.1
+        #黑名单IP
+        deny:
+        #登录账号和密码
+        login-username: admin
+        login-password: admin
+        #启用重置数据功能
+        reset-enable: true
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+      enabled: true
+  # redis
+  redis:
+    # 这是redis所在服务器的ip
+    host: 127.0.0.1
+    port: 6379
+    password:
+    # 连接超时时间（毫秒）
+    timeout: 10000ms
+    # redis数据库索引
+    database: 0
+    jedis:
+      pool:
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        # 连接池中的最大空闲连接
+        max-idle: 8
+        # 连接池中的最小空闲连接
+        min-idle: 0
+    cache:
+      type: redis
+mybatis:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  type-aliases-package: com.hust13.wishbottle.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8080
+
+# pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: false #pageSize=0
+
+

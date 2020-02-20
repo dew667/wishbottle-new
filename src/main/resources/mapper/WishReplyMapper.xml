@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust13.wishbottle.mapper.WishReplyMapper" >
+  <resultMap id="BaseResultMap" type="com.hust13.wishbottle.entity.WishReply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="wishbottle_id" property="wishbottleId" jdbcType="INTEGER" />
+    <result column="replyer_id" property="replyerId" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, wishbottle_id, replyer_id, time, content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from wish_reply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from wish_reply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hust13.wishbottle.entity.WishReply" >
+    insert into wish_reply (id, wishbottle_id, replyer_id,
+      time, content)
+    values (#{id,jdbcType=INTEGER}, #{wishbottleId,jdbcType=INTEGER}, #{replyerId,jdbcType=INTEGER}, 
+      #{time,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.WishReply" >
+    insert into wish_reply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="wishbottleId != null" >
+        wishbottle_id,
+      </if>
+      <if test="replyerId != null" >
+        replyer_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="wishbottleId != null" >
+        #{wishbottleId,jdbcType=INTEGER},
+      </if>
+      <if test="replyerId != null" >
+        #{replyerId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hust13.wishbottle.entity.WishReply" >
+    update wish_reply
+    <set >
+      <if test="wishbottleId != null" >
+        wishbottle_id = #{wishbottleId,jdbcType=INTEGER},
+      </if>
+      <if test="replyerId != null" >
+        replyer_id = #{replyerId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hust13.wishbottle.entity.WishReply" >
+    update wish_reply
+    set wishbottle_id = #{wishbottleId,jdbcType=INTEGER},
+      replyer_id = #{replyerId,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

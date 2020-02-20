@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust13.wishbottle.mapper.TreeholeMapper" >
+  <resultMap id="BaseResultMap" type="com.hust13.wishbottle.entity.Treehole" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="writer_id" property="writerId" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="views" property="views" jdbcType="INTEGER" />
+    <result column="reply_num" property="replyNum" jdbcType="INTEGER" />
+    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="like" property="like" jdbcType="INTEGER" />
+    <result column="report" property="report" jdbcType="INTEGER" />
+    <result column="top" property="top" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="voice" property="voice" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, writer_id, time, content, views, reply_num, pic, status, like, report, top, title, 
+    voice, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from treehole
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from treehole
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hust13.wishbottle.entity.Treehole" >
+    insert into treehole (id, writer_id, time,
+      content, views, reply_num, 
+      pic, status, like, 
+      report, top, title, 
+      voice, version)
+    values (#{id,jdbcType=INTEGER}, #{writerId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, 
+      #{content,jdbcType=VARCHAR}, #{views,jdbcType=INTEGER}, #{replyNum,jdbcType=INTEGER}, 
+      #{pic,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{like,jdbcType=INTEGER}, 
+      #{report,jdbcType=INTEGER}, #{top,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{voice,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Treehole" >
+    insert into treehole
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="writerId != null" >
+        writer_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="views != null" >
+        views,
+      </if>
+      <if test="replyNum != null" >
+        reply_num,
+      </if>
+      <if test="pic != null" >
+        pic,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="like != null" >
+        like,
+      </if>
+      <if test="report != null" >
+        report,
+      </if>
+      <if test="top != null" >
+        top,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="voice != null" >
+        voice,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="writerId != null" >
+        #{writerId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="views != null" >
+        #{views,jdbcType=INTEGER},
+      </if>
+      <if test="replyNum != null" >
+        #{replyNum,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null" >
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="like != null" >
+        #{like,jdbcType=INTEGER},
+      </if>
+      <if test="report != null" >
+        #{report,jdbcType=INTEGER},
+      </if>
+      <if test="top != null" >
+        #{top,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="voice != null" >
+        #{voice,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hust13.wishbottle.entity.Treehole" >
+    update treehole
+    <set >
+      <if test="writerId != null" >
+        writer_id = #{writerId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="views != null" >
+        views = #{views,jdbcType=INTEGER},
+      </if>
+      <if test="replyNum != null" >
+        reply_num = #{replyNum,jdbcType=INTEGER},
+      </if>
+      <if test="pic != null" >
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="like != null" >
+        like = #{like,jdbcType=INTEGER},
+      </if>
+      <if test="report != null" >
+        report = #{report,jdbcType=INTEGER},
+      </if>
+      <if test="top != null" >
+        top = #{top,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="voice != null" >
+        voice = #{voice,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hust13.wishbottle.entity.Treehole" >
+    update treehole
+    set writer_id = #{writerId,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      views = #{views,jdbcType=INTEGER},
+      reply_num = #{replyNum,jdbcType=INTEGER},
+      pic = #{pic,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      like = #{like,jdbcType=INTEGER},
+      report = #{report,jdbcType=INTEGER},
+      top = #{top,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      voice = #{voice,jdbcType=VARCHAR},
+      version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

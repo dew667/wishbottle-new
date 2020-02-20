@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust13.wishbottle.mapper.TreeReplyMapper" >
+  <resultMap id="BaseResultMap" type="com.hust13.wishbottle.entity.TreeReply" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="treehole_id" property="treeholeId" jdbcType="INTEGER" />
+    <result column="replyer_id" property="replyerId" jdbcType="INTEGER" />
+    <result column="answer_id" property="answerId" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="like" property="like" jdbcType="INTEGER" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, treehole_id, replyer_id, answer_id, time, content, status, like, version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tree_reply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tree_reply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hust13.wishbottle.entity.TreeReply" >
+    insert into tree_reply (id, treehole_id, replyer_id,
+      answer_id, time, content, 
+      status, like, version
+      )
+    values (#{id,jdbcType=INTEGER}, #{treeholeId,jdbcType=INTEGER}, #{replyerId,jdbcType=INTEGER}, 
+      #{answerId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{like,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.TreeReply" >
+    insert into tree_reply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="treeholeId != null" >
+        treehole_id,
+      </if>
+      <if test="replyerId != null" >
+        replyer_id,
+      </if>
+      <if test="answerId != null" >
+        answer_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="like != null" >
+        like,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="treeholeId != null" >
+        #{treeholeId,jdbcType=INTEGER},
+      </if>
+      <if test="replyerId != null" >
+        #{replyerId,jdbcType=INTEGER},
+      </if>
+      <if test="answerId != null" >
+        #{answerId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="like != null" >
+        #{like,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hust13.wishbottle.entity.TreeReply" >
+    update tree_reply
+    <set >
+      <if test="treeholeId != null" >
+        treehole_id = #{treeholeId,jdbcType=INTEGER},
+      </if>
+      <if test="replyerId != null" >
+        replyer_id = #{replyerId,jdbcType=INTEGER},
+      </if>
+      <if test="answerId != null" >
+        answer_id = #{answerId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="like != null" >
+        like = #{like,jdbcType=INTEGER},
+      </if>
+      <if test="version != null" >
+        version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hust13.wishbottle.entity.TreeReply" >
+    update tree_reply
+    set treehole_id = #{treeholeId,jdbcType=INTEGER},
+      replyer_id = #{replyerId,jdbcType=INTEGER},
+      answer_id = #{answerId,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      like = #{like,jdbcType=INTEGER},
+      version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
