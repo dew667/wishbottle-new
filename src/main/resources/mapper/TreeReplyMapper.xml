@@ -9,11 +9,11 @@
     <result column="time" property="time" jdbcType="TIMESTAMP" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="like" property="like" jdbcType="INTEGER" />
+    <result column="likes" property="likes" jdbcType="INTEGER" />
     <result column="version" property="version" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, treehole_id, replyer_id, answer_id, time, content, status, like, version
+    id, treehole_id, replyer_id, answer_id, time, content, status, likes, version
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -28,11 +28,11 @@
   <insert id="insert" parameterType="com.hust13.wishbottle.entity.TreeReply" >
     insert into tree_reply (id, treehole_id, replyer_id,
       answer_id, time, content, 
-      status, like, version
+      status, likes, version
       )
     values (#{id,jdbcType=INTEGER}, #{treeholeId,jdbcType=INTEGER}, #{replyerId,jdbcType=INTEGER}, 
       #{answerId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{like,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}
+      #{status,jdbcType=INTEGER}, #{likes,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.TreeReply" >
@@ -59,8 +59,8 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="like != null" >
-        like,
+      <if test="likes != null" >
+        likes,
       </if>
       <if test="version != null" >
         version,
@@ -88,8 +88,8 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="like != null" >
-        #{like,jdbcType=INTEGER},
+      <if test="likes != null" >
+        #{likes,jdbcType=INTEGER},
       </if>
       <if test="version != null" >
         #{version,jdbcType=INTEGER},
@@ -117,8 +117,8 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="like != null" >
-        like = #{like,jdbcType=INTEGER},
+      <if test="likes != null" >
+        likes = #{likes,jdbcType=INTEGER},
       </if>
       <if test="version != null" >
         version = #{version,jdbcType=INTEGER},
@@ -134,7 +134,7 @@
       time = #{time,jdbcType=TIMESTAMP},
       content = #{content,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      like = #{like,jdbcType=INTEGER},
+      likes = #{likes,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

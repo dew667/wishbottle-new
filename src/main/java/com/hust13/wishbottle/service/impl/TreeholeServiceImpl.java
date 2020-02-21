@@ -1,61 +1,36 @@
 package com.hust13.wishbottle.service.impl;
 
-import com.hust13.wishbottle.entity.TreeLog;
-import com.hust13.wishbottle.entity.TreeReply;
 import com.hust13.wishbottle.entity.Treehole;
-import com.hust13.wishbottle.mapper.LogMapper;
-import com.hust13.wishbottle.mapper.TreeReplyMapper;
 import com.hust13.wishbottle.mapper.TreeholeMapper;
 import com.hust13.wishbottle.service.TreeholeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * 树洞Service实现类
+ * update by wzy on 2020/2/21
+ */
 @Service
+@Transactional
 public class TreeholeServiceImpl implements TreeholeService {
-
-    @Autowired
-    TreeReplyMapper treeReplyMapper;
-
-    @Autowired
-    LogMapper treeLogMapper;
 
     @Autowired
     TreeholeMapper treeholeMapper;
 
+    /**
+     * 搜索所有文章列表
+     * @return
+     */
     @Override
-    public List<Treehole> getTreehole() {
+    public List<Treehole> searchArticleList() {
+        return treeholeMapper.searchAllArticle();
+    }
+
+    @Override
+    public Treehole saveTreeholeArticle(Treehole record) {
         return null;
-    }
-
-    @Override
-    public List<TreeLog> getTreeLog() {
-        return null;
-    }
-
-    @Override
-    public List<Treehole> getMyTreehole(int userId) {
-        return null;
-    }
-
-    @Override
-    public List<TreeLog> getMyTreeLog(int userId) {
-        return null;
-    }
-
-    @Override
-    public int writeTreehole(Treehole treehole) {
-        return 0;
-    }
-
-    @Override
-    public int writeTreeLog(TreeLog treeLog) {
-        return 0;
-    }
-
-    @Override
-    public int writeTreeReply(TreeReply treeReply) {
-        return 0;
     }
 }

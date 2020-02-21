@@ -11,12 +11,15 @@ public interface UserMapper {
 
     int insertSelective(User record);
 
-    int insertOpenId(Map<String, String> map);
+    int insertOpenId(Map<String, Object> map);
 
     User selectByPrimaryKey(Integer id);
 
     //由openid查对应userid
-    int findUserIdByOpenId(String openid);
+    Integer findUserIdByOpenId(String openid);
+
+    //选择性更新session表
+    Integer updateSessionSelective(Map<String, Object> map);
 
     int updateByPrimaryKeySelective(User record);
 

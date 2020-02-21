@@ -35,10 +35,10 @@ public class UserController {
 
     @PostMapping("/save")
     public Model saveUserInfo(@RequestBody User userInfo, HttpServletRequest request) {
-        //获取身份标识
-        String openid = (String) request.getAttribute("openid");
         Model model = new Model();
         try{
+            //获取用户信息
+            String openid = (String) request.getAttribute("openid");
             model.setData(userService.saveUserInfo(userInfo, openid));
         }
         catch (Exception e)

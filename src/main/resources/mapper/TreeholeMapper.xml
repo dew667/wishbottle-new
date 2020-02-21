@@ -10,7 +10,7 @@
     <result column="reply_num" property="replyNum" jdbcType="INTEGER" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="like" property="like" jdbcType="INTEGER" />
+    <result column="likes" property="likes" jdbcType="INTEGER" />
     <result column="report" property="report" jdbcType="INTEGER" />
     <result column="top" property="top" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
@@ -18,7 +18,7 @@
     <result column="version" property="version" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, writer_id, time, content, views, reply_num, pic, status, like, report, top, title, 
+    id, writer_id, time, content, views, reply_num, pic, status, likes, report, top, title,
     voice, version
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -27,6 +27,13 @@
     from treehole
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <!--获取所有文章列表-->
+  <select id="searchAllArticle" resultMap="BaseResultMap" >
+    select
+    id, writer_id, time, content, views, reply_num, likes, title
+    from treehole
+    where status=1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from treehole
     where id = #{id,jdbcType=INTEGER}
@@ -34,12 +41,12 @@
   <insert id="insert" parameterType="com.hust13.wishbottle.entity.Treehole" >
     insert into treehole (id, writer_id, time,
       content, views, reply_num, 
-      pic, status, like, 
+      pic, status, likes,
       report, top, title, 
       voice, version)
     values (#{id,jdbcType=INTEGER}, #{writerId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, 
       #{content,jdbcType=VARCHAR}, #{views,jdbcType=INTEGER}, #{replyNum,jdbcType=INTEGER}, 
-      #{pic,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{like,jdbcType=INTEGER}, 
+      #{pic,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{likes,jdbcType=INTEGER},
       #{report,jdbcType=INTEGER}, #{top,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{voice,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})
   </insert>
@@ -70,8 +77,8 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="like != null" >
-        like,
+      <if test="likes != null" >
+        likes,
       </if>
       <if test="report != null" >
         report,
@@ -114,8 +121,8 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="like != null" >
-        #{like,jdbcType=INTEGER},
+      <if test="likes != null" >
+        #{likes,jdbcType=INTEGER},
       </if>
       <if test="report != null" >
         #{report,jdbcType=INTEGER},
@@ -158,8 +165,8 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="like != null" >
-        like = #{like,jdbcType=INTEGER},
+      <if test="likes != null" >
+        likes = #{likes,jdbcType=INTEGER},
       </if>
       <if test="report != null" >
         report = #{report,jdbcType=INTEGER},
@@ -188,7 +195,7 @@
       reply_num = #{replyNum,jdbcType=INTEGER},
       pic = #{pic,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      like = #{like,jdbcType=INTEGER},
+      likes = #{likes,jdbcType=INTEGER},
       report = #{report,jdbcType=INTEGER},
       top = #{top,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},

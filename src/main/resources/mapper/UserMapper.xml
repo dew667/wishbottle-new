@@ -118,11 +118,24 @@
   </insert>
   <!--插入openid\session_ky\user_id至OpenId表中-->
   <insert id="insertOpenId" parameterType="HashMap">
-    insert into open_id(
+    insert into session(
         open_id, session_key
     )
     values (#{openid}, #{session_key})
   </insert>
+  <!--选择更新session表-->
+  <update id="updateSessionSelective" parameterType="HashMap">
+    update session
+    <set >
+      <if test="openid != null" >
+        open_id = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="session_key != null" >
+        session_key = #{session_key,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userid,jdbcType=INTEGER}
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.hust13.wishbottle.entity.User" >
     update user
     <set >

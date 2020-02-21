@@ -19,7 +19,7 @@ public class Treehole {
 
     private Integer status;
 
-    private Integer like;
+    private Integer likes;
 
     private Integer report;
 
@@ -95,12 +95,12 @@ public class Treehole {
         this.status = status;
     }
 
-    public Integer getLike() {
-        return like;
+    public Integer getlikes() {
+        return likes;
     }
 
-    public void setLike(Integer like) {
-        this.like = like;
+    public void setlikes(Integer likes) {
+        this.likes = likes;
     }
 
     public Integer getReport() {

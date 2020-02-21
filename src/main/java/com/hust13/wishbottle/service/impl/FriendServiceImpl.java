@@ -6,9 +6,6 @@ import com.hust13.wishbottle.mapper.FriendMapper;
 import com.hust13.wishbottle.mapper.UserMapper;
 import com.hust13.wishbottle.service.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,45 +26,45 @@ public class FriendServiceImpl implements FriendService {
 
     /**
      * 关注某一用户
-     * @param friend
+     * @param friendId
      * @return
      */
-    @Caching(
-            //使缓存失效，避免脏数据
-            evict = {
-                    @CacheEvict(value="concern", key="'concern-list'+#friend.mineId"),
-                    @CacheEvict(value="concern", key="'friend-list'+#friend.friendId")
-            }
-    )
     @Override
-    public Friend concernOneUser(Friend friend) {
-        Integer ret = friendMapper.insertSelective(friend);
+    public Friend concernOneUser(Integer friendId, String openid) {
+        //由openid 查 userid
+        Integer mineId = userMapper.findUserIdByOpenId(openid);
+        Friend record = new Friend();
+        record.setFriendId(friendId);
+        record.setMineId(mineId);
+        Integer ret = friendMapper.insertSelective(record);
         //成功插入条目
         if(ret > 0)
-            return friend;
+            return record;
         else
             throw new RuntimeException("向数据库插入关注条目失败");
     }
 
     /**
      * 查询所有本人关注的用户
-     * @param mineId
+     * @param openid
      * @return
      */
-    @Cacheable(value="concern", key="'concern-list'+#mineId") //查询和保存redis缓存
     @Override
-    public List<User> searchAllIConcern(Integer mineId) {
+    public List<User> searchAllIConcern(String openid) {
+        //由openid 查 userid
+        Integer mineId = userMapper.findUserIdByOpenId(openid);
         return friendMapper.searchAllIConcern(mineId);
     }
 
     /**
      * 查询我的所有粉丝
-     * @param mineId
+     * @param openid
      * @return
      */
-    @Cacheable(value="concern", key="'friend-list'+#mineId") //查询和保存redis缓存
     @Override
-    public List<User> searchAllConcernMe(Integer mineId) {
+    public List<User> searchAllConcernMe(String openid) {
+        //由openid 查 userid
+        Integer mineId = userMapper.findUserIdByOpenId(openid);
         return friendMapper.searchAllConcernMe(mineId);
     }
 
@@ -75,15 +72,13 @@ public class FriendServiceImpl implements FriendService {
      * 删除关注条目
      * @return
      */
-    @Caching(
-            //使缓存失效，避免脏数据
-            evict = {
-                    @CacheEvict(value="concern", key="'concern-list'+#record.mineId"),
-                    @CacheEvict(value="concern", key="'friend-list'+#record.friendId")
-            }
-    )
     @Override
-    public Integer removeConcernItem(Friend record) {
+    public Integer removeConcernItem(Integer friendId, String openid) {
+        Friend record = new Friend();
+        //由openid 查 userid
+        Integer mineId = userMapper.findUserIdByOpenId(openid);
+        record.setMineId(mineId);
+        record.setFriendId(friendId);
         Integer ret = friendMapper.deleteByFriendItem(record);
         return ret;
     }

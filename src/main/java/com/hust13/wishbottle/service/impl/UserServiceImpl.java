@@ -58,23 +58,39 @@ public class UserServiceImpl implements UserService {
         //保存信息到数据库
         String openid = openIdJson.getOpenid();
         String session_key = openIdJson.getSession_key();
-        Map<String, String> map = new HashMap<>();
-        map.put("openid", openid);
-        map.put("session_key", session_key);
-        Integer ret = userMapper.insertOpenId(map);
+        Map<String, Object> map = new HashMap<>();
+        //查看session表中是否已经存在对应条目
+        Integer userid = userMapper.findUserIdByOpenId(openid);
+        //已经存在，则更新session_key
+        if(userid != null){
+            map.put("session_key", session_key);
+            map.put("userid", userid);
+            Integer ret = userMapper.updateSessionSelective(map);
+        }
+        else{
+            //若不存在则插入条目
+            map.put("openid", openid);
+            map.put("session_key", session_key);
+            Integer ret = userMapper.insertOpenId(map);
+        }
         //返回身份标识给前端
         return key;
     }
 
     @Override
-    public Integer saveUserInfo(User userInfo, String openid) throws Exception {
+    public User saveUserInfo(User userInfo, String openid){
         //查找userid
         int userid = userMapper.findUserIdByOpenId(openid);
         userInfo.setId(userid);
         int ret = userMapper.insertSelective(userInfo);
         if(ret > 0)
-            return userid; //返回userid给前端
+            return userMapper.selectByPrimaryKey(userid); //返回User给前端
         else
             return null;
+    }
+
+    @Override
+    public Integer getUserIdByOpenId(String openid) {
+        return userMapper.findUserIdByOpenId(openid);
     }
 }

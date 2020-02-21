@@ -10,5 +10,8 @@ public interface UserService {
 
     String userLogin(String js_code) throws Exception;
 
-    Integer saveUserInfo(User userInfo, String openid) throws Exception;
+    User saveUserInfo(User userInfo, String openid);
+
+    //由openid查询userid
+    Integer getUserIdByOpenId(String openid);
 }

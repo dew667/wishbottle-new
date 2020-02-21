@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface FriendService {
 
-    Friend concernOneUser(Friend friend);
+    Friend concernOneUser(Integer friendId, String openid);
 
-    List<User> searchAllIConcern(Integer mineId);
+    List<User> searchAllIConcern(String openid);
 
-    List<User> searchAllConcernMe(Integer mineId);
+    List<User> searchAllConcernMe(String openid);
 
-    Integer removeConcernItem(Friend record);
+    Integer removeConcernItem(Integer friendId, String openid);
 }

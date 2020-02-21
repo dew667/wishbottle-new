@@ -2,11 +2,12 @@ package com.hust13.wishbottle.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hust13.wishbottle.entity.Friend;
 import com.hust13.wishbottle.model.Model;
 import com.hust13.wishbottle.service.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -22,14 +23,16 @@ public class FriendController {
 
     /**
      * 关注某一用户
-     * @param friend JSON格式包含mineId和friendId
+     * @param friendId 被关注者id
      * @return
      */
     @PostMapping("/concern")
-    public Model concernOneUser(@RequestBody Friend friend){
+    public Model concernOneUser(@RequestParam("id") Integer friendId, HttpServletRequest request){
         Model model = new Model();
         try {
-            model.setData(friendService.concernOneUser(friend));
+            //获取身份标识
+            String openid = (String) request.getAttribute("openid");
+            model.setData(friendService.concernOneUser(friendId, openid));
         }catch (Exception e)
         {
             model.setCode(1);
@@ -46,11 +49,13 @@ public class FriendController {
      */
     @GetMapping("/IConcern/{pageNum}/{pageSize}")
     public Model getAllIConcern(@PathVariable("pageNum") Integer pageNum,
-                                @PathVariable("pageSize") Integer pageSize, @RequestParam("id") Integer mineId){
+                                @PathVariable("pageSize") Integer pageSize, HttpServletRequest request){
         Model model = new Model();
         try {
+            //获取身份标识
+            String openid = (String) request.getAttribute("openid");
             PageHelper.startPage(pageNum,pageSize);
-            PageInfo pageInfo=new PageInfo(friendService.searchAllIConcern(mineId));
+            PageInfo pageInfo=new PageInfo(friendService.searchAllIConcern(openid));
             model.setData(pageInfo);
         }catch (Exception e)
         {
@@ -68,11 +73,13 @@ public class FriendController {
      */
     @GetMapping("/ConcernMe/{pageNum}/{pageSize}")
     public Model getAllConcernMe(@PathVariable("pageNum") Integer pageNum,
-                                @PathVariable("pageSize") Integer pageSize, @RequestParam("id") Integer mineId){
+                                @PathVariable("pageSize") Integer pageSize, HttpServletRequest request){
         Model model = new Model();
         try {
+            //获取身份标识
+            String openid = (String) request.getAttribute("openid");
             PageHelper.startPage(pageNum,pageSize);
-            PageInfo pageInfo=new PageInfo(friendService.searchAllConcernMe(mineId));
+            PageInfo pageInfo=new PageInfo(friendService.searchAllConcernMe(openid));
             model.setData(pageInfo);
         }catch (Exception e)
         {
@@ -88,14 +95,12 @@ public class FriendController {
      * @return
      */
     @DeleteMapping("/concern/{id}")
-    public Model removeConcern(@PathVariable("id") Integer friendId){
+    public Model removeConcern(@PathVariable("id") Integer friendId, HttpServletRequest request){
         Model model = new Model();
         try {
-            Friend friend = new Friend();
-            Integer mineId = 2;
-            friend.setMineId(mineId);
-            friend.setFriendId(friendId);
-            model.setData(friendService.removeConcernItem(friend));
+            //获取身份标识
+            String openid = (String) request.getAttribute("openid");
+            model.setData(friendService.removeConcernItem(friendId, openid));
         }catch (Exception e)
         {
             model.setCode(1);
