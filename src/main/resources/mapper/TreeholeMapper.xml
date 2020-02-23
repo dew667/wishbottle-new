@@ -50,7 +50,7 @@
       #{report,jdbcType=INTEGER}, #{top,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{voice,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Treehole" >
+  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Treehole" useGeneratedKeys="true" keyProperty="id">
     insert into treehole
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >

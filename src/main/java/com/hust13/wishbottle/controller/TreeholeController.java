@@ -63,27 +63,90 @@ public class TreeholeController {
         return model;
     }
 
+    /**
+     * 发布树洞文章
+     * @param articleData 上传title content 图片文件-可多个 语音文件
+     * @param request
+     * @return
+     */
     @PostMapping("/releaseArticle")
     public Model releaseArticle(TreeholeArticleVO articleData, HttpServletRequest request) {
         Model model = new Model();
         try {
+            //通过openid获取本人userid
             String openid = (String) request.getAttribute("openid");
             Integer writer_id = userService.getUserIdByOpenId(openid);
+            //获取文章各项数据
             String title = articleData.getTitle();
             String content = articleData.getContent();
             MultipartFile[] imagFiles = articleData.getImagFiles();
             MultipartFile voiceFile = articleData.getVoiceFile();
+            //调用服务上传图片和语音文件
             HashMap<String, String> filePathMap = uploadFileService.uploadFiles(imagFiles, voiceFile);
-            String imagFilesPath = filePathMap.get("imagFiles");
-            String voiceFilePath = filePathMap.get("voiceFile");
+            //得到返回的文件存储路径
+            String imagFilesUrl = filePathMap.get("imagFilesUrl");
+            String voiceFileUrl = filePathMap.get("voiceFileUrl");
+            //封装数据 准备调用服务存储树洞文章记录
             Treehole record = new Treehole();
             record.setWriterId(writer_id);
-            model.setData(null);
+            record.setTitle(title);
+            record.setContent(content);
+            record.setPic(imagFilesUrl);
+            record.setVoice(voiceFileUrl);
+            //调用服务存储树洞文章记录
+            Treehole treehole = treeholeService.saveTreeholeArticle(record);
+            model.setData(treehole);
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("发布失败");
+        }
+        return model;
+    }
+
+    /**
+     * 获取单篇文章信息
+     * @param id 文章条目id
+     * @return
+     */
+    @GetMapping("/getOneArticle/{id}")
+    public Model getArticle(@PathVariable("id") Integer id){
+        Model model = new Model();
+        try {
+            model.setData(treeholeService.getOneArticle(id));
         }
         catch (Exception e)
         {
             model.setCode(1);
             model.setMsg("获取失败");
+        }
+        return model;
+    }
+
+    /**
+     * 获取树洞文章下面的所有评论
+     * @param treeholeId 树洞文章的id
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/getAllComments/{pageNum}/{pageSize}")
+    public Model getAllComments(@RequestParam("id") Integer treeholeId,
+                                @PathVariable("pageNum") Integer pageNum,
+                                @PathVariable("pageSize") Integer pageSize){
+        Model  model = new Model();
+        try {
+            //按时间升序排列
+            String sort = "time asc";
+            PageHelper.startPage(pageNum,pageSize,sort);
+            PageInfo pageInfo=new PageInfo(treeholeService.getAllComments(treeholeId));
+            model.setData(pageInfo);
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("获取评论失败");
         }
         return model;
     }

@@ -1,5 +1,6 @@
 package com.hust13.wishbottle.service;
 
+import com.hust13.wishbottle.entity.TreeReply;
 import com.hust13.wishbottle.entity.Treehole;
 
 import java.util.List;
@@ -13,5 +14,9 @@ public interface TreeholeService {
     List<Treehole> searchArticleList();
 
     Treehole saveTreeholeArticle(Treehole record);
+
+    Treehole getOneArticle(Integer id);
+
+    List<TreeReply> getAllComments(Integer treeholeId);
 
 }

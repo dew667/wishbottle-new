@@ -11,6 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 请求拦截器 用于分析header中用户标识
@@ -57,6 +58,8 @@ public class MyInterceptor implements HandlerInterceptor {
         OpenIdJson data =  (OpenIdJson) keyInRedis;
         String openid = data.getOpenid();
         request.setAttribute("openid", openid);
+        //auth认证通过 则重置缓存失效时间
+        redisTemplate.expire(key, 35*60, TimeUnit.SECONDS);
         return true;
     }
 

@@ -1,5 +1,7 @@
 package com.hust13.wishbottle.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class TreeReply {
@@ -11,6 +13,7 @@ public class TreeReply {
 
     private Integer answerId;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date time;
 
     private String content;

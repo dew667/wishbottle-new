@@ -21,6 +21,13 @@
     from tree_reply
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <!--根据树洞文章id查询所有评论 保证status=1 answer_id=0-->
+  <select id="searchAllComments" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    id, treehole_id, replyer_id, answer_id, time, content, likes, report
+    from tree_reply
+    where status=1 and answer_id=0 and treehole_id=#{treeholeId}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tree_reply
     where id = #{id,jdbcType=INTEGER}
