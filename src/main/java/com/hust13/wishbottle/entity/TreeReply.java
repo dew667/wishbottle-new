@@ -24,6 +24,16 @@ public class TreeReply {
 
     private Integer version;
 
+    private Integer report;
+
+    public Integer getReport() {
+        return report;
+    }
+
+    public void setReport(Integer report) {
+        this.report = report;
+    }
+
     public Integer getId() {
         return id;
     }

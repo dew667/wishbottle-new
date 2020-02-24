@@ -203,4 +203,28 @@
       version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <!--增加树洞文章表中的浏览量views-->
+  <update id="updateArticleViews" parameterType="java.lang.Integer" >
+    update treehole
+    set views=views+1
+    where id=#{id}
+  </update>
+  <!--增加树洞文章表中的评论回复量-->
+  <update id="updateCommentNum" parameterType="java.lang.Integer" >
+    update treehole
+    set reply_num=reply_num+1
+    where id=#{id}
+  </update>
+  <!--更新文章的点赞数量-->
+  <update id="updateLikesNum" parameterType="java.lang.Integer" >
+    update treehole
+    set likes=likes+1
+    where id=#{id}
+  </update>
+  <!--更新树洞文章举报数目-->
+  <update id="updateReportNum" parameterType="java.lang.Integer" >
+    update treehole
+    set report=report+1
+    where id=#{id}
+  </update>
 </mapper>

@@ -19,4 +19,16 @@ public interface TreeholeMapper {
     int updateByPrimaryKeySelective(Treehole record);
 
     int updateByPrimaryKey(Treehole record);
+
+    //更新文章浏览量
+    Integer updateArticleViews(Integer id);
+
+    //更新文章评论回复量
+    Integer updateCommentNum(Integer id);
+
+    //更新文章点赞数量
+    Integer updateLikesNum(Integer id);
+
+    //更新文章举报数码
+    Integer updateReportNum(Integer id);
 }

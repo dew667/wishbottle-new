@@ -125,28 +125,39 @@ public class TreeholeController {
     }
 
     /**
-     * 获取树洞文章下面的所有评论
-     * @param treeholeId 树洞文章的id
-     * @param pageNum
-     * @param pageSize
+     * 点赞
+     * @param treeholeId 树洞文章id
      * @return
      */
-    @GetMapping("/getAllComments/{pageNum}/{pageSize}")
-    public Model getAllComments(@RequestParam("id") Integer treeholeId,
-                                @PathVariable("pageNum") Integer pageNum,
-                                @PathVariable("pageSize") Integer pageSize){
-        Model  model = new Model();
+    @PostMapping("/giveLike/{id}")
+    public Model giveLike(@PathVariable("id") Integer treeholeId) {
+        Model model = new Model();
         try {
-            //按时间升序排列
-            String sort = "time asc";
-            PageHelper.startPage(pageNum,pageSize,sort);
-            PageInfo pageInfo=new PageInfo(treeholeService.getAllComments(treeholeId));
-            model.setData(pageInfo);
+            model.setData(treeholeService.giveLike(treeholeId));
         }
         catch (Exception e)
         {
             model.setCode(1);
-            model.setMsg("获取评论失败");
+            model.setMsg("点赞失败");
+        }
+        return model;
+    }
+
+    /**
+     * 举报
+     * @param treeholeId 树洞文章id
+     * @return
+     */
+    @PostMapping("/sendReport/{id}")
+    public Model sendReport(@PathVariable("id") Integer treeholeId) {
+        Model model = new Model();
+        try {
+            model.setData(treeholeService.sendReport(treeholeId));
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("举报失败");
         }
         return model;
     }

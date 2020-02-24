@@ -17,6 +17,8 @@ public interface TreeholeService {
 
     Treehole getOneArticle(Integer id);
 
-    List<TreeReply> getAllComments(Integer treeholeId);
+    String giveLike(Integer treeholeId);
+
+    String sendReport(Integer treeholeId);
 
 }

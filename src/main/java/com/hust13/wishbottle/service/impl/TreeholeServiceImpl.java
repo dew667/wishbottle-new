@@ -1,16 +1,12 @@
 package com.hust13.wishbottle.service.impl;
 
-import com.hust13.wishbottle.entity.TreeReply;
 import com.hust13.wishbottle.entity.Treehole;
-import com.hust13.wishbottle.mapper.TreeReplyMapper;
 import com.hust13.wishbottle.mapper.TreeholeMapper;
 import com.hust13.wishbottle.service.TreeholeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +20,6 @@ public class TreeholeServiceImpl implements TreeholeService {
 
     @Autowired
     TreeholeMapper treeholeMapper;
-
-    @Autowired
-    TreeReplyMapper treeReplyMapper;
 
     /**
      * 搜索所有文章列表
@@ -65,16 +58,32 @@ public class TreeholeServiceImpl implements TreeholeService {
      */
     @Override
     public Treehole getOneArticle(Integer id) {
+        //更新treehole表中views字段 阅读量+1
+        Integer ret = treeholeMapper.updateArticleViews(id);
         return treeholeMapper.selectByPrimaryKey(id);
     }
 
     /**
-     * 根据树洞文章id获取所有评论
-     * @param treeholeId
+     * 点赞数增加
+     * @param treeholeId 树洞id
      * @return
      */
     @Override
-    public List<TreeReply> getAllComments(Integer treeholeId) {
-        return treeReplyMapper.searchAllComments(treeholeId);
+    public String giveLike(Integer treeholeId) {
+        Integer ret = treeholeMapper.updateLikesNum(treeholeId);
+        if(ret > 0)
+            return "点赞成功";
+        else
+            return null;
     }
+
+    @Override
+    public String sendReport(Integer treeholeId) {
+        Integer ret = treeholeMapper.updateReportNum(treeholeId);
+        if(ret > 0)
+            return "举报成功";
+        else
+            return null;
+    }
+
 }
