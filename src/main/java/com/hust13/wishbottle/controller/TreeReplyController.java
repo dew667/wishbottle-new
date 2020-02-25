@@ -54,6 +54,33 @@ public class TreeReplyController {
     }
 
     /**
+     * 获取作者的评论
+     * @param treeholeId 树洞文章id
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/getCommentsOfAuthor/{pageNum}/{pageSize}")
+    public Model getCommentsOfAuthor(@RequestParam("id") Integer treeholeId,
+                                        @PathVariable("pageNum") Integer pageNum,
+                                        @PathVariable("pageSize") Integer pageSize) {
+        Model  model = new Model();
+        try {
+            //按时间升序排列
+            String sort = "time asc";
+            PageHelper.startPage(pageNum,pageSize,sort);
+            PageInfo pageInfo=new PageInfo(treeReplyService.getAllCommentsOfAuthor(treeholeId));
+            model.setData(pageInfo);
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("获取评论失败");
+        }
+        return model;
+    }
+
+    /**
      * 获取指定评论下面的所有回复
      * @param commentId 指定评论的id
      * @param pageNum

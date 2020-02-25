@@ -15,6 +15,20 @@
     from tree_history
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <!--联表查询 获取历史记录表中的时间和树洞文章表相关信息-->
+  <select id="searchHistoryInfo" resultType="com.hust13.wishbottle.model.HistoryData" parameterType="java.lang.Integer" >
+    select
+    t.id, t.writer_id, t.title, h.time
+    from tree_history h inner join treehole t
+    on h.treehole_id=t.id
+    where h.user_id=#{userId}
+  </select>
+  <!--通过树洞文章id查询是否已存在该项记录-->
+  <select id="findIfExist" parameterType="java.lang.Integer">
+    select count(1)
+    from tree_history
+    where treehole_id=#{treeholeId}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tree_history
     where id = #{id,jdbcType=INTEGER}
@@ -37,6 +51,9 @@
       <if test="time != null" >
         time,
       </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -47,6 +64,9 @@
       </if>
       <if test="time != null" >
         #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>

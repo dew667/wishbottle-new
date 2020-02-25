@@ -7,6 +7,16 @@ public class TreeHistory {
 
     private Integer treeholeId;
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    private Integer userId;
+
     private Date time;
 
     public Integer getId() {

@@ -63,6 +63,25 @@ public class TreeholeController {
         return model;
     }
 
+    @GetMapping("/getRecommend/{pageNum}/{pageSize}")
+    public Model getRecommendArticleList(@PathVariable("pageNum") Integer pageNum,
+                                         @PathVariable("pageSize") Integer pageSize) {
+        Model model = new Model();
+        try {
+            //排序方式
+            String sort = "views desc, reply_num desc, likes desc"; //默认按热度排序-即浏览量、回复量、点赞数
+            PageHelper.startPage(pageNum,pageSize,sort);
+            PageInfo pageInfo=new PageInfo(treeholeService.searchArticleList());
+            model.setData(pageInfo);
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("获取失败");
+        }
+        return model;
+    }
+
     /**
      * 发布树洞文章
      * @param articleData 上传title content 图片文件-可多个 语音文件
@@ -107,14 +126,20 @@ public class TreeholeController {
 
     /**
      * 获取单篇文章信息
-     * @param id 文章条目id
+     * @param treeholeId 文章条目id
      * @return
      */
     @GetMapping("/getOneArticle/{id}")
-    public Model getArticle(@PathVariable("id") Integer id){
+    public Model getArticle(@PathVariable("id") Integer treeholeId, HttpServletRequest request){
         Model model = new Model();
         try {
-            model.setData(treeholeService.getOneArticle(id));
+            //获取本人id 用于存储历史记录
+            String openid = (String) request.getAttribute("openid");
+            Integer userId = userService.getUserIdByOpenId(openid);
+            //存储历史记录
+            Integer ret = treeholeService.saveHistory(userId, treeholeId);
+            //获取文章
+            model.setData(treeholeService.getOneArticle(treeholeId));
         }
         catch (Exception e)
         {
@@ -158,6 +183,37 @@ public class TreeholeController {
         {
             model.setCode(1);
             model.setMsg("举报失败");
+        }
+        return model;
+    }
+
+
+    /**
+     * 分页查询用户浏览记录
+     * @param pageNum
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @GetMapping("/getHistoryList/{pageNum}/{pageSize}")
+    public Model getHistoryList(@PathVariable("pageNum") Integer pageNum,
+                               @PathVariable("pageSize") Integer pageSize,
+                                HttpServletRequest request) {
+        Model model = new Model();
+        try {
+            //获取用户id
+            String openid = (String) request.getAttribute("openid");
+            Integer userId = userService.getUserIdByOpenId(openid);
+            //按时间升序排列
+            String sort = "h.time asc";
+            PageHelper.startPage(pageNum,pageSize,sort);
+            PageInfo pageInfo=new PageInfo(treeholeService.getHistory(userId));
+            model.setData(pageInfo);
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("获取历史记录失败");
         }
         return model;
     }

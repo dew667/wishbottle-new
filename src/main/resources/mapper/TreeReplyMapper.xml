@@ -28,6 +28,13 @@
     from tree_reply
     where status=1 and answer_id=0 and treehole_id=#{treeholeId}
   </select>
+  <!--根据文章id查询所有作者所属的评论 保证status=1 answer_id=0-->
+  <select id="searchAllCommentsOfAuthor" resultMap="BaseResultMap" parameterType="HashMap">
+    select
+    id, treehole_id, replyer_id, answer_id, time, content, likes, report
+    from tree_reply
+    where status=1 and answer_id=0 and replyer_id=#{writerId} and treehole_id=#{treeholeId}
+  </select>
   <!--根据指定评论的id获取所有的回复-->
   <select id="searchAllReplies" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select

@@ -1,6 +1,7 @@
 package com.hust13.wishbottle.service.impl;
 
 import com.hust13.wishbottle.entity.TreeReply;
+import com.hust13.wishbottle.entity.Treehole;
 import com.hust13.wishbottle.mapper.TreeReplyMapper;
 import com.hust13.wishbottle.mapper.TreeholeMapper;
 import com.hust13.wishbottle.service.TreeReplyService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -32,6 +34,23 @@ public class TreeReplyServiceImpl implements TreeReplyService {
     @Override
     public List<TreeReply> getAllComments(Integer treeholeId) {
         return treeReplyMapper.searchAllComments(treeholeId);
+    }
+
+    /**
+     * 只看作者的评论
+     * @param treeholeId 树洞文章id
+     * @return
+     */
+    @Override
+    public List<TreeReply> getAllCommentsOfAuthor(Integer treeholeId) {
+        //查询文章对应的作者id
+        Treehole record = treeholeMapper.selectByPrimaryKey(treeholeId);
+        Integer writerId = record.getWriterId();
+        //封装作者id和树洞文章id
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("treeholeId", treeholeId);
+        map.put("writerId", writerId);
+        return treeReplyMapper.searchAllCommentsOfAuthor(map);
     }
 
     /**

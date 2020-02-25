@@ -12,6 +12,8 @@ public interface TreeReplyService {
 
     List<TreeReply> getAllComments(Integer treeholeId);
 
+    List<TreeReply> getAllCommentsOfAuthor(Integer treeholeId);
+
     List<TreeReply> getAllReplies(Integer commentId);
 
     TreeReply saveComment(TreeReply record);
