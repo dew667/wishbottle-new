@@ -162,6 +162,7 @@ public class TreeholeController {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             model.setCode(1);
             model.setMsg("点赞失败");
         }
@@ -181,6 +182,7 @@ public class TreeholeController {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             model.setCode(1);
             model.setMsg("举报失败");
         }

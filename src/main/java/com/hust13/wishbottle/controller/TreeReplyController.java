@@ -182,6 +182,7 @@ public class TreeReplyController {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             model.setCode(1);
             model.setMsg("点赞失败");
         }
@@ -201,6 +202,7 @@ public class TreeReplyController {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             model.setCode(1);
             model.setMsg("点赞失败");
         }

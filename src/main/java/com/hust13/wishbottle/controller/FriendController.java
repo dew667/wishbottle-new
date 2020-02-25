@@ -35,6 +35,7 @@ public class FriendController {
             model.setData(friendService.concernOneUser(friendId, openid));
         }catch (Exception e)
         {
+            e.printStackTrace();
             model.setCode(1);
             model.setMsg("关注用户失败");
         }

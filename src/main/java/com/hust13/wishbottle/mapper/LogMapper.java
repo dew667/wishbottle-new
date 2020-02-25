@@ -2,6 +2,9 @@ package com.hust13.wishbottle.mapper;
 
 import com.hust13.wishbottle.entity.Log;
 
+import java.util.List;
+import java.util.Map;
+
 public interface LogMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -14,4 +17,8 @@ public interface LogMapper {
     int updateByPrimaryKeySelective(Log record);
 
     int updateByPrimaryKey(Log record);
+
+    List<Log> getMyLogs(int writerId);
+
+    List<Log> searchInLog(Map<String, Object> map);
 }

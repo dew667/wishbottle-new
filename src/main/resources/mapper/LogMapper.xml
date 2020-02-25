@@ -5,13 +5,14 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="writer_id" property="writerId" jdbcType="INTEGER" />
     <result column="content" property="content" jdbcType="VARCHAR" />
-    <result column="pic" property="pic" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="emotion" property="emotion" jdbcType="INTEGER"/>
+    <result column="weather" property="weather" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, writer_id, content, pic, time, status, title
+    id, writer_id, content, time, status, title, weather, emotion
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -31,7 +32,7 @@
       #{pic,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
       #{title,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Log" >
+  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Log" useGeneratedKeys="true" keyProperty="id">
     insert into log
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -43,9 +44,6 @@
       <if test="content != null" >
         content,
       </if>
-      <if test="pic != null" >
-        pic,
-      </if>
       <if test="time != null" >
         time,
       </if>
@@ -54,6 +52,12 @@
       </if>
       <if test="title != null" >
         title,
+      </if>
+      <if test="weather != null" >
+        weather,
+      </if>
+      <if test="emotion != null" >
+        emotion,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -66,9 +70,6 @@
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
       </if>
-      <if test="pic != null" >
-        #{pic,jdbcType=VARCHAR},
-      </if>
       <if test="time != null" >
         #{time,jdbcType=TIMESTAMP},
       </if>
@@ -77,6 +78,12 @@
       </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="weather != null" >
+        #{weather,jdbcType=VARCHAR},
+      </if>
+      <if test="emotion != null" >
+        #{emotion,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -89,9 +96,6 @@
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
       </if>
-      <if test="pic != null" >
-        pic = #{pic,jdbcType=VARCHAR},
-      </if>
       <if test="time != null" >
         time = #{time,jdbcType=TIMESTAMP},
       </if>
@@ -100,6 +104,12 @@
       </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="weather != null" >
+        weather = #{weather,jdbcType=VARCHAR},
+      </if>
+      <if test="emotion != null" >
+        emotion = #{emotion,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -114,4 +124,18 @@
       title = #{title,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--获取本人所有日记-->
+  <select id="getMyLogs" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from log
+    where writer_id = #{writerId,jdbcType=INTEGER}
+  </select>
+
+  <!--根据作者id和关键词搜索-->
+  <select id="searchInLog" parameterType="HashMap" resultMap="BaseResultMap" >
+    select *
+    from log
+    where writer_id=#{writerId} and (title like '%${keywords}%' or content like '%${keywords}%')
+  </select>
 </mapper>

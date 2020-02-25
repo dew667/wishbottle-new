@@ -1,5 +1,7 @@
 package com.hust13.wishbottle.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Log {
@@ -9,13 +11,33 @@ public class Log {
 
     private String content;
 
-    private String pic;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date time;
 
     private Integer status;
 
     private String title;
+
+    //心情
+    private Integer emotion;
+
+    private String weather;
+
+    public Integer getEmotion() {
+        return emotion;
+    }
+
+    public void setEmotion(Integer emotion) {
+        this.emotion = emotion;
+    }
+
+    public String getWeather() {
+        return weather;
+    }
+
+    public void setWeather(String weather) {
+        this.weather = weather;
+    }
 
     public Integer getId() {
         return id;
@@ -39,14 +61,6 @@ public class Log {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
-    }
-
-    public String getPic() {
-        return pic;
-    }
-
-    public void setPic(String pic) {
-        this.pic = pic == null ? null : pic.trim();
     }
 
     public Date getTime() {

@@ -81,7 +81,7 @@ public class TreeholeServiceImpl implements TreeholeService {
         if(ret > 0)
             return "点赞成功";
         else
-            return null;
+            throw new RuntimeException("点赞操作失败");
     }
 
     /**
@@ -95,7 +95,7 @@ public class TreeholeServiceImpl implements TreeholeService {
         if(ret > 0)
             return "举报成功";
         else
-            return null;
+            throw new RuntimeException("举报操作失败");
     }
 
     /**
