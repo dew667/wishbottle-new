@@ -30,9 +30,7 @@ public class FriendServiceImpl implements FriendService {
      * @return
      */
     @Override
-    public Friend concernOneUser(Integer friendId, String openid) {
-        //由openid 查 userid
-        Integer mineId = userMapper.findUserIdByOpenId(openid);
+    public Friend concernOneUser(Integer friendId, Integer mineId) {
         Friend record = new Friend();
         record.setFriendId(friendId);
         record.setMineId(mineId);
@@ -46,25 +44,21 @@ public class FriendServiceImpl implements FriendService {
 
     /**
      * 查询所有本人关注的用户
-     * @param openid
+     * @param mineId
      * @return
      */
     @Override
-    public List<User> searchAllIConcern(String openid) {
-        //由openid 查 userid
-        Integer mineId = userMapper.findUserIdByOpenId(openid);
+    public List<User> searchAllIConcern(Integer mineId) {
         return friendMapper.searchAllIConcern(mineId);
     }
 
     /**
      * 查询我的所有粉丝
-     * @param openid
+     * @param mineId
      * @return
      */
     @Override
-    public List<User> searchAllConcernMe(String openid) {
-        //由openid 查 userid
-        Integer mineId = userMapper.findUserIdByOpenId(openid);
+    public List<User> searchAllConcernMe(Integer mineId) {
         return friendMapper.searchAllConcernMe(mineId);
     }
 
@@ -73,10 +67,8 @@ public class FriendServiceImpl implements FriendService {
      * @return
      */
     @Override
-    public Integer removeConcernItem(Integer friendId, String openid) {
+    public Integer removeConcernItem(Integer friendId, Integer mineId) {
         Friend record = new Friend();
-        //由openid 查 userid
-        Integer mineId = userMapper.findUserIdByOpenId(openid);
         record.setMineId(mineId);
         record.setFriendId(friendId);
         Integer ret = friendMapper.deleteByFriendItem(record);

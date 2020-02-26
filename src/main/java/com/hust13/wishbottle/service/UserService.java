@@ -14,4 +14,7 @@ public interface UserService {
 
     //由openid查询userid
     Integer getUserIdByOpenId(String openid);
+
+    //获取指定用户信息
+    User getUserInfo(Integer userId);
 }

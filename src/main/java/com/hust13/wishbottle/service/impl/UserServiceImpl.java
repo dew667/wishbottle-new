@@ -77,6 +77,12 @@ public class UserServiceImpl implements UserService {
         return key;
     }
 
+    /**
+     * 保存用户信息
+     * @param userInfo
+     * @param openid
+     * @return
+     */
     @Override
     public User saveUserInfo(User userInfo, String openid){
         //查找userid
@@ -89,8 +95,23 @@ public class UserServiceImpl implements UserService {
             return null;
     }
 
+    /**
+     * 通过openid获取用户id
+     * @param openid
+     * @return
+     */
     @Override
     public Integer getUserIdByOpenId(String openid) {
         return userMapper.findUserIdByOpenId(openid);
+    }
+
+    /**
+     * 获取指定用户信息
+     * @param userId
+     * @return
+     */
+    @Override
+    public User getUserInfo(Integer userId) {
+        return userMapper.selectByPrimaryKey(userId);
     }
 }

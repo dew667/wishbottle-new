@@ -63,6 +63,12 @@ public class TreeholeController {
         return model;
     }
 
+    /**
+     * 获取猜你喜欢列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/getRecommend/{pageNum}/{pageSize}")
     public Model getRecommendArticleList(@PathVariable("pageNum") Integer pageNum,
                                          @PathVariable("pageSize") Integer pageSize) {

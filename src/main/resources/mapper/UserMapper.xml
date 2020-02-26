@@ -13,9 +13,10 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="ban" property="ban" jdbcType="INTEGER" />
     <result column="my_pic" property="myPic" jdbcType="VARCHAR" />
+    <result column="tags" property="tags" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, name, avatar, gender, age, signature, city, create_time, update_time, ban, my_pic
+    id, name, avatar, gender, age, signature, city, create_time, update_time, ban, my_pic, tags
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -37,11 +38,11 @@
     insert into user (id, name, avatar,
       gender, age, signature, 
       city, create_time, update_time, 
-      ban, my_pic)
+      ban, my_pic, tags)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, 
       #{gender,jdbcType=INTEGER}, #{age,jdbcType=INTEGER}, #{signature,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{ban,jdbcType=INTEGER}, #{myPic,jdbcType=VARCHAR})
+      #{ban,jdbcType=INTEGER}, #{myPic,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.User" >
     insert into user
@@ -79,6 +80,9 @@
       <if test="myPic != null" >
         my_pic,
       </if>
+      <if test="tags != null" >
+        tags,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -113,6 +117,9 @@
       </if>
       <if test="myPic != null" >
         #{myPic,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -169,6 +176,9 @@
       <if test="myPic != null" >
         my_pic = #{myPic,jdbcType=VARCHAR},
       </if>
+      <if test="tags != null" >
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -183,7 +193,8 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       ban = #{ban,jdbcType=INTEGER},
-      my_pic = #{myPic,jdbcType=VARCHAR}
+      my_pic = #{myPic,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

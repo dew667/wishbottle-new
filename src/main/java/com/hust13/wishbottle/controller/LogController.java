@@ -118,7 +118,7 @@ public class LogController {
 
     /**
      * 修改日记
-     * @param log 请求头传入参数包括 id-必须 content title time status emotion weather
+     * @param log 请求体传入参数包括 id-必须 content title time status emotion weather
      * @return
      */
     @PutMapping("/update")

@@ -19,6 +19,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    /**
+     * 授权登录接口
+     * @param js_code
+     * @return
+     */
     @PostMapping("/login")
     public Model login(@RequestParam("js_code") String js_code){
         Model model = new Model();
@@ -33,6 +38,12 @@ public class UserController {
         return model;
     }
 
+    /**
+     * 保存用户信息接口
+     * @param userInfo
+     * @param request
+     * @return
+     */
     @PostMapping("/save")
     public Model saveUserInfo(@RequestBody User userInfo, HttpServletRequest request) {
         Model model = new Model();
@@ -48,4 +59,31 @@ public class UserController {
         }
         return model;
     }
+
+    /**
+     * 获取用户信息
+     * @param request
+     * @param userId 如果userId为空则查询本人信息 否则查询指定用户信息
+     * @return
+     */
+    @GetMapping("/getUserInfo")
+    public Model getUserInfo(HttpServletRequest request,
+                             @RequestParam(value="userId", required=false) Integer userId) {
+        Model model = new Model();
+        try{
+            //如果userId为空则查询本人信息 否则查询指定用户信息
+            if(userId == null){
+                String openid = (String) request.getAttribute("openid");
+                userId =  userService.getUserIdByOpenId(openid);
+            }
+            model.setData(userService.getUserInfo(userId));
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("存储用户信息请求失败");
+        }
+        return model;
+    }
+
 }

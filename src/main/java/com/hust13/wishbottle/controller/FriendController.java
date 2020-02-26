@@ -2,12 +2,17 @@ package com.hust13.wishbottle.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hust13.wishbottle.entity.User;
 import com.hust13.wishbottle.model.Model;
 import com.hust13.wishbottle.service.FriendService;
+import com.hust13.wishbottle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -21,6 +26,9 @@ public class FriendController {
     @Autowired
     private FriendService friendService;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * 关注某一用户
      * @param friendId 被关注者id
@@ -32,7 +40,8 @@ public class FriendController {
         try {
             //获取身份标识
             String openid = (String) request.getAttribute("openid");
-            model.setData(friendService.concernOneUser(friendId, openid));
+            Integer mineId = userService.getUserIdByOpenId(openid);
+            model.setData(friendService.concernOneUser(friendId, mineId));
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -55,8 +64,9 @@ public class FriendController {
         try {
             //获取身份标识
             String openid = (String) request.getAttribute("openid");
+            Integer mineId = userService.getUserIdByOpenId(openid);
             PageHelper.startPage(pageNum,pageSize);
-            PageInfo pageInfo=new PageInfo(friendService.searchAllIConcern(openid));
+            PageInfo pageInfo=new PageInfo(friendService.searchAllIConcern(mineId));
             model.setData(pageInfo);
         }catch (Exception e)
         {
@@ -79,8 +89,9 @@ public class FriendController {
         try {
             //获取身份标识
             String openid = (String) request.getAttribute("openid");
+            Integer mineId = userService.getUserIdByOpenId(openid);
             PageHelper.startPage(pageNum,pageSize);
-            PageInfo pageInfo=new PageInfo(friendService.searchAllConcernMe(openid));
+            PageInfo pageInfo=new PageInfo(friendService.searchAllConcernMe(mineId));
             model.setData(pageInfo);
         }catch (Exception e)
         {
@@ -101,11 +112,49 @@ public class FriendController {
         try {
             //获取身份标识
             String openid = (String) request.getAttribute("openid");
-            model.setData(friendService.removeConcernItem(friendId, openid));
+            Integer mineId = userService.getUserIdByOpenId(openid);
+            model.setData(friendService.removeConcernItem(friendId, mineId));
         }catch (Exception e)
         {
             model.setCode(1);
             model.setMsg("删除关注条目时出错");
+        }
+        return model;
+    }
+
+    /**
+     * 获取用户关注的数目和粉丝数目
+     * @param request
+     * @param userId 指定的用户id-可为空表示查询我的信息
+     * @return
+     */
+    @GetMapping("/getConcernNum")
+    public Model getConcernNum(HttpServletRequest request,
+                               @RequestParam(value="userId", required=false) Integer userId) {
+        Model model = new Model();
+        try{
+            //userId为空则查询本人的信息 否则查询指定用户信息
+            if(userId == null) {
+                String openid = (String) request.getAttribute("openid");
+                userId = userService.getUserIdByOpenId(openid);
+            }
+            //获取我关注的用户数目
+            List<User> iConcern = friendService.searchAllIConcern(userId);
+            Integer iConcernNum = iConcern.size();
+            //获取我的粉丝数目
+            List<User> concernMe = friendService.searchAllConcernMe(userId);
+            Integer concernMeNum = concernMe.size();
+            //封装数据
+            Map<String, Integer> map = new HashMap<>();
+            map.put("iConcernNum", iConcernNum);
+            map.put("concernMeNum", concernMeNum);
+            //设置返回数据
+            model.setData(map);
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("获取关注粉丝数目失败");
         }
         return model;
     }
