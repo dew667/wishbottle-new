@@ -4,15 +4,18 @@
   <resultMap id="BaseResultMap" type="com.hust13.wishbottle.entity.Wishbottle" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="writer_id" property="writerId" jdbcType="INTEGER" />
-    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="throw_time" property="throwTime" jdbcType="TIMESTAMP" />
+    <result column="pick_time" property="pickTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="picker_id" property="pickerId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="pic" property="pic" jdbcType="VARCHAR" />
+    <result column="type" property="pic" jdbcType="INTEGER" />
     <result column="report" property="report" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, writer_id, time, picker_id, content, status, pic, report
+    id, writer_id, throw_time, pick_time, update_time, picker_id, title, content, status, type, report
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,14 +28,14 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hust13.wishbottle.entity.Wishbottle" >
-    insert into wishbottle (id, writer_id, time,
-      picker_id, content, status, 
-      pic, report)
-    values (#{id,jdbcType=INTEGER}, #{writerId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, 
-      #{pickerId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{pic,jdbcType=VARCHAR}, #{report,jdbcType=INTEGER})
+    insert into wishbottle
+    (id, writer_id, throw_time, pick_time, update_time, picker_id, title, content, status, type, report)
+    values (#{id,jdbcType=INTEGER}, #{writerId,jdbcType=INTEGER}, #{throwTime,jdbcType=TIMESTAMP},
+      #{pickTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{pickerId,jdbcType=INTEGER},
+      #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+      #{type,jdbcType=INTEGER}, #{report,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Wishbottle" >
+  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Wishbottle" useGeneratedKeys="true" keyProperty="id">
     insert into wishbottle
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -41,11 +44,20 @@
       <if test="writerId != null" >
         writer_id,
       </if>
-      <if test="time != null" >
-        time,
+      <if test="throwTime != null" >
+        throw_time,
+      </if>
+      <if test="pickTime != null" >
+        pick_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
       </if>
       <if test="pickerId != null" >
         picker_id,
+      </if>
+      <if test="title != null" >
+        title,
       </if>
       <if test="content != null" >
         content,
@@ -53,8 +65,8 @@
       <if test="status != null" >
         status,
       </if>
-      <if test="pic != null" >
-        pic,
+      <if test="type != null" >
+        type,
       </if>
       <if test="report != null" >
         report,
@@ -67,11 +79,20 @@
       <if test="writerId != null" >
         #{writerId,jdbcType=INTEGER},
       </if>
-      <if test="time != null" >
-        #{time,jdbcType=TIMESTAMP},
+      <if test="throwTime != null" >
+        #{throwTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickTime != null" >
+        #{pickTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="pickerId != null" >
         #{pickerId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
@@ -79,8 +100,8 @@
       <if test="status != null" >
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="pic != null" >
-        #{pic,jdbcType=VARCHAR},
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="report != null" >
         #{report,jdbcType=INTEGER},
@@ -93,11 +114,20 @@
       <if test="writerId != null" >
         writer_id = #{writerId,jdbcType=INTEGER},
       </if>
-      <if test="time != null" >
-        time = #{time,jdbcType=TIMESTAMP},
+      <if test="throwTime != null" >
+        throw_time = #{throwTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pickTime != null" >
+        pick_time = #{pickTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="pickerId != null" >
         picker_id = #{pickerId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
@@ -105,8 +135,8 @@
       <if test="status != null" >
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="pic != null" >
-        pic = #{pic,jdbcType=VARCHAR},
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="report != null" >
         report = #{report,jdbcType=INTEGER},
@@ -117,11 +147,14 @@
   <update id="updateByPrimaryKey" parameterType="com.hust13.wishbottle.entity.Wishbottle" >
     update wishbottle
     set writer_id = #{writerId,jdbcType=INTEGER},
-      time = #{time,jdbcType=TIMESTAMP},
+      throw_time = #{throwTime,jdbcType=TIMESTAMP},
+      pick_time = #{pickTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       picker_id = #{pickerId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
-      pic = #{pic,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
       report = #{report,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

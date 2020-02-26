@@ -1,5 +1,7 @@
 package com.hust13.wishbottle.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Wishbottle {
@@ -7,15 +9,69 @@ public class Wishbottle {
 
     private Integer writerId;
 
-    private Date time;
+    //抛掷时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    private Date throwTime;
+
+    //拾取时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    private Date pickTime;
+
+    //修改草稿时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    private Date updateTime;
 
     private Integer pickerId;
 
+    private String title;
+
     private String content;
 
+    //状态 0-心愿海 1-被捞取 2-捞取者删除 3-发布者删除 4-两者都删 5-管理员删除 6-保存在草稿箱
     private Integer status;
 
-    private String pic;
+    public Date getThrowTime() {
+        return throwTime;
+    }
+
+    public void setThrowTime(Date throwTime) {
+        this.throwTime = throwTime;
+    }
+
+    public Date getPickTime() {
+        return pickTime;
+    }
+
+    public void setPickTime(Date pickTime) {
+        this.pickTime = pickTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    //心愿瓶类型
+    private Integer type;
 
     private Integer report;
 
@@ -33,14 +89,6 @@ public class Wishbottle {
 
     public void setWriterId(Integer writerId) {
         this.writerId = writerId;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
     }
 
     public Integer getPickerId() {
@@ -65,14 +113,6 @@ public class Wishbottle {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getPic() {
-        return pic;
-    }
-
-    public void setPic(String pic) {
-        this.pic = pic == null ? null : pic.trim();
     }
 
     public Integer getReport() {

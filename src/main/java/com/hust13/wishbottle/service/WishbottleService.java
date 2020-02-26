@@ -7,16 +7,7 @@ import java.util.List;
 
 public interface WishbottleService {
 
-    //捞心愿瓶
-    public Wishbottle searchWishbottle();
-
     //发布心愿瓶
-    public int throwWishbottle(Wishbottle wishbottle);
-
-    //查看自己的心愿瓶
-    public List<Wishbottle> getWishbottle(int userId);
-
-    //写心愿瓶回复
-    public int writeWishReply(WishReply wishReply);
+    Wishbottle throwWishbottle(Wishbottle wishbottle);
 
 }

@@ -22,10 +22,10 @@ import java.util.List;
 public class TreeholeServiceImpl implements TreeholeService {
 
     @Autowired
-    TreeholeMapper treeholeMapper;
+    private TreeholeMapper treeholeMapper;
 
     @Autowired
-    TreeHistoryMapper treeHistoryMapper;
+    private TreeHistoryMapper treeHistoryMapper;
 
     /**
      * 搜索所有文章列表

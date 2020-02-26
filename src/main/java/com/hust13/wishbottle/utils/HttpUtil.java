@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.commons.httpclient.HttpStatus;//此类需要添加maven依赖或jar包
 
 /**
+ * 网络Http工具类
  * 参考 https://www.cnblogs.com/to-red/p/11563854.html
  */
 public class HttpUtil {

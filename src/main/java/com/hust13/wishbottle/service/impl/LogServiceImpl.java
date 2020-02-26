@@ -18,7 +18,7 @@ import java.util.Map;
 public class LogServiceImpl implements LogService {
 
     @Autowired
-    LogMapper logMapper;
+    private LogMapper logMapper;
 
     /**
      * 写日记

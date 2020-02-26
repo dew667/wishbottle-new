@@ -1,7 +1,5 @@
 package com.hust13.wishbottle.model;
 
-import org.springframework.web.multipart.MultipartFile;
-
 /**
  * 树洞文章上传发布封装类
  * created by wzy on 2020/2/21
@@ -14,25 +12,25 @@ public class TreeholeArticleVO {
     //内容
     private String content;
 
-    //图片 可能有多张
-    MultipartFile [] imagFiles;
+    //图片文件名数组 可能有多个图片
+    String[] imagFiles;
 
-    //音频
-    MultipartFile voiceFile;
+    //音频文件名
+    String voiceFile;
 
-    public MultipartFile[] getImagFiles() {
+    public String[] getImagFiles() {
         return imagFiles;
     }
 
-    public void setImagFiles(MultipartFile[] imagFiles) {
+    public void setImagFiles(String[] imagFiles) {
         this.imagFiles = imagFiles;
     }
 
-    public MultipartFile getVoiceFile() {
+    public String getVoiceFile() {
         return voiceFile;
     }
 
-    public void setVoiceFile(MultipartFile voiceFile) {
+    public void setVoiceFile(String voiceFile) {
         this.voiceFile = voiceFile;
     }
 

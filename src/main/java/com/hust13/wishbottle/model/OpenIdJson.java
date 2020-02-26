@@ -1,9 +1,13 @@
 package com.hust13.wishbottle.model;
 
+import java.io.Serializable;
+
 /**
  * 封装openId和session_key
  */
-public class OpenIdJson {
+public class OpenIdJson implements Serializable {
+
+    private static final long serialVersionUID = -8508861873732702443L;
 
     private String openid;
     private String session_key;

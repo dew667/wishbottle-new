@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 25/02/2020 14:21:08
+ Date: 26/02/2020 15:52:02
 */
 
 SET NAMES utf8mb4;
@@ -36,6 +36,9 @@ CREATE TABLE `friend`  (
 -- Records of friend
 -- ----------------------------
 INSERT INTO `friend` VALUES (1, 1, 2);
+INSERT INTO `friend` VALUES (2, 6, 2);
+INSERT INTO `friend` VALUES (3, 6, 1);
+INSERT INTO `friend` VALUES (4, 1, 6);
 
 -- ----------------------------
 -- Table structure for log
@@ -53,7 +56,7 @@ CREATE TABLE `log`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `8`(`writer_id`) USING BTREE,
   CONSTRAINT `fk_8` FOREIGN KEY (`writer_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of log
@@ -110,19 +113,6 @@ CREATE TABLE `session`  (
 -- Records of session
 -- ----------------------------
 INSERT INTO `session` VALUES ('onXqv4hwBiYdmkoWO93c8UEpCv5o', 'aZPxLB+M8ET05NfTDkl/yw==', 6);
-
--- ----------------------------
--- Table structure for tag
--- ----------------------------
-DROP TABLE IF EXISTS `tag`;
-CREATE TABLE `tag`  (
-  `id` int(11) NOT NULL COMMENT '标签条目id 主键 非空 自增',
-  `user_id` int(11) NULL DEFAULT NULL COMMENT '用户id(拥有者id) 非空 外键约束参照user(id)',
-  `content` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '标签内容 文本',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `user_id`(`user_id`) USING BTREE,
-  CONSTRAINT `tag_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for tree_history
@@ -200,13 +190,13 @@ CREATE TABLE `treehole`  (
   `content` varchar(3000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '树洞内容 文本',
   `views` int(255) NOT NULL DEFAULT 0 COMMENT '浏览量 非空 默认为0',
   `reply_num` int(255) NOT NULL DEFAULT 0 COMMENT '回复量 非空 默认为0',
-  `pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片地址（多张图片的话，地址用分号‘+’隔开）',
+  `pic` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片地址链接（多张图片的话，地址用分号‘+’隔开）',
   `status` int(11) NOT NULL DEFAULT 1 COMMENT '状态 0-删除 1-发布 非空 默认为1',
   `likes` int(255) NOT NULL DEFAULT 0 COMMENT '点赞数 非空 默认为0',
   `report` int(255) NOT NULL DEFAULT 0 COMMENT '举报数(向管理员报告) 非空 默认为0',
   `top` int(11) NOT NULL DEFAULT 0 COMMENT '置顶状态(由管理员操作) 0-时间排序 1-置顶',
   `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '树洞标题 非空 默认”标题”',
-  `voice` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '语音链接地址',
+  `voice` varchar(800) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '语音链接地址',
   `version` int(255) NOT NULL DEFAULT 0 COMMENT '乐观锁 版本号',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `4`(`writer_id`) USING BTREE,
@@ -224,6 +214,11 @@ INSERT INTO `treehole` VALUES (6, 6, '2020-02-22 16:12:53.184000', '我的树洞
 INSERT INTO `treehole` VALUES (7, 6, '2020-02-23 06:00:39.262000', '我的树洞内容01', 1, 0, '50345dce-2c02-4e75-a4d7-bf40cecbdc39.gif+7788a1b1-847a-442a-b1d5-b544e8ad31da.png', 1, 0, 0, 0, '标题01', '0f058e94-5310-4d88-983e-05626e960b9e.mp3', 0);
 INSERT INTO `treehole` VALUES (8, 6, '2020-02-23 06:01:17.627000', '我的树洞内容02', 4, 0, '4661f51e-1afc-40ca-8715-e8a8959ca108.gif+8a953c28-8278-488c-8096-401b9c278047.png', 1, 0, 0, 0, '标题02', NULL, 0);
 INSERT INTO `treehole` VALUES (9, 6, '2020-02-23 06:01:50.380000', '我的树洞内容02', 1, 3, NULL, 1, 2, 1, 0, '标题02', '029e9d8c-36e3-4022-99b6-1f7eaf1dc885.mp3', 0);
+INSERT INTO `treehole` VALUES (13, 6, '2020-02-26 03:57:22.138000', '为什么要写这些内容？', 0, 0, 'http://localhost:8080/treehole/releaseArticle.jpg+http://localhost:8080/treehole/r1d23321.png+http://localhost:8080/treehole/xxxxxx.png', 1, 0, 0, 0, '我的标题是什么呢？', 'http://localhost:8080/treehole/re2313434fdfds.mp3', 0);
+INSERT INTO `treehole` VALUES (14, 6, '2020-02-26 03:57:45.581000', '为什么要写这些内容21212？', 0, 0, 'http://localhost:8080/treehole/releaseArticle.jpg', 1, 0, 0, 0, '我的标题是什么122121212？', 'http://localhost:8080/treehole/re2313434fdfds.mp3', 0);
+INSERT INTO `treehole` VALUES (15, 6, '2020-02-26 03:57:56.324000', '为什么要写这些内容21212xxxxxxxxxxxx？', 0, 0, NULL, 1, 0, 0, 0, '我的标题是什么122xxxxxx？', 'http://localhost:8080/treehole/re2313434fdfds.mp3', 0);
+INSERT INTO `treehole` VALUES (16, 6, '2020-02-26 03:58:11.264000', '为什么要写这些内容21212xxxyyyyyyxxxx？', 0, 0, 'http://localhost:8080/treehole/releaseArticle.jpg', 1, 0, 0, 0, '我的标题是什么122yyyyyyyyyx？', NULL, 0);
+INSERT INTO `treehole` VALUES (17, 6, '2020-02-26 03:58:23.988000', '为什么要写这些zzzzzzzzz？', 0, 0, NULL, 1, 0, 0, 0, '我的标题是什zzzzzzzzzz？', NULL, 0);
 
 -- ----------------------------
 -- Table structure for user
@@ -241,15 +236,16 @@ CREATE TABLE `user`  (
   `update_time` datetime(6) NULL DEFAULT NULL COMMENT '用户最后修改时间',
   `ban` int(255) NOT NULL DEFAULT 1 COMMENT '封禁状态(由管理员操作) 0-封禁 1-正常',
   `my_pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '个性化背景图片地址',
+  `tags` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户标签 多个用\'+\'分隔',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '红红', '000', 0, 18, NULL, '北京', NULL, NULL, 1, NULL);
-INSERT INTO `user` VALUES (2, '绿绿', '000', 0, 18, NULL, '北京', NULL, NULL, 1, NULL);
-INSERT INTO `user` VALUES (6, '00', 'ds', 0, 18, NULL, 'wh', NULL, NULL, 1, NULL);
+INSERT INTO `user` VALUES (1, '红红', '000', 0, 18, '哈哈哈', '北京', NULL, NULL, 1, NULL, NULL);
+INSERT INTO `user` VALUES (2, '绿绿', '000', 0, 18, '切切切', '北京', NULL, NULL, 1, NULL, NULL);
+INSERT INTO `user` VALUES (6, '00', 'ds', 0, 18, '我有我的young', 'wh', NULL, NULL, 1, NULL, '文艺+去+斜杠');
 
 -- ----------------------------
 -- Table structure for wish_reply
@@ -275,11 +271,14 @@ DROP TABLE IF EXISTS `wishbottle`;
 CREATE TABLE `wishbottle`  (
   `id` int(255) NOT NULL AUTO_INCREMENT COMMENT '心愿id 主键 非空 自增',
   `writer_id` int(255) NOT NULL COMMENT '心愿瓶的作者id 非空 外键约束参照user(id)',
-  `time` datetime(6) NULL DEFAULT NULL COMMENT '心愿发表时间 ',
+  `trow_time` datetime(6) NULL DEFAULT NULL COMMENT '心愿瓶抛掷时间 ',
+  `pick_time` datetime(6) NULL DEFAULT NULL COMMENT '心愿瓶拾取时间',
+  `update_time` datetime(6) NULL DEFAULT NULL COMMENT '草稿修改时间',
   `picker_id` int(255) NULL DEFAULT NULL COMMENT '捡瓶子的用户id 外键约束参照user(id)',
-  `content` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '心愿瓶内容 文本内容或语音文件链接',
-  `status` int(11) NOT NULL DEFAULT 0 COMMENT '状态 0-没被捞 1-被捞取 2捞取者删除 3-发布者删除 4-两者都删 5-管理员删除 6-保存在草稿箱 非空',
-  `pic` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片链接地址（多张图片的话，地址用分号‘-’隔开）',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '心愿瓶标题',
+  `content` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '心愿瓶内容 文本内容',
+  `status` int(11) NULL DEFAULT 0 COMMENT '状态 0-心愿海 1-被捞取 2-捞取者删除 3-发布者删除 4-两者都删 5-管理员删除 6-保存在草稿箱 非空',
+  `type` int(11) NULL DEFAULT NULL COMMENT '心愿瓶类型 ',
   `report` int(255) NOT NULL DEFAULT 0 COMMENT '举报数 非空 默认为0',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `0`(`writer_id`) USING BTREE,

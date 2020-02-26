@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.UUID;
 
 /**
- * 文件上传util
+ * 文件上传util -- 已弃用
  * created by wzy on 2020/2/22
  */
 public class UploadFileUtil {

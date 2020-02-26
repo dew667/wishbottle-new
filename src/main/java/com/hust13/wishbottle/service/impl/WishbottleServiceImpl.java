@@ -1,42 +1,33 @@
 package com.hust13.wishbottle.service.impl;
 
-import com.hust13.wishbottle.entity.WishReply;
+
 import com.hust13.wishbottle.entity.Wishbottle;
 import com.hust13.wishbottle.mapper.WishReplyMapper;
 import com.hust13.wishbottle.mapper.WishbottleMapper;
 import com.hust13.wishbottle.service.WishbottleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-
+@Transactional
 public class WishbottleServiceImpl implements WishbottleService {
 
     @Autowired
-    WishbottleMapper wishbottleMapper;
+    private WishbottleMapper wishbottleMapper;
 
     @Autowired
-    WishReplyMapper wishReplyMapper;
+    private WishReplyMapper wishReplyMapper;
 
+    /**
+     * 抛掷心愿瓶
+     * @param wishbottle
+     * @return
+     */
     @Override
-    public Wishbottle searchWishbottle() {
-        return null;
+    public Wishbottle throwWishbottle(Wishbottle wishbottle) {
+        Integer ret = wishbottleMapper.insertSelective(wishbottle);
+        return wishbottle;
     }
 
-    @Override
-    public int throwWishbottle(Wishbottle wishbottle) {
-        return 0;
-    }
-
-    @Override
-    public List<Wishbottle> getWishbottle(int userId) {
-        return null;
-    }
-
-    @Override
-    public int writeWishReply(WishReply wishReply) {
-        return 0;
-    }
 }

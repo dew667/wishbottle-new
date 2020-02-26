@@ -21,10 +21,10 @@ import java.util.List;
 public class TreeReplyServiceImpl implements TreeReplyService {
 
     @Autowired
-    TreeReplyMapper treeReplyMapper;
+    private TreeReplyMapper treeReplyMapper;
 
     @Autowired
-    TreeholeMapper treeholeMapper;
+    private TreeholeMapper treeholeMapper;
 
     /**
      * 根据树洞文章id获取所有评论

@@ -28,9 +28,9 @@ public class UserServiceImpl implements UserService {
     private final String appSecret = "d08c0b6f6a429c58efa00c0117f32d76"; //小程序密钥
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
     @Autowired
-    RedisTemplate redisTemplate; //redis缓存操作工具
+    private RedisTemplate redisTemplate; //redis缓存操作工具
 
     /**
      * 登录授权

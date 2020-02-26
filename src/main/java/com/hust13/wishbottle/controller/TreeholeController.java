@@ -5,15 +5,13 @@ import com.github.pagehelper.PageInfo;
 import com.hust13.wishbottle.entity.Treehole;
 import com.hust13.wishbottle.model.Model;
 import com.hust13.wishbottle.model.TreeholeArticleVO;
+import com.hust13.wishbottle.service.ImagFilesService;
 import com.hust13.wishbottle.service.TreeholeService;
-import com.hust13.wishbottle.service.UploadFileService;
 import com.hust13.wishbottle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 
 /**
  * 树洞控制器
@@ -24,13 +22,13 @@ import java.util.HashMap;
 public class TreeholeController {
 
     @Autowired
-    TreeholeService treeholeService;
+    private TreeholeService treeholeService;
 
     @Autowired
-    UploadFileService uploadFileService;
+    private UserService userService;
 
     @Autowired
-    UserService userService;
+    private ImagFilesService imagFilesService;
 
     /**
      * 分页查询获取所有树洞文章 按时间或热度排序
@@ -90,7 +88,7 @@ public class TreeholeController {
 
     /**
      * 发布树洞文章
-     * @param articleData 上传title content 图片文件-可多个 语音文件
+     * @param articleData 上传title content 图片文件链接-可多个 语音文件链接
      * @param request
      * @return
      */
@@ -104,13 +102,10 @@ public class TreeholeController {
             //获取文章各项数据
             String title = articleData.getTitle();
             String content = articleData.getContent();
-            MultipartFile[] imagFiles = articleData.getImagFiles();
-            MultipartFile voiceFile = articleData.getVoiceFile();
-            //调用服务上传图片和语音文件
-            HashMap<String, String> filePathMap = uploadFileService.uploadFiles(imagFiles, voiceFile);
-            //得到返回的文件存储路径
-            String imagFilesUrl = filePathMap.get("imagFilesUrl");
-            String voiceFileUrl = filePathMap.get("voiceFileUrl");
+            String[] imagFiles = articleData.getImagFiles();
+            String voiceFileUrl = articleData.getVoiceFile();
+            //调用服务对图片文件名进行拼接处理
+            String imagFilesUrl = imagFilesService.makeImagFilesUrl(imagFiles);
             //封装数据 准备调用服务存储树洞文章记录
             Treehole record = new Treehole();
             record.setWriterId(writer_id);
@@ -144,7 +139,7 @@ public class TreeholeController {
             Integer userId = userService.getUserIdByOpenId(openid);
             //存储历史记录
             Integer ret = treeholeService.saveHistory(userId, treeholeId);
-            //获取文章
+            //获取文章信息
             model.setData(treeholeService.getOneArticle(treeholeId));
         }
         catch (Exception e)
