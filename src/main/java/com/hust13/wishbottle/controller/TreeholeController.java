@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hust13.wishbottle.entity.Treehole;
 import com.hust13.wishbottle.model.Model;
-import com.hust13.wishbottle.model.TreeholeArticleVO;
+import com.hust13.wishbottle.model.vo.ArticleUploadVO;
 import com.hust13.wishbottle.service.ImagFilesService;
 import com.hust13.wishbottle.service.TreeholeService;
 import com.hust13.wishbottle.service.UserService;
@@ -31,7 +31,7 @@ public class TreeholeController {
     private ImagFilesService imagFilesService;
 
     /**
-     * 分页查询获取所有树洞文章 按时间或热度排序
+     * 分页查排序询获取所有树洞文章 按时间或热度
      * @param pageNum
      * @param pageSize
      * @param orderBy 排序方式 time-时间 hot-热度
@@ -43,11 +43,11 @@ public class TreeholeController {
         Model model = new Model();
         try {
             //排序方式
-            String sort = "views desc, reply_num desc, likes desc"; //默认按热度排序-即浏览量、回复量、点赞数
+            String sort = "t.views desc, t.reply_num desc, t.likes desc"; //默认按热度排序-即浏览量、回复量、点赞数
             if("hot".equals(orderBy)){ //按热度排序
-                sort = "views desc, reply_num desc, likes desc";
+                sort = "t.views desc, t.reply_num desc, t.likes desc";
             } else if("time".equals(orderBy)){ //按时间排序
-                sort = "time desc";
+                sort = "t.time desc";
             }
             PageHelper.startPage(pageNum,pageSize,sort);
             PageInfo pageInfo=new PageInfo(treeholeService.searchArticleList());
@@ -73,7 +73,7 @@ public class TreeholeController {
         Model model = new Model();
         try {
             //排序方式
-            String sort = "views desc, reply_num desc, likes desc"; //默认按热度排序-即浏览量、回复量、点赞数
+            String sort = "rand()"; //随机排序
             PageHelper.startPage(pageNum,pageSize,sort);
             PageInfo pageInfo=new PageInfo(treeholeService.searchArticleList());
             model.setData(pageInfo);
@@ -93,7 +93,7 @@ public class TreeholeController {
      * @return
      */
     @PostMapping("/releaseArticle")
-    public Model releaseArticle(TreeholeArticleVO articleData, HttpServletRequest request) {
+    public Model releaseArticle(@RequestBody ArticleUploadVO articleData, HttpServletRequest request) {
         Model model = new Model();
         try {
             //通过openid获取本人userid

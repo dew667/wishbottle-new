@@ -1,6 +1,5 @@
 package com.hust13.wishbottle.model;
 
-
 public class Model {
 
     private int code = 0;

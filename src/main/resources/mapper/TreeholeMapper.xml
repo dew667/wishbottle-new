@@ -9,17 +9,44 @@
     <result column="views" property="views" jdbcType="INTEGER" />
     <result column="reply_num" property="replyNum" jdbcType="INTEGER" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
-    <result column="status" property="status" jdbcType="INTEGER" />
     <result column="likes" property="likes" jdbcType="INTEGER" />
     <result column="report" property="report" jdbcType="INTEGER" />
     <result column="top" property="top" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="voice" property="voice" jdbcType="VARCHAR" />
-    <result column="version" property="version" jdbcType="INTEGER" />
   </resultMap>
+
+  <!--映射TreeholeVO-->
+  <resultMap id="TreeholeResultMap" type="com.hust13.wishbottle.model.vo.TreeholeVO" >
+    <id column="treehole_id" property="id" jdbcType="INTEGER" />
+    <result column="treehole_writer_id" property="writerId" jdbcType="INTEGER" />
+    <result column="treehole_time" property="time" jdbcType="TIMESTAMP" />
+    <result column="treehole_content" property="content" jdbcType="VARCHAR" />
+    <result column="treehole_views" property="views" jdbcType="INTEGER" />
+    <result column="treehole_reply_num" property="replyNum" jdbcType="INTEGER" />
+    <result column="treehole_pic" property="pic" jdbcType="VARCHAR" />
+    <result column="treehole_likes" property="likes" jdbcType="INTEGER" />
+    <result column="treehole_report" property="report" jdbcType="INTEGER" />
+    <result column="treehole_top" property="top" jdbcType="INTEGER" />
+    <result column="treehole_title" property="title" jdbcType="VARCHAR" />
+    <result column="treehole_voice" property="voice" jdbcType="VARCHAR" />
+    <association property="user" javaType="User" >
+      <id column="user_id" property="id" jdbcType="INTEGER" />
+      <result column="user_name" property="name" jdbcType="VARCHAR" />
+      <result column="user_avatar" property="avatar" jdbcType="VARCHAR" />
+      <result column="user_gender" property="gender" jdbcType="INTEGER" />
+      <result column="user_age" property="age" jdbcType="INTEGER" />
+      <result column="user_signature" property="signature" jdbcType="VARCHAR" />
+      <result column="user_city" property="city" jdbcType="VARCHAR" />
+      <result column="user_create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="user_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+      <result column="user_ban" property="ban" jdbcType="INTEGER" />
+      <result column="user_my_pic" property="myPic" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+
   <sql id="Base_Column_List" >
-    id, writer_id, time, content, views, reply_num, pic, status, likes, report, top, title,
-    voice, version
+    id, writer_id, time, content, views, reply_num, pic, likes, report, top, title, voice
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -27,12 +54,43 @@
     from treehole
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <!--获取所有文章列表-->
-  <select id="searchAllArticle" resultMap="BaseResultMap" >
+
+  <!--获取单篇文章展示信息-->
+  <select id="getArticleInfo" resultMap="TreeholeResultMap">
     select
-    id, writer_id, time, content, views, reply_num, likes, title
-    from treehole
-    where status=1
+    t.id as treehole_id,
+    t.time as treehole_id,
+    t.title as treehole_title,
+    t.content as treehole_content,
+    t.pic as treehole_pic,
+    t.voice as treehole_voice,
+    t.likes as treehole_likes,
+    t.reply_num as treehole_reply_num,
+    u.id as user_id,
+    u.name as user_name,
+    u.avatar as user_avatar,
+    u.gender as user_gender
+    from treehole t inner join user u
+    on t.writer_id=u.id
+    where t.id=#{id}
+  </select>
+
+  <!--获取所有文章列表-->
+  <select id="searchAllArticle" resultMap="TreeholeResultMap" >
+    select
+    t.id as treehole_id,
+    t.time as treehole_time,
+    t.content as treehole_content,
+    t.views as treehole_views,
+    t.reply_num as treehole_reply_num,
+    t.likes as treehole_likes,
+    t.title as treehole_title,
+    u.id as user_id,
+    u.avatar as user_avatar,
+    u.gender as user_gender
+    from treehole t
+    inner join user u
+    on t.writer_id=u.id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from treehole
@@ -41,14 +99,14 @@
   <insert id="insert" parameterType="com.hust13.wishbottle.entity.Treehole" >
     insert into treehole (id, writer_id, time,
       content, views, reply_num, 
-      pic, status, likes,
-      report, top, title, 
-      voice, version)
+      pic, likes,
+      report, top, title,
+      voice)
     values (#{id,jdbcType=INTEGER}, #{writerId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, 
       #{content,jdbcType=VARCHAR}, #{views,jdbcType=INTEGER}, #{replyNum,jdbcType=INTEGER}, 
-      #{pic,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{likes,jdbcType=INTEGER},
+      #{pic,jdbcType=VARCHAR}, #{likes,jdbcType=INTEGER},
       #{report,jdbcType=INTEGER}, #{top,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
-      #{voice,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER})
+      #{voice,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Treehole" useGeneratedKeys="true" keyProperty="id">
     insert into treehole
@@ -74,9 +132,6 @@
       <if test="pic != null" >
         pic,
       </if>
-      <if test="status != null" >
-        status,
-      </if>
       <if test="likes != null" >
         likes,
       </if>
@@ -91,9 +146,6 @@
       </if>
       <if test="voice != null" >
         voice,
-      </if>
-      <if test="version != null" >
-        version,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -118,9 +170,6 @@
       <if test="pic != null" >
         #{pic,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        #{status,jdbcType=INTEGER},
-      </if>
       <if test="likes != null" >
         #{likes,jdbcType=INTEGER},
       </if>
@@ -135,9 +184,6 @@
       </if>
       <if test="voice != null" >
         #{voice,jdbcType=VARCHAR},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -162,9 +208,6 @@
       <if test="pic != null" >
         pic = #{pic,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
-      </if>
       <if test="likes != null" >
         likes = #{likes,jdbcType=INTEGER},
       </if>
@@ -180,9 +223,6 @@
       <if test="voice != null" >
         voice = #{voice,jdbcType=VARCHAR},
       </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=INTEGER},
-      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -194,7 +234,6 @@
       views = #{views,jdbcType=INTEGER},
       reply_num = #{replyNum,jdbcType=INTEGER},
       pic = #{pic,jdbcType=VARCHAR},
-      status = #{status,jdbcType=INTEGER},
       likes = #{likes,jdbcType=INTEGER},
       report = #{report,jdbcType=INTEGER},
       top = #{top,jdbcType=INTEGER},

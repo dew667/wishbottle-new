@@ -4,7 +4,8 @@ import com.hust13.wishbottle.entity.TreeHistory;
 import com.hust13.wishbottle.entity.Treehole;
 import com.hust13.wishbottle.mapper.TreeHistoryMapper;
 import com.hust13.wishbottle.mapper.TreeholeMapper;
-import com.hust13.wishbottle.model.HistoryData;
+import com.hust13.wishbottle.model.vo.HistoryVO;
+import com.hust13.wishbottle.model.vo.TreeholeVO;
 import com.hust13.wishbottle.service.TreeholeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class TreeholeServiceImpl implements TreeholeService {
      * @return
      */
     @Override
-    public List<Treehole> searchArticleList() {
+    public List<TreeholeVO> searchArticleList() {
         return treeholeMapper.searchAllArticle();
     }
 
@@ -50,7 +51,6 @@ public class TreeholeServiceImpl implements TreeholeService {
         record.setViews(0);
         record.setlikes(0);
         record.setReport(0);
-        record.setStatus(1);
         record.setTop(0);
         record.setReplyNum(0);
         Integer ret = treeholeMapper.insertSelective(record);
@@ -63,11 +63,11 @@ public class TreeholeServiceImpl implements TreeholeService {
      * @return
      */
     @Override
-    public Treehole getOneArticle(Integer treeholeId) {
+    public TreeholeVO getOneArticle(Integer treeholeId) {
         //更新treehole表中views字段 阅读量+1
         Integer ret1 = treeholeMapper.updateArticleViews(treeholeId);
         //返回树洞文章
-        return treeholeMapper.selectByPrimaryKey(treeholeId);
+        return treeholeMapper.getArticleInfo(treeholeId);
     }
 
     /**
@@ -104,7 +104,7 @@ public class TreeholeServiceImpl implements TreeholeService {
      * @return
      */
     @Override
-    public List<HistoryData> getHistory(Integer userId) {
+    public List<HistoryVO> getHistory(Integer userId) {
         return treeHistoryMapper.searchHistoryInfo(userId);
     }
 

@@ -1,9 +1,15 @@
 package com.hust13.wishbottle.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.hust13.wishbottle.entity.TreeComment;
 import com.hust13.wishbottle.entity.TreeReply;
 import com.hust13.wishbottle.entity.Treehole;
+import com.hust13.wishbottle.mapper.TreeCommentMapper;
 import com.hust13.wishbottle.mapper.TreeReplyMapper;
 import com.hust13.wishbottle.mapper.TreeholeMapper;
+import com.hust13.wishbottle.model.vo.CommentVO;
+import com.hust13.wishbottle.model.vo.ReplyVO;
 import com.hust13.wishbottle.service.TreeReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +27,13 @@ import java.util.List;
 public class TreeReplyServiceImpl implements TreeReplyService {
 
     @Autowired
-    private TreeReplyMapper treeReplyMapper;
+    private TreeCommentMapper treeCommentMapper;
 
     @Autowired
     private TreeholeMapper treeholeMapper;
+
+    @Autowired
+    private TreeReplyMapper treeReplyMapper;
 
     /**
      * 根据树洞文章id获取所有评论
@@ -32,8 +41,8 @@ public class TreeReplyServiceImpl implements TreeReplyService {
      * @return
      */
     @Override
-    public List<TreeReply> getAllComments(Integer treeholeId) {
-        return treeReplyMapper.searchAllComments(treeholeId);
+    public List<CommentVO> getAllComments(Integer treeholeId) {
+        return treeCommentMapper.searchAllComments(treeholeId);
     }
 
     /**
@@ -42,7 +51,7 @@ public class TreeReplyServiceImpl implements TreeReplyService {
      * @return
      */
     @Override
-    public List<TreeReply> getAllCommentsOfAuthor(Integer treeholeId) {
+    public PageInfo getAllCommentsOfAuthor(Integer treeholeId, Integer pageNum, Integer pageSize) {
         //查询文章对应的作者id
         Treehole record = treeholeMapper.selectByPrimaryKey(treeholeId);
         Integer writerId = record.getWriterId();
@@ -50,7 +59,11 @@ public class TreeReplyServiceImpl implements TreeReplyService {
         HashMap<String, Integer> map = new HashMap<>();
         map.put("treeholeId", treeholeId);
         map.put("writerId", writerId);
-        return treeReplyMapper.searchAllCommentsOfAuthor(map);
+        //按时间升序排列
+        String sort = "c.time asc";
+        PageHelper.startPage(pageNum,pageSize,sort);
+        PageInfo pageInfo = new PageInfo(treeCommentMapper.searchAllCommentsOfAuthor(map));
+        return pageInfo;
     }
 
     /**
@@ -59,8 +72,8 @@ public class TreeReplyServiceImpl implements TreeReplyService {
      * @return
      */
     @Override
-    public List<TreeReply> getAllReplies(Integer commentId) {
-        return treeReplyMapper.searchAllReplies(commentId);
+    public List<ReplyVO> getAllReplies(Integer commentId) {
+        return treeReplyMapper.getAllReplies(commentId);
     }
 
     /**
@@ -69,10 +82,10 @@ public class TreeReplyServiceImpl implements TreeReplyService {
      * @return
      */
     @Override
-    public TreeReply saveComment(TreeReply record) {
+    public TreeComment saveComment(TreeComment record) {
         //更新表中评论量
         Integer ret1 = treeholeMapper.updateCommentNum(record.getTreeholeId());
-        Integer ret2 = treeReplyMapper.insertSelective(record);
+        Integer ret2 = treeCommentMapper.insertSelective(record);
         return record;
     }
 
@@ -83,9 +96,7 @@ public class TreeReplyServiceImpl implements TreeReplyService {
      */
     @Override
     public TreeReply saveReply(TreeReply record) {
-        //更新表中评论量
-        Integer ret1 = treeholeMapper.updateCommentNum(record.getTreeholeId());
-        Integer ret2 = treeReplyMapper.insertSelective(record);
+        Integer ret = treeReplyMapper.insertSelective(record);
         return record;
     }
 
@@ -96,7 +107,7 @@ public class TreeReplyServiceImpl implements TreeReplyService {
      */
     @Override
     public String giveLike(Integer commentId) {
-        Integer ret = treeReplyMapper.updateLikesNum(commentId);
+        Integer ret = treeCommentMapper.updateLikesNum(commentId);
         if(ret > 0)
             return "点赞成功";
         else
@@ -110,7 +121,7 @@ public class TreeReplyServiceImpl implements TreeReplyService {
      */
     @Override
     public String sendReport(Integer commentId) {
-        Integer ret = treeReplyMapper.updateReportNum(commentId);
+        Integer ret = treeCommentMapper.updateReportNum(commentId);
         if(ret > 0)
             return "举报成功";
         else

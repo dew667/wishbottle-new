@@ -2,6 +2,7 @@ package com.hust13.wishbottle.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hust13.wishbottle.entity.TreeComment;
 import com.hust13.wishbottle.entity.TreeReply;
 import com.hust13.wishbottle.model.Model;
 import com.hust13.wishbottle.service.TreeReplyService;
@@ -27,7 +28,7 @@ public class TreeReplyController {
     private UserService userService;
 
     /**
-     * 获取树洞文章下面的所有评论
+     * 获取树洞文章下面的所有评论以及显示前三条回复
      * @param treeholeId 树洞文章的id
      * @param pageNum
      * @param pageSize
@@ -40,7 +41,7 @@ public class TreeReplyController {
         Model  model = new Model();
         try {
             //按时间升序排列
-            String sort = "time asc";
+            String sort = "c.time asc";
             PageHelper.startPage(pageNum,pageSize,sort);
             PageInfo pageInfo=new PageInfo(treeReplyService.getAllComments(treeholeId));
             model.setData(pageInfo);
@@ -66,10 +67,7 @@ public class TreeReplyController {
                                         @PathVariable("pageSize") Integer pageSize) {
         Model  model = new Model();
         try {
-            //按时间升序排列
-            String sort = "time asc";
-            PageHelper.startPage(pageNum,pageSize,sort);
-            PageInfo pageInfo=new PageInfo(treeReplyService.getAllCommentsOfAuthor(treeholeId));
+            PageInfo pageInfo= treeReplyService.getAllCommentsOfAuthor(treeholeId, pageNum, pageSize);
             model.setData(pageInfo);
         }
         catch (Exception e)
@@ -94,13 +92,14 @@ public class TreeReplyController {
         Model  model = new Model();
         try {
             //按时间升序排列
-            String sort = "time asc";
+            String sort = "r.time asc";
             PageHelper.startPage(pageNum,pageSize,sort);
             PageInfo pageInfo=new PageInfo(treeReplyService.getAllReplies(commentId));
             model.setData(pageInfo);
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             model.setCode(1);
             model.setMsg("获取评论失败");
         }
@@ -113,7 +112,7 @@ public class TreeReplyController {
      * @return
      */
     @PostMapping("/releaseComment")
-    public Model releaseComment(@RequestBody TreeReply record, HttpServletRequest request) {
+    public Model releaseComment(@RequestBody TreeComment record, HttpServletRequest request) {
         Model model = new Model();
         try{
             String openid = (String) request.getAttribute("openid");
@@ -122,10 +121,6 @@ public class TreeReplyController {
             //获取时间
             Date date = new Date();
             record.setTime(date);
-            //设置answerId为0 表示评论指向树洞文章
-            record.setAnswerId(0);
-            //初始化其他数据
-            record.setStatus(1);
             record.setlikes(0);
             record.setReport(0);
             model.setData(treeReplyService.saveComment(record));
@@ -140,7 +135,7 @@ public class TreeReplyController {
 
     /**
      * 发布回复
-     * @param record 请求体record中应包含 treeholeId-文章id answerId-回复者id content-内容
+     * @param record 请求体record中应包含 commentId-指向评论id  content-内容
      * @param request
      * @return
      */
@@ -155,10 +150,6 @@ public class TreeReplyController {
             //获取时间
             Date date = new Date();
             record.setTime(date);
-            //初始化其他数据
-            record.setStatus(1);
-            record.setlikes(0);
-            record.setReport(0);
             model.setData(treeReplyService.saveReply(record));
         }
         catch (Exception e)

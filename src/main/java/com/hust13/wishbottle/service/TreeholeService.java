@@ -1,11 +1,10 @@
 package com.hust13.wishbottle.service;
 
-import com.hust13.wishbottle.entity.TreeReply;
 import com.hust13.wishbottle.entity.Treehole;
-import com.hust13.wishbottle.model.HistoryData;
+import com.hust13.wishbottle.model.vo.HistoryVO;
+import com.hust13.wishbottle.model.vo.TreeholeVO;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 树洞文章Service接口
@@ -13,17 +12,17 @@ import java.util.Map;
  */
 public interface TreeholeService {
 
-    List<Treehole> searchArticleList();
+    List<TreeholeVO> searchArticleList();
 
     Treehole saveTreeholeArticle(Treehole record);
 
-    Treehole getOneArticle(Integer treeholeId);
+    TreeholeVO getOneArticle(Integer treeholeId);
 
     String giveLike(Integer treeholeId);
 
     String sendReport(Integer treeholeId);
 
-    List<HistoryData> getHistory(Integer userId);
+    List<HistoryVO> getHistory(Integer userId);
 
     Integer saveHistory(Integer userId, Integer treeholeId);
 

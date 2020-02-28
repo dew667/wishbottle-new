@@ -127,14 +127,14 @@
 
   <!--获取本人所有日记-->
   <select id="getMyLogs" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select *
+    select id, title, content, time
     from log
     where writer_id = #{writerId,jdbcType=INTEGER}
   </select>
 
   <!--根据作者id和关键词搜索-->
   <select id="searchInLog" parameterType="HashMap" resultMap="BaseResultMap" >
-    select *
+    select id, title, content, time
     from log
     where writer_id=#{writerId} and (title like '%${keywords}%' or content like '%${keywords}%')
   </select>

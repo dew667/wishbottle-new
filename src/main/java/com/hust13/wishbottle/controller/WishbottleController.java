@@ -1,15 +1,13 @@
 package com.hust13.wishbottle.controller;
 
-import com.hust13.wishbottle.entity.WishReply;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hust13.wishbottle.entity.Wishbottle;
 import com.hust13.wishbottle.model.Model;
 import com.hust13.wishbottle.service.UserService;
 import com.hust13.wishbottle.service.WishbottleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -63,12 +61,53 @@ public class WishbottleController {
     public Model saveDraft(@RequestBody Wishbottle wishbottle, HttpServletRequest request) {
         Model model = new Model();
         try {
-            model.setData(null);
+            //获取心愿瓶撰写者id
+            String openid = (String) request.getAttribute("openid");
+            Integer userId = userService.getUserIdByOpenId(openid);
+            //设置心愿瓶撰写者id
+            wishbottle.setWriterId(userId);
+            //设置草稿修改时间
+            wishbottle.setUpdateTime(new Date());
+            //设置心愿瓶状态为保存在草稿箱
+            wishbottle.setStatus(6);
+            //保存心愿瓶并返回该心愿瓶信息
+            model.setData(wishbottleService.throwWishbottle(wishbottle));
         }
         catch (Exception e)
         {
             model.setCode(1);
             model.setMsg("保存草稿失败");
+        }
+        return model;
+    }
+
+    /**
+     * 分页获取已捞取列表
+     * @param pageNum
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @GetMapping("/getPickList/{pageNum}/{pageSize}")
+    public Model getPickList(@PathVariable("pageNum") Integer pageNum,
+                             @PathVariable("pageSize") Integer pageSize,
+                             HttpServletRequest request) {
+        Model model = new Model();
+        try {
+            //获取本人id
+            String openid = (String) request.getAttribute("openid");
+            Integer userId = userService.getUserIdByOpenId( openid);
+            //按捞取时间排序
+            String sort = "w.pick_time asc";
+            PageHelper.startPage(pageNum,pageSize,sort);
+            //根据本人id获取已捞取列表
+            PageInfo pageInfo=new PageInfo(wishbottleService.getPickList(userId));
+            model.setData(pageInfo);
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("获取已捞取列表失败");
         }
         return model;
     }

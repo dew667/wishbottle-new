@@ -1,10 +1,10 @@
-package com.hust13.wishbottle.model;
+package com.hust13.wishbottle.model.vo;
 
 /**
  * 树洞文章上传发布封装类
  * created by wzy on 2020/2/21
  */
-public class TreeholeArticleVO {
+public class ArticleUploadVO {
 
     //标题
     private String title;

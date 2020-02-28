@@ -1,6 +1,10 @@
 package com.hust13.wishbottle.service;
 
+import com.github.pagehelper.PageInfo;
+import com.hust13.wishbottle.entity.TreeComment;
 import com.hust13.wishbottle.entity.TreeReply;
+import com.hust13.wishbottle.model.vo.CommentVO;
+import com.hust13.wishbottle.model.vo.ReplyVO;
 
 import java.util.List;
 
@@ -10,14 +14,18 @@ import java.util.List;
  */
 public interface TreeReplyService {
 
-    List<TreeReply> getAllComments(Integer treeholeId);
+    //获取所有评论
+    List<CommentVO> getAllComments(Integer treeholeId);
 
-    List<TreeReply> getAllCommentsOfAuthor(Integer treeholeId);
+    //获取作者评论
+    PageInfo getAllCommentsOfAuthor(Integer treeholeId, Integer pageNum, Integer pageSize);
 
-    List<TreeReply> getAllReplies(Integer commentId);
+    //获取回复
+    List<ReplyVO> getAllReplies(Integer commentId);
 
-    TreeReply saveComment(TreeReply record);
+    TreeComment saveComment(TreeComment record);
 
+    //保存回复
     TreeReply saveReply(TreeReply record);
 
     String giveLike(Integer commentId);

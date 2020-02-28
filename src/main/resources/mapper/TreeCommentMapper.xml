@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust13.wishbottle.mapper.TreeCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.hust13.wishbottle.entity.TreeComment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="treehole_id" property="treeholeId" jdbcType="INTEGER" />
+    <result column="replyer_id" property="replyerId" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="likes" property="likes" jdbcType="INTEGER" />
+    <result column="report" property="report" jdbcType="INTEGER" />
+  </resultMap>
+
+  <!--映射CommentVO-->
+  <resultMap id="CommentResultMap" type="com.hust13.wishbottle.model.vo.CommentVO" >
+    <id column="comment_id" property="id" jdbcType="INTEGER" />
+    <result column="comment_treehole_id" property="treeholeId" jdbcType="INTEGER" />
+    <result column="comment_replyer_id" property="replyerId" jdbcType="INTEGER" />
+    <result column="comment_time" property="time" jdbcType="TIMESTAMP" />
+    <result column="comment_content" property="content" jdbcType="VARCHAR" />
+    <result column="comment_likes" property="likes" jdbcType="INTEGER" />
+    <result column="comment_report" property="report" jdbcType="INTEGER" />
+    <association property="user" javaType="User">
+      <id column="user_id" property="id" jdbcType="INTEGER" />
+      <result column="user_name" property="name" jdbcType="VARCHAR" />
+      <result column="user_avatar" property="avatar" jdbcType="VARCHAR" />
+      <result column="user_gender" property="gender" jdbcType="INTEGER" />
+      <result column="user_age" property="age" jdbcType="INTEGER" />
+      <result column="user_signature" property="signature" jdbcType="VARCHAR" />
+      <result column="user_city" property="city" jdbcType="VARCHAR" />
+      <result column="user_create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="user_update_time" property="updateTime" jdbcType="TIMESTAMP" />
+      <result column="user_ban" property="ban" jdbcType="INTEGER" />
+      <result column="user_my_pic" property="myPic" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, treehole_id, replyer_id, time, content, likes, report
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tree_comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!--根据树洞文章id查询所有评论 附带用户信息-->
+  <select id="searchAllComments" resultMap="CommentResultMap" parameterType="java.lang.Integer" >
+    select
+    c.id as comment_id,
+    c.time as comment_time,
+    c.content as comment_content,
+    c.likes as comment_likes,
+    u.id as user_id,
+    u.name as user_name,
+    u.avatar as user_avatar,
+    u.gender as user_gender
+    from tree_comment c inner join user u
+    on c.replyer_id=u.id
+    where c.treehole_id=#{treeholeId}
+  </select>
+  <!--根据文章id查询所有作者所属的评论 附带用户信息-->
+  <select id="searchAllCommentsOfAuthor" resultMap="CommentResultMap" parameterType="HashMap">
+    select
+    c.id as comment_id,
+    c.time as comment_time,
+    c.content as comment_content,
+    c.likes as comment_likes,
+    u.id as user_id,
+    u.name as user_name,
+    u.avatar as user_avatar,
+    u.gender as user_gender
+    from tree_comment c inner join user u
+    on c.replyer_id=u.id
+    where c.treehole_id=#{treeholeId} and c.replyer_id=#{writerId}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tree_comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hust13.wishbottle.entity.TreeComment" >
+    insert into tree_comment (id, treehole_id, replyer_id,
+      time, content,
+      likes, report
+      )
+    values (#{id,jdbcType=INTEGER}, #{treeholeId,jdbcType=INTEGER}, #{replyerId,jdbcType=INTEGER}, 
+      #{time,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR},
+      #{likes,jdbcType=INTEGER}, #{report,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.TreeComment" useGeneratedKeys="true" keyProperty="id">
+    insert into tree_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="treeholeId != null" >
+        treehole_id,
+      </if>
+      <if test="replyerId != null" >
+        replyer_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="likes != null" >
+        likes,
+      </if>
+      <if test="report != null" >
+        report,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="treeholeId != null" >
+        #{treeholeId,jdbcType=INTEGER},
+      </if>
+      <if test="replyerId != null" >
+        #{replyerId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="likes != null" >
+        #{likes,jdbcType=INTEGER},
+      </if>
+      <if test="report != null" >
+        #{report,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hust13.wishbottle.entity.TreeComment" >
+    update tree_comment
+    <set >
+      <if test="treeholeId != null" >
+        treehole_id = #{treeholeId,jdbcType=INTEGER},
+      </if>
+      <if test="replyerId != null" >
+        replyer_id = #{replyerId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="likes != null" >
+        likes = #{likes,jdbcType=INTEGER},
+      </if>
+      <if test="report != null" >
+        report = #{report,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hust13.wishbottle.entity.TreeComment" >
+    update tree_comment
+    set treehole_id = #{treeholeId,jdbcType=INTEGER},
+      replyer_id = #{replyerId,jdbcType=INTEGER},
+      time = #{time,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=VARCHAR},
+      likes = #{likes,jdbcType=INTEGER},
+      report = #{report,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--更新评论条目的点赞数目-->
+  <update id="updateLikesNum" parameterType="java.lang.Integer" >
+    update tree_comment
+    set likes=likes+1
+    where id=#{id}
+  </update>
+  <!--更新评论条目的举报数目-->
+  <update id="updateReportNum" parameterType="java.lang.Integer" >
+    update tree_comment
+    set report=report+1
+    where id=#{id}
+  </update>
+</mapper>

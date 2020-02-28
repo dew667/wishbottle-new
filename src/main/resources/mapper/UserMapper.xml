@@ -13,7 +13,6 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="ban" property="ban" jdbcType="INTEGER" />
     <result column="my_pic" property="myPic" jdbcType="VARCHAR" />
-    <result column="tags" property="tags" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, name, avatar, gender, age, signature, city, create_time, update_time, ban, my_pic, tags

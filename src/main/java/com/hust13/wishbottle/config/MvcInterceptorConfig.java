@@ -20,7 +20,9 @@ public class MvcInterceptorConfig extends WebMvcConfigurationSupport {
         // addPathPatterns 用于添加拦截规则，/**表示拦截所有请求
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(myInterceptor).addPathPatterns("/**")
-                .excludePathPatterns("/user/login");
+                .excludePathPatterns("/user/login", "/treehole/getArticleList/**", "/treehole/getRecommend/**",
+                        "/treehole/getOneArticle/**", "/treeReply/getAllComments/**", "/treeReply/getCommentsOfAuthor/**",
+                        "/treeReply/getAllReplies/**");
         super.addInterceptors(registry);
     }
 }

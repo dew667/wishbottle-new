@@ -1,38 +1,23 @@
 package com.hust13.wishbottle.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TreeReply {
+
     private Integer id;
 
-    private Integer treeholeId;
+    private Integer commentId;
 
     private Integer replyerId;
 
-    private Integer answerId;
+    private String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
     private Date time;
-
-    private String content;
-
-    private Integer status;
-
-    private Integer likes;
-
-    private Integer version;
-
-    private Integer report;
-
-    public Integer getReport() {
-        return report;
-    }
-
-    public void setReport(Integer report) {
-        this.report = report;
-    }
 
     public Integer getId() {
         return id;
@@ -42,12 +27,12 @@ public class TreeReply {
         this.id = id;
     }
 
-    public Integer getTreeholeId() {
-        return treeholeId;
+    public Integer getCommentId() {
+        return commentId;
     }
 
-    public void setTreeholeId(Integer treeholeId) {
-        this.treeholeId = treeholeId;
+    public void setCommentId(Integer commentId) {
+        this.commentId = commentId;
     }
 
     public Integer getReplyerId() {
@@ -58,12 +43,12 @@ public class TreeReply {
         this.replyerId = replyerId;
     }
 
-    public Integer getAnswerId() {
-        return answerId;
+    public String getContent() {
+        return content;
     }
 
-    public void setAnswerId(Integer answerId) {
-        this.answerId = answerId;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Date getTime() {
@@ -74,35 +59,4 @@ public class TreeReply {
         this.time = time;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getlikes() {
-        return likes;
-    }
-
-    public void setlikes(Integer likes) {
-        this.likes = likes;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
 }

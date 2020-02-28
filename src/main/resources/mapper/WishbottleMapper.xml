@@ -14,6 +14,36 @@
     <result column="type" property="pic" jdbcType="INTEGER" />
     <result column="report" property="report" jdbcType="INTEGER" />
   </resultMap>
+
+  <!--映射WishbottleVO-->
+  <resultMap id="WishbottleResultMap" type="com.hust13.wishbottle.model.vo.WishbottleVO" >
+    <id property="id" column="id" />
+    <result property="writerId" column="writer_id"/>
+    <result property="throwTime" column="throw_time"/>
+    <result property="pickTime" column="pick_time"/>
+    <result property="updateTime" column="update_time"/>
+    <result property="pickerId" column="picker_id"/>
+    <result property="title" column="title"/>
+    <result property="content" column="content"/>
+    <result property="status" column="status"/>
+    <result property="type" column="type"/>
+    <result property="report" column="report"/>
+    <association property="user" javaType="User">
+      <id property="id" column="id"/>
+      <result property="name" column="name"/>
+      <result property="avatar" column="avatar"/>
+      <result property="gender" column="gender"/>
+      <result property="age" column="age"/>
+      <result property="signature" column="signature"/>
+      <result property="city" column="city"/>
+      <result property="createTime" column="create_time"/>
+      <result property="updateTime" column="update_time"/>
+      <result property="ban" column="ban"/>
+      <result property="myPic" column="my_pic"/>
+      <result property="tags" column="tags"/>
+    </association>
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, writer_id, throw_time, pick_time, update_time, picker_id, title, content, status, type, report
   </sql>
@@ -158,4 +188,13 @@
       report = #{report,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--根据用户id获取已捞取列表 返回WishbottleData封装类List-->
+  <select id="selectPickList" resultMap="WishbottleResultMap" parameterType="java.lang.Integer" >
+    select
+    w.id, w.pick_time, u.id, u.avatar, u.gender, u.city
+    from wishbottle w inner join user u
+    on w.writer_id=u.id
+    where picker_id=#{userId} and (status=1 or status=3)
+  </select>
 </mapper>
