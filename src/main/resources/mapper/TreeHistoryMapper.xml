@@ -68,7 +68,7 @@
     where h.user_id=#{userId}
   </select>
   <!--通过树洞文章id查询是否已存在该项记录-->
-  <select id="findIfExist" parameterType="java.lang.Integer">
+  <select id="findIfExist" parameterType="java.lang.Integer" resultType="java.lang.Integer">
     select count(1)
     from tree_history
     where treehole_id=#{treeholeId}

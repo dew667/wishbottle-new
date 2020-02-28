@@ -16,7 +16,7 @@ public class TreeReply {
 
     private String content;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date time;
 
     public Integer getId() {

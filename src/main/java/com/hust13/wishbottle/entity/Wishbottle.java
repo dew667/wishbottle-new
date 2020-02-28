@@ -1,34 +1,35 @@
 package com.hust13.wishbottle.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Wishbottle {
     private Integer id;
 
     private Integer writerId;
 
     //抛掷时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date throwTime;
 
-    //拾取时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
-    private Date pickTime;
-
     //修改草稿时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date updateTime;
-
-    private Integer pickerId;
 
     private String title;
 
     private String content;
 
-    //状态 0-心愿海 1-被捞取 2-捞取者删除 3-发布者删除 4-两者都删 5-管理员删除 6-保存在草稿箱
+    //状态 0-心愿海 1-被捞取 2-发布者删除 3-管理员删除 4-保存在草稿箱
     private Integer status;
+
+    //心愿瓶类型
+    private Integer type;
+
+    private Integer report;
 
     public Date getThrowTime() {
         return throwTime;
@@ -36,14 +37,6 @@ public class Wishbottle {
 
     public void setThrowTime(Date throwTime) {
         this.throwTime = throwTime;
-    }
-
-    public Date getPickTime() {
-        return pickTime;
-    }
-
-    public void setPickTime(Date pickTime) {
-        this.pickTime = pickTime;
     }
 
     public Date getUpdateTime() {
@@ -70,11 +63,6 @@ public class Wishbottle {
         this.type = type;
     }
 
-    //心愿瓶类型
-    private Integer type;
-
-    private Integer report;
-
     public Integer getId() {
         return id;
     }
@@ -89,14 +77,6 @@ public class Wishbottle {
 
     public void setWriterId(Integer writerId) {
         this.writerId = writerId;
-    }
-
-    public Integer getPickerId() {
-        return pickerId;
-    }
-
-    public void setPickerId(Integer pickerId) {
-        this.pickerId = pickerId;
     }
 
     public String getContent() {

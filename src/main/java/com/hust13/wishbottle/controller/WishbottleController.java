@@ -69,7 +69,7 @@ public class WishbottleController {
             //设置草稿修改时间
             wishbottle.setUpdateTime(new Date());
             //设置心愿瓶状态为保存在草稿箱
-            wishbottle.setStatus(6);
+            wishbottle.setStatus(4);
             //保存心愿瓶并返回该心愿瓶信息
             model.setData(wishbottleService.throwWishbottle(wishbottle));
         }
@@ -80,6 +80,29 @@ public class WishbottleController {
         }
         return model;
     }
+
+    /**
+     * 捡一个瓶子 通过拦截器限制每日捞取次数
+     * @return
+     */
+    @GetMapping("/pick")
+    public Model pickBottle(HttpServletRequest request) {
+        Model model = new Model();
+        try {
+            //获取拾取人id
+            String openid = (String) request.getAttribute("openid");
+            Integer userId = userService.getUserIdByOpenId(openid);
+            model.setData(wishbottleService.pickOneBottle(userId));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            model.setCode(1);
+            model.setMsg("拾取失败");
+        }
+        return model;
+    }
+
 
     /**
      * 分页获取已捞取列表
@@ -98,7 +121,7 @@ public class WishbottleController {
             String openid = (String) request.getAttribute("openid");
             Integer userId = userService.getUserIdByOpenId( openid);
             //按捞取时间排序
-            String sort = "w.pick_time asc";
+            String sort = "p.pick_time asc";
             PageHelper.startPage(pageNum,pageSize,sort);
             //根据本人id获取已捞取列表
             PageInfo pageInfo=new PageInfo(wishbottleService.getPickList(userId));

@@ -20,4 +20,7 @@ public interface WishbottleMapper {
 
     //根据用户id查询已捞取心愿瓶的信息
     List<WishbottleVO> selectPickList(Integer userId);
+
+    //获取一条心愿瓶信息
+    Wishbottle selectOne();
 }

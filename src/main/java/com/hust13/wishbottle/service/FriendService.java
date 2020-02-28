@@ -2,6 +2,7 @@ package com.hust13.wishbottle.service;
 
 import com.hust13.wishbottle.entity.Friend;
 import com.hust13.wishbottle.entity.User;
+import com.hust13.wishbottle.model.vo.ConcernVO;
 
 import java.util.List;
 
@@ -13,9 +14,9 @@ public interface FriendService {
 
     Friend concernOneUser(Integer friendId, Integer mineId);
 
-    List<User> searchAllIConcern(Integer mineId);
+    List<ConcernVO> searchAllIConcern(Integer mineId);
 
     List<User> searchAllConcernMe(Integer mineId);
 
-    Integer removeConcernItem(Integer friendId, Integer mineId);
+    String removeConcernItem(Integer friendId, Integer mineId);
 }

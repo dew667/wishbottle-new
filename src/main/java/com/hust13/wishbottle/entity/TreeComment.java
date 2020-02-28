@@ -13,7 +13,7 @@ public class TreeComment {
 
     private Integer replyerId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date time;
 
     private String content;

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust13.wishbottle.mapper.PickMapper" >
+    <resultMap id="BaseResultMap" type="com.hust13.wishbottle.entity.Pick" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="wishbottle_id" property="wishbottleId" jdbcType="INTEGER" />
+        <result column="picker_id" property="pickerId" jdbcType="INTEGER" />
+        <result column="pick_time" property="pickTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Pick" useGeneratedKeys="true" keyProperty="id">
+        insert into pick
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="wishbottleId != null" >
+                wishbottle_id,
+            </if>
+            <if test="pickerId != null" >
+                picker_id,
+            </if>
+            <if test="pickTime != null" >
+                pick_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="wishbottleId != null" >
+                #{wishbottleId,jdbcType=INTEGER},
+            </if>
+            <if test="pickerId != null" >
+                #{pickerId,jdbcType=INTEGER},
+            </if>
+            <if test="pickTime != null" >
+                #{pickTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

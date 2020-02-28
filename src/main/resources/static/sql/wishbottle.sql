@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 28/02/2020 11:51:54
+ Date: 28/02/2020 15:29:14
 */
 
 SET NAMES utf8mb4;
@@ -36,9 +36,9 @@ CREATE TABLE `friend`  (
 -- Records of friend
 -- ----------------------------
 INSERT INTO `friend` VALUES (1, 1, 2);
-INSERT INTO `friend` VALUES (2, 6, 2);
-INSERT INTO `friend` VALUES (3, 6, 1);
 INSERT INTO `friend` VALUES (4, 1, 6);
+INSERT INTO `friend` VALUES (5, 6, 1);
+INSERT INTO `friend` VALUES (20, 6, 2);
 
 -- ----------------------------
 -- Table structure for log
@@ -97,6 +97,18 @@ CREATE TABLE `message`  (
   INDEX `9`(`target_id`) USING BTREE,
   CONSTRAINT `fk_9` FOREIGN KEY (`target_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for pick
+-- ----------------------------
+DROP TABLE IF EXISTS `pick`;
+CREATE TABLE `pick`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `wishbottle_id` int(11) NULL DEFAULT NULL COMMENT '心愿瓶id 参照wishbottle(id)',
+  `picker_id` int(11) NULL DEFAULT NULL COMMENT '拾取者id',
+  `pick_time` datetime(0) NULL DEFAULT NULL COMMENT '拾取时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for session
@@ -269,23 +281,6 @@ INSERT INTO `user` VALUES (2, '绿绿', '000', 0, 18, '切切切', '北京', NUL
 INSERT INTO `user` VALUES (6, '00', 'ds', 0, 18, '我有我的young', 'wh', NULL, NULL, 1, NULL);
 
 -- ----------------------------
--- Table structure for wish_reply
--- ----------------------------
-DROP TABLE IF EXISTS `wish_reply`;
-CREATE TABLE `wish_reply`  (
-  `id` int(255) NOT NULL AUTO_INCREMENT COMMENT '回复id 主键 非空 自增',
-  `wishbottle_id` int(255) NOT NULL COMMENT '心愿瓶id 非空 外键约束参照wish_bottle(id)',
-  `replyer_id` int(255) NOT NULL COMMENT '回复者id 非空 外键约束参照user(id)',
-  `time` datetime(6) NULL DEFAULT NULL COMMENT '回复时间 非空',
-  `content` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '回复内容 非空 文本内容或语音文件链接',
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `2`(`wishbottle_id`) USING BTREE,
-  INDEX `3`(`replyer_id`) USING BTREE,
-  CONSTRAINT `fk_2` FOREIGN KEY (`wishbottle_id`) REFERENCES `wishbottle` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `fk_3` FOREIGN KEY (`replyer_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
 -- Table structure for wishbottle
 -- ----------------------------
 DROP TABLE IF EXISTS `wishbottle`;
@@ -293,27 +288,23 @@ CREATE TABLE `wishbottle`  (
   `id` int(255) NOT NULL AUTO_INCREMENT COMMENT '心愿id 主键 非空 自增',
   `writer_id` int(255) NOT NULL COMMENT '心愿瓶的作者id 非空 外键约束参照user(id)',
   `throw_time` datetime(6) NULL DEFAULT NULL COMMENT '心愿瓶抛掷时间 ',
-  `pick_time` datetime(6) NULL DEFAULT NULL COMMENT '心愿瓶拾取时间',
   `update_time` datetime(6) NULL DEFAULT NULL COMMENT '草稿修改时间',
-  `picker_id` int(255) NULL DEFAULT NULL COMMENT '捡瓶子的用户id 外键约束参照user(id)',
   `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '心愿瓶标题',
   `content` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '心愿瓶内容 文本内容',
-  `status` int(11) NOT NULL DEFAULT 0 COMMENT '状态 0-心愿海 1-被捞取 2-捞取者删除 3-发布者删除 4-两者都删 5-管理员删除 6-保存在草稿箱',
+  `status` int(11) NOT NULL DEFAULT 0 COMMENT '状态 0-心愿海 1-被捞取 2-发布者删除 3-管理员删除 4-保存在草稿箱',
   `type` int(11) NULL DEFAULT NULL COMMENT '心愿瓶类型 ',
   `report` int(11) NOT NULL DEFAULT 0 COMMENT '举报数 非空 默认为0',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `0`(`writer_id`) USING BTREE,
-  INDEX `1`(`picker_id`) USING BTREE,
-  CONSTRAINT `fk_0` FOREIGN KEY (`writer_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `fk_1` FOREIGN KEY (`picker_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `fk_0` FOREIGN KEY (`writer_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wishbottle
 -- ----------------------------
-INSERT INTO `wishbottle` VALUES (1, 1, '2020-02-26 08:50:18.294000', '2020-02-29 14:13:57.000000', NULL, 6, '这是我的心愿一首', '谢谢你的关心', 1, 1, 0);
-INSERT INTO `wishbottle` VALUES (3, 1, NULL, NULL, '2020-02-27 01:46:36.124000', NULL, '飞流直下三千尺', '疑是银河落九天', 6, 1, 0);
-INSERT INTO `wishbottle` VALUES (4, 2, '2020-02-27 01:47:23.384000', '2020-02-28 14:13:50.000000', NULL, 6, '山重水复疑无路', '柳暗花明又一村', 1, 1, 0);
-INSERT INTO `wishbottle` VALUES (5, 2, '2020-02-27 14:13:30.000000', '2020-02-28 14:13:53.000000', NULL, 6, 'fsd', 'fsd', 3, 1, 0);
+INSERT INTO `wishbottle` VALUES (1, 1, '2020-02-26 08:50:18.294000', NULL, '这是我的心愿一首', '谢谢你的关心', 1, 1, 0);
+INSERT INTO `wishbottle` VALUES (3, 1, NULL, '2020-02-27 01:46:36.124000', '飞流直下三千尺', '疑是银河落九天', 6, 1, 0);
+INSERT INTO `wishbottle` VALUES (4, 2, '2020-02-27 01:47:23.384000', NULL, '山重水复疑无路', '柳暗花明又一村', 1, 1, 0);
+INSERT INTO `wishbottle` VALUES (5, 2, '2020-02-27 14:13:30.000000', NULL, 'fsd', 'fsd', 3, 1, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

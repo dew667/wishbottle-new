@@ -5,30 +5,26 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="writer_id" property="writerId" jdbcType="INTEGER" />
     <result column="throw_time" property="throwTime" jdbcType="TIMESTAMP" />
-    <result column="pick_time" property="pickTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="picker_id" property="pickerId" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="type" property="pic" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
     <result column="report" property="report" jdbcType="INTEGER" />
   </resultMap>
 
   <!--映射WishbottleVO-->
   <resultMap id="WishbottleResultMap" type="com.hust13.wishbottle.model.vo.WishbottleVO" >
-    <id property="id" column="id" />
-    <result property="writerId" column="writer_id"/>
-    <result property="throwTime" column="throw_time"/>
-    <result property="pickTime" column="pick_time"/>
-    <result property="updateTime" column="update_time"/>
-    <result property="pickerId" column="picker_id"/>
-    <result property="title" column="title"/>
-    <result property="content" column="content"/>
-    <result property="status" column="status"/>
-    <result property="type" column="type"/>
-    <result property="report" column="report"/>
-    <association property="user" javaType="User">
+    <id property="id" column="wishbottle_id" />
+    <result property="writerId" column="wishbottle_writer_id"/>
+    <result property="throwTime" column="wishbottle_throw_time"/>
+    <result property="updateTime" column="wishbottle_update_time"/>
+    <result property="title" column="wishbottle_title"/>
+    <result property="content" column="wishbottle_content"/>
+    <result property="status" column="wishbottle_status"/>
+    <result property="type" column="wishbottle_type"/>
+    <result property="report" column="wishbottle_report"/>
+    <association property="user" javaType="User" columnPrefix="user_">
       <id property="id" column="id"/>
       <result property="name" column="name"/>
       <result property="avatar" column="avatar"/>
@@ -42,10 +38,16 @@
       <result property="myPic" column="my_pic"/>
       <result property="tags" column="tags"/>
     </association>
+    <association property="pick" javaType="Pick" columnPrefix="pick_">
+      <id property="id" column="id"/>
+      <result property="wishbottleId" column="wishbottle_id"/>
+      <result property="pickerId" column="picker_id"/>
+      <result property="pickTime" column="pick_time"/>
+    </association>
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, writer_id, throw_time, pick_time, update_time, picker_id, title, content, status, type, report
+    id, writer_id, throw_time, update_time, title, content, status, type, report
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -59,9 +61,9 @@
   </delete>
   <insert id="insert" parameterType="com.hust13.wishbottle.entity.Wishbottle" >
     insert into wishbottle
-    (id, writer_id, throw_time, pick_time, update_time, picker_id, title, content, status, type, report)
+    (id, writer_id, throw_time, update_time, title, content, status, type, report)
     values (#{id,jdbcType=INTEGER}, #{writerId,jdbcType=INTEGER}, #{throwTime,jdbcType=TIMESTAMP},
-      #{pickTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{pickerId,jdbcType=INTEGER},
+     #{updateTime,jdbcType=TIMESTAMP},
       #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
       #{type,jdbcType=INTEGER}, #{report,jdbcType=INTEGER})
   </insert>
@@ -77,14 +79,8 @@
       <if test="throwTime != null" >
         throw_time,
       </if>
-      <if test="pickTime != null" >
-        pick_time,
-      </if>
       <if test="updateTime != null" >
         update_time,
-      </if>
-      <if test="pickerId != null" >
-        picker_id,
       </if>
       <if test="title != null" >
         title,
@@ -112,14 +108,8 @@
       <if test="throwTime != null" >
         #{throwTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="pickTime != null" >
-        #{pickTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="updateTime != null" >
         #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pickerId != null" >
-        #{pickerId,jdbcType=INTEGER},
       </if>
       <if test="title != null" >
         #{title,jdbcType=VARCHAR},
@@ -147,14 +137,8 @@
       <if test="throwTime != null" >
         throw_time = #{throwTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="pickTime != null" >
-        pick_time = #{pickTime,jdbcType=TIMESTAMP},
-      </if>
       <if test="updateTime != null" >
         update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="pickerId != null" >
-        picker_id = #{pickerId,jdbcType=INTEGER},
       </if>
       <if test="title != null" >
         title = #{title,jdbcType=VARCHAR},
@@ -178,9 +162,7 @@
     update wishbottle
     set writer_id = #{writerId,jdbcType=INTEGER},
       throw_time = #{throwTime,jdbcType=TIMESTAMP},
-      pick_time = #{pickTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      picker_id = #{pickerId,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
@@ -192,9 +174,22 @@
   <!--根据用户id获取已捞取列表 返回WishbottleData封装类List-->
   <select id="selectPickList" resultMap="WishbottleResultMap" parameterType="java.lang.Integer" >
     select
-    w.id, w.pick_time, u.id, u.avatar, u.gender, u.city
-    from wishbottle w inner join user u
-    on w.writer_id=u.id
-    where picker_id=#{userId} and (status=1 or status=3)
+    w.id as wishbottle_id,
+    u.id as user_id,
+    u.avatar as user_avatar,
+    u.gender as user_gender,
+    u.city as user_city,
+    p.pick_time as pick_pick_time
+    from wishbottle w inner join user u on w.writer_id=u.id
+    inner join pick p on w.id=p.wishbottle_id
+    where p.picker_id=#{userId} and (w.status=1 or status=2)
+  </select>
+  
+  <!--随机返回一个瓶子信息-->
+  <select id="selectOne" resultMap="BaseResultMap" parameterType="Pick" >
+    select id, title, content, type
+    from wishbottle
+    where status=0 or status=1 or status=2
+    order by rand() LIMIT 1
   </select>
 </mapper>

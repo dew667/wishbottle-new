@@ -1,5 +1,6 @@
 package com.hust13.wishbottle.config;
 
+import com.hust13.wishbottle.interceptor.BottleInterceptor;
 import com.hust13.wishbottle.interceptor.MyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,9 @@ public class MvcInterceptorConfig extends WebMvcConfigurationSupport {
     @Autowired
     private MyInterceptor myInterceptor;
 
+    @Autowired
+    private BottleInterceptor bottleInterceptor;
+
     @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         // addPathPatterns 用于添加拦截规则，/**表示拦截所有请求
@@ -23,6 +27,7 @@ public class MvcInterceptorConfig extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/user/login", "/treehole/getArticleList/**", "/treehole/getRecommend/**",
                         "/treehole/getOneArticle/**", "/treeReply/getAllComments/**", "/treeReply/getCommentsOfAuthor/**",
                         "/treeReply/getAllReplies/**");
+        registry.addInterceptor(bottleInterceptor).addPathPatterns("/wishbottle/pick");
         super.addInterceptors(registry);
     }
 }

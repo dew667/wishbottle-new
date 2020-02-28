@@ -1,9 +1,12 @@
 package com.hust13.wishbottle.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * 好友-关注关系实体
  * created by wzy on 2020/2/19
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Friend {
 
     /**

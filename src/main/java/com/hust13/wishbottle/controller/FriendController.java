@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hust13.wishbottle.entity.User;
 import com.hust13.wishbottle.model.Model;
+import com.hust13.wishbottle.model.vo.ConcernVO;
 import com.hust13.wishbottle.service.FriendService;
 import com.hust13.wishbottle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +140,7 @@ public class FriendController {
                 userId = userService.getUserIdByOpenId(openid);
             }
             //获取我关注的用户数目
-            List<User> iConcern = friendService.searchAllIConcern(userId);
+            List<ConcernVO> iConcern = friendService.searchAllIConcern(userId);
             Integer iConcernNum = iConcern.size();
             //获取我的粉丝数目
             List<User> concernMe = friendService.searchAllConcernMe(userId);

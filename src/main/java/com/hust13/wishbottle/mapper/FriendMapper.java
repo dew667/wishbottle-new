@@ -2,8 +2,10 @@ package com.hust13.wishbottle.mapper;
 
 import com.hust13.wishbottle.entity.Friend;
 import com.hust13.wishbottle.entity.User;
+import com.hust13.wishbottle.model.vo.ConcernVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FriendMapper {
     int deleteByPrimaryKey(Integer id);
@@ -21,7 +23,7 @@ public interface FriendMapper {
      * @param mineId
      * @return
      */
-    List<User> searchAllIConcern(Integer mineId);
+    List<ConcernVO> searchAllIConcern(Integer mineId);
 
     /**
      * 查询我的所有粉丝
@@ -33,4 +35,7 @@ public interface FriendMapper {
     int updateByPrimaryKeySelective(Friend record);
 
     int updateByPrimaryKey(Friend record);
+
+    //判断表中是否已存在对应项
+    Integer ifExist(Map<String, Integer> map);
 }

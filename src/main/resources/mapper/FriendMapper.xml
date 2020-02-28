@@ -6,6 +6,28 @@
     <result column="mine_id" property="mineId" jdbcType="INTEGER" />
     <result column="friend_id" property="friendId" jdbcType="INTEGER" />
   </resultMap>
+
+  <!--映射FriendVO-->
+  <resultMap id="ConcernResultMap" type="com.hust13.wishbottle.model.vo.ConcernVO">
+    <id column="concern_id" property="id" jdbcType="INTEGER" />
+    <result column="concern_mine_id" property="mineId" jdbcType="INTEGER" />
+    <result column="concern_friend_id" property="friendId" jdbcType="INTEGER" />
+    <result column="concern_status" property="status" jdbcType="INTEGER"/>
+    <association property="user" javaType="User" columnPrefix="user_">
+      <id column="id" property="id" jdbcType="INTEGER" />
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+      <result column="gender" property="gender" jdbcType="INTEGER" />
+      <result column="age" property="age" jdbcType="INTEGER" />
+      <result column="signature" property="signature" jdbcType="VARCHAR" />
+      <result column="city" property="city" jdbcType="VARCHAR" />
+      <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+      <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+      <result column="ban" property="ban" jdbcType="INTEGER" />
+      <result column="my_pic" property="myPic" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, mine_id, friend_id
   </sql>
@@ -15,15 +37,29 @@
     from friend
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <!--判断表中是否已存在对应条目-->
+  <select id="ifExist" parameterType="HashMap" resultType="java.lang.Integer">
+    select count(*)
+    from friend
+    where mine_id=#{mineId} and friend_id=#{friendId}
+  </select>
   <!--查询所有我关注的用户-->
-  <select id="searchAllIConcern" resultType="User" parameterType="java.lang.Integer">
-    select id, name, avatar
-    from user
-    where id in (
-      select friend_id
-      from friend
-      where mine_id=#{mineId}
-    )
+  <select id="searchAllIConcern" resultMap="ConcernResultMap" parameterType="java.lang.Integer">
+    select f.id as concern_id,
+    f.status as concern_status,
+    u.id as user_id,
+    u.avatar as user_avatar,
+    u.gender as user_gender,
+    u.name as user_name
+    from (
+      select distinct T1.id,T1.mine_id,T1.friend_id,if(T1.friend_id=T2.mine_id,2,1) as `status`
+      from (select * from friend where mine_id = #{mineId}) as T1
+      left join (select * from friend where friend_id =#{mineId}) as T2
+      on T1.mine_id=T2.friend_id
+      where T1.friend_id in (select mine_id from friend where friend_id =#{mineId}) and T1.friend_id=T2.mine_id
+      or T1.friend_id not in (select mine_id from friend where friend_id =#{mineId})
+	) f
+	inner join user u on f.friend_id=u.id
   </select>
   <!--查询我的粉丝-->
   <select id="searchAllConcernMe" resultType="User" parameterType="java.lang.Integer">
