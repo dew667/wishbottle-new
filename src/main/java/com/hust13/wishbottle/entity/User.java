@@ -31,16 +31,6 @@ public class User {
 
     private String myPic;
 
-    private String tags;
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
     public Integer getId() {
         return id;
     }

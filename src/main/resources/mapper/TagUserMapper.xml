@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust13.wishbottle.mapper.TagUserMapper" >
+
+    <!--获取用户的标签-->
+    <select id="getTagsByUserId" parameterType="java.lang.Integer" resultType="Tag">
+        select id, tag, color
+        from tag_admin
+        where id in(
+            select tag_id
+            from tag_user
+            where user_id=#{userId}
+        )
+    </select>
+
+    <!--插入条目-->
+    <insert id="insertRecord" parameterType="HashMap">
+        insert into tag_user
+        (user_id, tag_id)
+        values (#{userId}, #{tagId})
+    </insert>
+
+    <!--删除用户所有标签-->
+    <delete id="deleteAllByUserId" parameterType="java.lang.Integer">
+        delete from tag_user
+        where user_id=#{userId}
+    </delete>
+
+</mapper>

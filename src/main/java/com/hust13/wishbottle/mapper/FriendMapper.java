@@ -38,4 +38,7 @@ public interface FriendMapper {
 
     //判断表中是否已存在对应项
     Integer ifExist(Map<String, Integer> map);
+
+    //判断是否关注某一用户
+    Integer isConcernOneUser(Map<String, Integer> map);
 }

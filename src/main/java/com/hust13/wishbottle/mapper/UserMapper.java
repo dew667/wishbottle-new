@@ -24,4 +24,7 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    //获取用户信息
+    User getUserInfo(Integer userId);
 }

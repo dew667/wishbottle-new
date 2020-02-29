@@ -130,4 +130,11 @@
       friend_id = #{friendId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--判断是否关注某一用户-->
+  <select id="isConcernOneUser" parameterType="HashMap" resultType="java.lang.Integer">
+    select count(*)
+    from friend
+    where mine_id=#{mineId} and friend_id=#{userId}
+  </select>
 </mapper>

@@ -5,6 +5,7 @@ import com.hust13.wishbottle.entity.User;
 import com.hust13.wishbottle.model.vo.ConcernVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 好友-关注DAO接口
@@ -19,4 +20,7 @@ public interface FriendService {
     List<User> searchAllConcernMe(Integer mineId);
 
     String removeConcernItem(Integer friendId, Integer mineId);
+
+    //判断是否关注某一用户
+    Map<String, Integer> isConcernOneUser(Integer mineId, Integer userId);
 }

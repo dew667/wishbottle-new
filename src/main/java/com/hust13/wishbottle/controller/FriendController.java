@@ -159,4 +159,27 @@ public class FriendController {
         }
         return model;
     }
+
+    /**
+     * 判断自己是否关注了某一用户
+     * @param userId 用户id
+     * @param request
+     * @return 0-false 1-true
+     */
+    @GetMapping("/isConcern/{id}")
+    public Model isConcernOneUser(@PathVariable("id") Integer userId, HttpServletRequest request) {
+        Model model = new Model();
+        try {
+            //获取我的id
+            String openid = (String) request.getAttribute("openid");
+            Integer mineId = userService.getUserIdByOpenId(openid);
+            model.setData(friendService.isConcernOneUser(mineId, userId));
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("查询失败");
+        }
+        return model;
+    }
 }

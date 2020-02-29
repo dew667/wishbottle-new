@@ -85,4 +85,16 @@ public class FriendServiceImpl implements FriendService {
         else
             throw new RuntimeException("删除失败");
     }
+
+    @Override
+    public Map<String, Integer> isConcernOneUser(Integer mineId, Integer userId) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("mineId", mineId);
+        map.put("userId", userId);
+        Integer ret = friendMapper.isConcernOneUser(map);
+        //返回结果
+        Map<String, Integer> isConcernMap = new HashMap<>();
+        isConcernMap.put("isConcern", ret);
+        return isConcernMap;
+    }
 }

@@ -1,6 +1,7 @@
 package com.hust13.wishbottle.service;
 
 import com.hust13.wishbottle.entity.User;
+import com.hust13.wishbottle.model.vo.UserVO;
 
 /**
  * UserService
@@ -16,5 +17,8 @@ public interface UserService {
     Integer getUserIdByOpenId(String openid);
 
     //获取指定用户信息
-    User getUserInfo(Integer userId);
+    UserVO getUserInfo(Integer userId);
+
+    //修改用户信息
+    UserVO updateUserInfo(UserVO record);
 }

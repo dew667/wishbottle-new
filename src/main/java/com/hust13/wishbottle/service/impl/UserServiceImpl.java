@@ -1,9 +1,12 @@
 package com.hust13.wishbottle.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hust13.wishbottle.entity.Tag;
 import com.hust13.wishbottle.entity.User;
+import com.hust13.wishbottle.mapper.TagUserMapper;
 import com.hust13.wishbottle.mapper.UserMapper;
 import com.hust13.wishbottle.model.OpenIdJson;
+import com.hust13.wishbottle.model.vo.UserVO;
 import com.hust13.wishbottle.service.UserService;
 import com.hust13.wishbottle.utils.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -29,6 +33,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private TagUserMapper tagUserMapper;
+
     @Autowired
     private RedisTemplate redisTemplate; //redis缓存操作工具
 
@@ -111,7 +119,42 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public User getUserInfo(Integer userId) {
-        return userMapper.selectByPrimaryKey(userId);
+    public UserVO getUserInfo(Integer userId) {
+        User user = userMapper.getUserInfo(userId);
+        List<Tag> tags = tagUserMapper.getTagsByUserId(userId);
+        //设置返回数据
+        UserVO userVo = new UserVO();
+        userVo.setId(user.getId());
+        userVo.setName(user.getName());
+        userVo.setAvatar(user.getAvatar());
+        userVo.setGender(user.getGender());
+        userVo.setAge(user.getAge());
+        userVo.setSignature(user.getSignature());
+        userVo.setCity(user.getCity());
+        userVo.setMyPic(user.getCity());
+        userVo.setTags(tags);
+        return userVo;
+    }
+
+    /**
+     * 更新用户信息
+     * @param record
+     * @return
+     */
+    @Override
+    public UserVO updateUserInfo(UserVO record) {
+        //更新user表
+        User user = record;
+        Integer ret1 = userMapper.updateByPrimaryKeySelective(record);
+        //先清除用户所有的标签
+        Integer ret2 = tagUserMapper.deleteAllByUserId(record.getId());
+        //循环向tag_user表中插入记录
+        for (Tag tag : record.getTags()){
+            Map<String, Integer> map = new HashMap<>();
+            map.put("userId", record.getId());
+            map.put("tagId", tag.getId());
+            Integer ret3 = tagUserMapper.insertRecord(map);
+        }
+        return record;
     }
 }

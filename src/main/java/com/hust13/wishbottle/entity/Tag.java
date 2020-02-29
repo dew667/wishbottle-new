@@ -1,11 +1,12 @@
 package com.hust13.wishbottle.entity;
 
 public class Tag {
+
     private Integer id;
 
-    private Integer userId;
+    private String tag;
 
-    private String content;
+    private String color;
 
     public Integer getId() {
         return id;
@@ -15,19 +16,19 @@ public class Tag {
         this.id = id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getTag() {
+        return tag;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
-    public String getContent() {
-        return content;
+    public String getColor() {
+        return color;
     }
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+    public void setColor(String color) {
+        this.color = color;
     }
 }
