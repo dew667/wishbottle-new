@@ -30,4 +30,7 @@ public interface WishbottleMapper {
     List<WishbottleVO> selectThrowList(Integer userId);
 
     List<Wishbottle> selectDraftList(Integer userId);
+
+    //读取bottle中信息
+    Wishbottle readOne(Integer id);
 }

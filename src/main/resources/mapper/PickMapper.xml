@@ -40,4 +40,10 @@
         </trim>
     </insert>
 
+    <delete id="deleteItem" parameterType="HashMap">
+        delete
+        from pick
+        where picker_id=#{pickerId} and wishbottle_id=#{wishbottleId}
+    </delete>
+
 </mapper>

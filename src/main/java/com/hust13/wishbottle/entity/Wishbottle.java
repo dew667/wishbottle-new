@@ -23,7 +23,7 @@ public class Wishbottle {
 
     private String content;
 
-    //状态 0-心愿海 1-被捞取 2-发布者删除 3-管理员删除 4-保存在草稿箱
+    //状态  1-可捞取 2-发布者删除 3-管理员删除 4-保存在草稿箱 5-从草稿箱删除
     private Integer status;
 
     //心愿瓶类型

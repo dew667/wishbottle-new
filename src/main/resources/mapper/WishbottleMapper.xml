@@ -197,7 +197,7 @@
       from pick
       where picker_id=#{userId}
     )
-    and (status=0 or status=1 or status=2)
+    and (status=1 or status=2)
     and writer_id!=#{userId}
     order by rand() LIMIT 1
   </select>
@@ -211,7 +211,7 @@
     from pick p
     inner join wishbottle w
     on p.wishbottle_id=w.id
-    where writer_id=#{userId} and (status=0 or status=1)
+    where writer_id=#{userId} and status=1
     group by w.id
   </select>
 
@@ -221,5 +221,13 @@
     id, update_time
     from wishbottle
     where writer_id=#{userId} and status=4
+  </select>
+
+  <!--读取bottle中信息-->
+  <select id="readOne" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    id, title, content, type
+    from wishbottle
+    where id=#{id}
   </select>
 </mapper>

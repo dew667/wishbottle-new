@@ -22,4 +22,15 @@ public interface WishbottleService {
     //获取草稿列表
     List<Wishbottle> getDraftList(Integer userId);
 
+    //从pick列表中删除条目
+    String deleteFromPickList(Integer id, Integer userId);
+
+    //从throw列表中删除条目
+    String deleteFromThrowList(Integer id);
+
+    //从draft列表删除条目
+    String deleteFromDraftList(Integer id);
+
+    //阅读瓶子中信息
+    Wishbottle readOneBottle(Integer id);
 }

@@ -6,13 +6,16 @@ import com.hust13.wishbottle.entity.Wishbottle;
 import com.hust13.wishbottle.mapper.PickMapper;
 import com.hust13.wishbottle.mapper.WishbottleMapper;
 import com.hust13.wishbottle.model.vo.WishbottleVO;
+import com.hust13.wishbottle.service.ImagFilesService;
 import com.hust13.wishbottle.service.WishbottleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -86,6 +89,65 @@ public class WishbottleServiceImpl implements WishbottleService {
     @Override
     public List<Wishbottle> getDraftList(Integer userId) {
         return wishbottleMapper.selectDraftList(userId);
+    }
+
+    /**
+     * 删除pick表中条目
+     * @param id
+     * @param userId
+     * @return
+     */
+    @Override
+    public String deleteFromPickList(Integer id, Integer userId) {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("wishbottleId", id);
+        map.put("pickerId", userId);
+        Integer ret = pickMapper.deleteItem(map);
+        if(ret > 0)
+            return "删除条目成功";
+        else
+            throw new RuntimeException("删除条目失败");
+    }
+
+    /**
+     * 从throw列表删除
+     * @param id
+     * @return
+     */
+    @Override
+    public String deleteFromThrowList(Integer id) {
+        Wishbottle record = new Wishbottle();
+        record.setId(id);
+        //设置status状态为发布者从自己列表删除
+        record.setStatus(2);
+        Integer ret = wishbottleMapper.updateByPrimaryKeySelective(record);
+        if(ret > 0)
+            return "删除条目成功";
+        else
+            throw new RuntimeException("删除条目失败");
+    }
+
+    /**
+     * 从draft列表删除
+     * @param id
+     * @return
+     */
+    @Override
+    public String deleteFromDraftList(Integer id) {
+        Wishbottle record = new Wishbottle();
+        record.setId(id);
+        //设置status状态为发布者从自己列表删除
+        record.setStatus(5);
+        Integer ret = wishbottleMapper.updateByPrimaryKeySelective(record);
+        if(ret > 0)
+            return "删除条目成功";
+        else
+            throw new RuntimeException("删除条目失败");
+    }
+
+    @Override
+    public Wishbottle readOneBottle(Integer id) {
+        return wishbottleMapper.readOne(id);
     }
 
 }

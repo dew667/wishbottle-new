@@ -38,8 +38,8 @@ public class WishbottleController {
             wishbottle.setWriterId(userId);
             //设置心愿瓶抛掷时间
             wishbottle.setThrowTime(new Date());
-            //设置心愿瓶状态为漂浮在海中
-            wishbottle.setStatus(0);
+            //设置心愿瓶状态为可捞取
+            wishbottle.setStatus(1);
             //发布心愿瓶并返回该心愿瓶信息
             model.setData(wishbottleService.throwWishbottle(wishbottle));
         }
@@ -194,6 +194,85 @@ public class WishbottleController {
         {
             model.setCode(1);
             model.setMsg("获取草稿列表失败");
+        }
+        return model;
+    }
+
+    @GetMapping("/read/{id}")
+    public Model readWishbottle(@PathVariable("id") Integer id) {
+        Model model = new Model();
+        try {
+            model.setData(wishbottleService.readOneBottle(id));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            model.setCode(1);
+            model.setMsg("阅读失败");
+        }
+        return model;
+    }
+
+    /**
+     * 删除本人pick列表中的条目
+     * @param id 瓶子id
+     * @param request
+     * @return
+     */
+    @DeleteMapping("/deleteFromPickList/{id}")
+    public Model deleteFromPickList(@PathVariable("id") Integer id, HttpServletRequest request) {
+        Model model = new Model();
+        try {
+            //获取本人id
+            String openid = (String) request.getAttribute("openid");
+            Integer userId = userService.getUserIdByOpenId(openid);
+            model.setData(wishbottleService.deleteFromPickList(id, userId));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            model.setCode(1);
+            model.setMsg("删除失败");
+        }
+        return model;
+    }
+
+    /**
+     * 删除本人throw列表中的条目
+     * @param id 瓶子id
+     * @return
+     */
+    @DeleteMapping("/deleteFromThrowList/{id}")
+    public Model deleteFromThrowList(@PathVariable("id") Integer id) {
+        Model model = new Model();
+        try {
+            model.setData(wishbottleService.deleteFromThrowList(id));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            model.setCode(1);
+            model.setMsg("删除失败");
+        }
+        return model;
+    }
+
+    /**
+     * 从草稿列表中删除条目
+     * @param id 瓶子id
+     * @return
+     */
+    @DeleteMapping("/deleteFromDraftList/{id}")
+    public Model deleteFromDraftList(@PathVariable("id") Integer id) {
+        Model model = new Model();
+        try {
+            model.setData(wishbottleService.deleteFromDraftList(id));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            model.setCode(1);
+            model.setMsg("删除失败");
         }
         return model;
     }
