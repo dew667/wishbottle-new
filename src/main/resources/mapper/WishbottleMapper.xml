@@ -24,6 +24,7 @@
     <result property="status" column="wishbottle_status"/>
     <result property="type" column="wishbottle_type"/>
     <result property="report" column="wishbottle_report"/>
+    <result property="count" column="wishbottle_count"/>
     <association property="user" javaType="User" columnPrefix="user_">
       <id property="id" column="id"/>
       <result property="name" column="name"/>
@@ -186,10 +187,39 @@
   </select>
   
   <!--随机返回一个瓶子信息-->
-  <select id="selectOne" resultMap="BaseResultMap" parameterType="Pick" >
-    select id, title, content, type
+  <select id="selectOne" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    id, title, content, type
     from wishbottle
-    where status=0 or status=1 or status=2
+    where id not in (
+      select
+      wishbottle_id
+      from pick
+      where picker_id=#{userId}
+    )
+    and (status=0 or status=1 or status=2)
+    and writer_id!=#{userId}
     order by rand() LIMIT 1
+  </select>
+
+  <!--根据用户id获取已投放列表 返回WishbottleData封装类List-->
+  <select id="selectThrowList" resultMap="WishbottleResultMap" parameterType="java.lang.Integer">
+    select w.id as wishbottle_id,
+    w.throw_time as wishbottle_throw_time,
+    w.type as wishbottle_type,
+    count(*) as wishbottle_count
+    from pick p
+    inner join wishbottle w
+    on p.wishbottle_id=w.id
+    where writer_id=#{userId} and (status=0 or status=1)
+    group by w.id
+  </select>
+
+  <!--根据用户id获取草稿列表-->
+  <select id="selectDraftList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    id, update_time
+    from wishbottle
+    where writer_id=#{userId} and status=4
   </select>
 </mapper>

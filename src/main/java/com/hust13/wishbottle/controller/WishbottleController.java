@@ -83,7 +83,7 @@ public class WishbottleController {
 
     /**
      * 捡一个瓶子 通过拦截器限制每日捞取次数
-     * @return
+     * @return 若返回data为空 则表明没有可捞取的瓶子
      */
     @GetMapping("/pick")
     public Model pickBottle(HttpServletRequest request) {
@@ -131,6 +131,69 @@ public class WishbottleController {
         {
             model.setCode(1);
             model.setMsg("获取已捞取列表失败");
+        }
+        return model;
+    }
+
+    /**
+     * 获取已投放列表
+     * @param pageNum
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @GetMapping("/getThrowList/{pageNum}/{pageSize}")
+    public Model getThrowList(@PathVariable("pageNum") Integer pageNum,
+                              @PathVariable("pageSize") Integer pageSize,
+                              HttpServletRequest request) {
+        Model model = new Model();
+        try {
+            //获取本人id
+            String openid = (String) request.getAttribute("openid");
+            Integer userId = userService.getUserIdByOpenId(openid);
+            //按捞取时间排序
+            String sort = "w.throw_time asc";
+            PageHelper.startPage(pageNum,pageSize,sort);
+            //根据本人id获取已捞取列表
+            PageInfo pageInfo=new PageInfo(wishbottleService.getThrowList(userId));
+            model.setData(pageInfo);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            model.setCode(1);
+            model.setMsg("获取投放列表失败");
+        }
+        return model;
+    }
+
+    /**
+     * 获取草稿列表
+     * @param pageNum
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @GetMapping("/getDraftList/{pageNum}/{pageSize}")
+    public Model getDraftList(@PathVariable("pageNum") Integer pageNum,
+                              @PathVariable("pageSize") Integer pageSize,
+                              HttpServletRequest request) {
+        Model model = new Model();
+        try {
+            //获取本人id
+            String openid = (String) request.getAttribute("openid");
+            Integer userId = userService.getUserIdByOpenId(openid);
+            //按捞取时间排序
+            String sort = "throw_time asc";
+            PageHelper.startPage(pageNum,pageSize,sort);
+            //根据本人id获取已捞取列表
+            PageInfo pageInfo=new PageInfo(wishbottleService.getDraftList(userId));
+            model.setData(pageInfo);
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("获取草稿列表失败");
         }
         return model;
     }
