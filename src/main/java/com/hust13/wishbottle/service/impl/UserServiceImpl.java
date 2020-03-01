@@ -157,4 +157,27 @@ public class UserServiceImpl implements UserService {
         }
         return record;
     }
+
+    /**
+     * 管理获取所有
+     * @return
+     */
+    @Override
+    public List<User> getAllUser() {
+        return userMapper.getAllUser();
+    }
+
+    /**
+     * 管理删除
+     * @param id
+     * @return
+     */
+    @Override
+    public String deleteById(Integer id) {
+        Integer ret = userMapper.deleteByPrimaryKey(id);
+        if(ret > 0)
+            return "删除成功";
+        else
+            throw new RuntimeException("删除失败");
+    }
 }

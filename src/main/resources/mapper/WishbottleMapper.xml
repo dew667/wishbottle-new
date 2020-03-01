@@ -230,4 +230,11 @@
     from wishbottle
     where id=#{id}
   </select>
+
+  <!--获取所有-->
+  <select id="getAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from wishbottle
+  </select>
 </mapper>

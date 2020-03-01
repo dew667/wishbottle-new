@@ -26,7 +26,7 @@ public class MvcInterceptorConfig extends WebMvcConfigurationSupport {
         registry.addInterceptor(myInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/user/login", "/treehole/getArticleList/**", "/treehole/getRecommend/**",
                         "/treehole/getOneArticle/**", "/treeReply/getAllComments/**", "/treeReply/getCommentsOfAuthor/**",
-                        "/treeReply/getAllReplies/**");
+                        "/treeReply/getAllReplies/**", "/admin/**");
         registry.addInterceptor(bottleInterceptor).addPathPatterns("/wishbottle/pick");
         super.addInterceptors(registry);
     }

@@ -2,6 +2,7 @@ package com.hust13.wishbottle.mapper;
 
 import com.hust13.wishbottle.entity.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserMapper {
@@ -27,4 +28,6 @@ public interface UserMapper {
 
     //获取用户信息
     User getUserInfo(Integer userId);
+
+    List<User> getAllUser();
 }

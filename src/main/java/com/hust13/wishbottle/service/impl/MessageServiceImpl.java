@@ -5,10 +5,15 @@ import com.hust13.wishbottle.mapper.MessageMapper;
 import com.hust13.wishbottle.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * message业务实现类
+ */
 @Service
+@Transactional
 public class MessageServiceImpl implements MessageService {
 
     @Autowired
@@ -42,6 +47,24 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Message> getIndexMsg() {
         return messageMapper.getIndexMessage();
+    }
+
+    /**
+     * 管理获取所有
+     * @return
+     */
+    @Override
+    public List<Message> getAllMsg() {
+        return messageMapper.getAllByAdmin();
+    }
+
+    @Override
+    public String deleteById(Integer id) {
+        Integer ret = messageMapper.deleteByPrimaryKey(id);
+        if(ret > 0)
+            return "删除成功";
+        else
+            throw new RuntimeException("删除失败");
     }
 
 }

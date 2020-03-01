@@ -26,4 +26,8 @@ public interface TreeholeService {
 
     Integer saveHistory(Integer userId, Integer treeholeId);
 
+    List<Treehole> getAllTreehole();
+
+    String deleteById(Integer id);
+
 }

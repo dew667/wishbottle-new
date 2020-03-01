@@ -4,17 +4,13 @@ import com.hust13.wishbottle.entity.Manager;
 
 import java.util.List;
 
+/**
+ * 管理员service接口
+ */
 public interface ManagerService {
 
-    //判断管理员是否是超级管理员
-    public int judgeManager(int managerId);
+    List<Manager> getAllManager();
 
-    //添加管理员
-    public int addManager(Manager manager);
+    String deleteById(Integer id);
 
-    //删除管理员
-    public int deleteManager(int managerId);
-
-    //获取所有管理员信息
-    public List<Manager> getManagers();
 }

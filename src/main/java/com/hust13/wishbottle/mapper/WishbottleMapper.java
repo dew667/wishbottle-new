@@ -33,4 +33,7 @@ public interface WishbottleMapper {
 
     //读取bottle中信息
     Wishbottle readOne(Integer id);
+
+    //获取所有
+    List<Wishbottle> getAll();
 }

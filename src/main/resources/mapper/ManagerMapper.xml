@@ -79,4 +79,11 @@
       type = #{type,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--获取all-->
+  <select id="getAllManager" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from manager
+  </select>
 </mapper>

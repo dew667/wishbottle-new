@@ -141,4 +141,11 @@
     from message
     where type=3
   </select>
+
+  <!--管理员获取所有-->
+  <select id="getAllByAdmin" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from message
+  </select>
 </mapper>

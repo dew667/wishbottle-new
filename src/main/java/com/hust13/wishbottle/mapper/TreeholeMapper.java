@@ -35,4 +35,7 @@ public interface TreeholeMapper {
 
     //更新文章举报数码
     Integer updateReportNum(Integer id);
+
+    //获取所有树洞
+    List<Treehole> getAllTreehole();
 }

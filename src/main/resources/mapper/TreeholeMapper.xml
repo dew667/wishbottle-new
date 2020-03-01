@@ -266,4 +266,11 @@
     set report=report+1
     where id=#{id}
   </update>
+
+  <!--获取所有树洞-->
+  <select id="getAllTreehole" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from treehole
+  </select>
 </mapper>

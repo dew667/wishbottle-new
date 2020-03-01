@@ -129,4 +129,27 @@ public class TreeholeServiceImpl implements TreeholeService {
             return 0;
     }
 
+    /**
+     * 获取所有树洞
+     * @return
+     */
+    @Override
+    public List<Treehole> getAllTreehole() {
+        return treeholeMapper.getAllTreehole();
+    }
+
+    /**
+     * 管理删除
+     * @param id
+     * @return
+     */
+    @Override
+    public String deleteById(Integer id) {
+        Integer ret = treeholeMapper.deleteByPrimaryKey(id);
+        if(ret > 0)
+            return "删除成功";
+        else
+            throw new RuntimeException("删除失败");
+    }
+
 }

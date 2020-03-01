@@ -22,4 +22,6 @@ public interface MessageMapper {
 
     //获取主页滚动通知
     List<Message> getIndexMessage();
+
+    List<Message> getAllByAdmin();
 }

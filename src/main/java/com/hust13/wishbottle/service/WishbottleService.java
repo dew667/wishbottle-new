@@ -33,4 +33,10 @@ public interface WishbottleService {
 
     //阅读瓶子中信息
     Wishbottle readOneBottle(Integer id);
+
+    //获取所有心愿瓶
+    List<Wishbottle> getAllBottle();
+
+    //管理员删除
+    String deleteById(Integer id);
 }

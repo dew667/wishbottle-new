@@ -145,9 +145,37 @@ public class WishbottleServiceImpl implements WishbottleService {
             throw new RuntimeException("删除条目失败");
     }
 
+    /**
+     * 读取内容
+     * @param id
+     * @return
+     */
     @Override
     public Wishbottle readOneBottle(Integer id) {
         return wishbottleMapper.readOne(id);
+    }
+
+    /**
+     * 获取所有瓶子信息
+     * @return
+     */
+    @Override
+    public List<Wishbottle> getAllBottle() {
+        return wishbottleMapper.getAll();
+    }
+
+    /**
+     * 管理删除
+     * @param id
+     * @return
+     */
+    @Override
+    public String deleteById(Integer id) {
+        Integer ret = wishbottleMapper.deleteByPrimaryKey(id);
+        if(ret > 0)
+            return "删除成功";
+        else
+            throw new RuntimeException("删除失败");
     }
 
 }

@@ -1,29 +1,29 @@
 package com.hust13.wishbottle.controller.admin;
 
 import com.hust13.wishbottle.model.Model;
-import com.hust13.wishbottle.service.MessageService;
+import com.hust13.wishbottle.service.TreeholeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *  消息管理控制器
+ * 树洞管理控制器
  */
 @RestController
-@RequestMapping("/admin/message")
-public class MessageAdminController {
+@RequestMapping("/admin/treehole")
+public class TreeholeAdminController {
 
     @Autowired
-    private MessageService messageService;
+    private TreeholeService treeholeService;
 
     /**
      * 获取所有树洞列表
      * @return
      */
     @GetMapping("/getAll")
-    public Model getAllMsg() {
+    public Model getAllArticle() {
         Model model = new Model();
         try {
-            model.setData(messageService.getAllMsg());
+            model.setData(treeholeService.getAllTreehole());
         }
         catch (Exception e)
         {
@@ -38,7 +38,7 @@ public class MessageAdminController {
     public Model deleteOne(@PathVariable("id") Integer id) {
         Model model = new Model();
         try {
-            model.setData(messageService.deleteById(id));
+            model.setData(treeholeService.deleteById(id));
         }
         catch (Exception e)
         {

@@ -194,4 +194,10 @@
     from user
     where id=#{userId}
   </select>
+
+  <select id="getAllUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+  </select>
 </mapper>

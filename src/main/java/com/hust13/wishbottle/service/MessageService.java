@@ -15,4 +15,10 @@ public interface MessageService {
      //获取主页滚动通知
      List<Message> getIndexMsg();
 
+     //管理界面获取所有
+     List<Message> getAllMsg();
+
+     //删除
+     String deleteById(Integer id);
+
 }
