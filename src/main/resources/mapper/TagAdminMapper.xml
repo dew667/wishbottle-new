@@ -2,4 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hust13.wishbottle.mapper.TagAdminMapper" >
 
+    <resultMap id="BaseResultMap" type="com.hust13.wishbottle.entity.Tag" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="tag" property="tag" jdbcType="VARCHAR" />
+        <result column="color" property="color" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, tag, color
+    </sql>
+
+    <!--获取随机20条标签-->
+    <select id="get20Tags" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List" />
+        from tag_admin
+        order by rand() limit 20
+    </select>
+
+
 </mapper>
