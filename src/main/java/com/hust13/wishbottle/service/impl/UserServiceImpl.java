@@ -131,7 +131,7 @@ public class UserServiceImpl implements UserService {
         userVo.setAge(user.getAge());
         userVo.setSignature(user.getSignature());
         userVo.setCity(user.getCity());
-        userVo.setMyPic(user.getCity());
+        userVo.setMyPic(user.getMyPic());
         userVo.setTags(tags);
         return userVo;
     }
