@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hust13.wishbottle.mapper.IndexPicMapper" >
+
+    <resultMap id="BaseResultMap" type="com.hust13.wishbottle.entity.IndexPic" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="pic" property="pic" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, pic, url, time
+    </sql>
+
+    <!--获取所有轮播图-->
+    <select id="getAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from index_pic
+    </select>
+
+</mapper>

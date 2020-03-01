@@ -86,6 +86,12 @@ public class FriendServiceImpl implements FriendService {
             throw new RuntimeException("删除失败");
     }
 
+    /**
+     * 是否关注
+     * @param mineId
+     * @param userId
+     * @return
+     */
     @Override
     public Map<String, Integer> isConcernOneUser(Integer mineId, Integer userId) {
         Map<String, Integer> map = new HashMap<>();
@@ -96,5 +102,14 @@ public class FriendServiceImpl implements FriendService {
         Map<String, Integer> isConcernMap = new HashMap<>();
         isConcernMap.put("isConcern", ret);
         return isConcernMap;
+    }
+
+    @Override
+    public List<User> getRecommend(Integer mineId) {
+        List<User> users = friendMapper.getRecommend(mineId);
+        //若推荐用户为空则随机推荐
+        if(users.size() <= 0)
+            users = friendMapper.getRandUsers(mineId);
+        return users;
     }
 }

@@ -41,4 +41,10 @@ public interface FriendMapper {
 
     //判断是否关注某一用户
     Integer isConcernOneUser(Map<String, Integer> map);
+
+    //获取推荐用户
+    List<User> getRecommend(Integer mineId);
+
+    //随机获取用户
+    List<User> getRandUsers(Integer mineId);
 }

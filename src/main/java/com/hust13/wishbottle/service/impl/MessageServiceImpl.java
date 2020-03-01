@@ -12,35 +12,36 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
 
     @Autowired
-    MessageMapper messageMapper;
+    private MessageMapper messageMapper;
 
-    @Override
-    public List<Message> getSysMessage() {
-        return null;
-    }
-
+    /**
+     * 获取通知公告和警告
+     * @param userId
+     * @return
+     */
     @Override
     public List<Message> getMessage(int userId){
-        return null;
+        List<Message> msgList = messageMapper.getAllMessage(userId);
+        return msgList;
     }
 
+    /**
+     * 阅读指定消息
+     * @param id
+     * @return
+     */
     @Override
-    public int releaseSysMessage(Message message) {
-        return 0;
+    public Message readMessage(Integer id) {
+        return messageMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 获取主页滚动通知
+     * @return
+     */
     @Override
-    public int releaseWarnMessage(Message message) {
-        return 0;
+    public List<Message> getIndexMsg() {
+        return messageMapper.getIndexMessage();
     }
 
-    @Override
-    public int releaseWishbottleMessage(Message message) {
-        return 0;
-    }
-
-    @Override
-    public int releaseTreeholeMessage(Message message) {
-        return 0;
-    }
 }

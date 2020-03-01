@@ -1,23 +1,39 @@
 package com.hust13.wishbottle.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Date;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Message {
     private Integer id;
 
+    private String title;
+
     private String content;
 
+    // 已读标记 0-未读 1-已读
     private Integer flag;
 
+    //目标用户id
     private Integer targetId;
 
+    //1-通知公告 2-管理员警告 3-首页滚动消息
     private Integer type;
-
-    private Integer sourceId;
 
     private String pic;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date time;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public Integer getId() {
         return id;
@@ -57,14 +73,6 @@ public class Message {
 
     public void setType(Integer type) {
         this.type = type;
-    }
-
-    public Integer getSourceId() {
-        return sourceId;
-    }
-
-    public void setSourceId(Integer sourceId) {
-        this.sourceId = sourceId;
     }
 
     public String getPic() {

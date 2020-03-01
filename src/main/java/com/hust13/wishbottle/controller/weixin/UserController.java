@@ -1,4 +1,4 @@
-package com.hust13.wishbottle.controller;
+package com.hust13.wishbottle.controller.weixin;
 
 import com.hust13.wishbottle.entity.User;
 import com.hust13.wishbottle.model.Model;

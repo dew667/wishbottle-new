@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 29/02/2020 22:51:21
+ Date: 01/03/2020 19:22:11
 */
 
 SET NAMES utf8mb4;
@@ -39,6 +39,25 @@ INSERT INTO `friend` VALUES (1, 1, 2);
 INSERT INTO `friend` VALUES (4, 1, 6);
 INSERT INTO `friend` VALUES (5, 6, 1);
 INSERT INTO `friend` VALUES (20, 6, 2);
+
+-- ----------------------------
+-- Table structure for index_pic
+-- ----------------------------
+DROP TABLE IF EXISTS `index_pic`;
+CREATE TABLE `index_pic`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '轮播图链接地址',
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '指向链接',
+  `time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of index_pic
+-- ----------------------------
+INSERT INTO `index_pic` VALUES (1, 'xxxx、', '00002', NULL);
+INSERT INTO `index_pic` VALUES (2, 'xxxx', '00001', NULL);
+INSERT INTO `index_pic` VALUES (3, 'zzzz', '0001', NULL);
 
 -- ----------------------------
 -- Table structure for log
@@ -86,17 +105,28 @@ CREATE TABLE `manager`  (
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE `message`  (
   `id` int(255) NOT NULL AUTO_INCREMENT COMMENT '消息id 主键 非空 自增',
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '消息内容',
-  `flag` int(11) NULL DEFAULT NULL COMMENT '是否已读标记',
-  `target_id` int(255) NULL DEFAULT NULL COMMENT '消息目标用户id 非空 外键约束参照user(id)',
-  `type` int(255) NOT NULL COMMENT '1-通知公告2-心愿瓶回复 3-树洞回复 4-管理员警告 5-首页滚动消息',
-  `source_id` int(255) NULL DEFAULT NULL COMMENT '心愿瓶回复或者树洞回复的id （来自心愿或者树洞表）',
-  `pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片地址 通知公告或警告等可能有图片',
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '消息标题',
+  `content` varchar(5200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '消息内容',
+  `flag` int(11) NOT NULL DEFAULT 0 COMMENT '是否已读标记 0-未读 1-已读',
+  `target_id` int(255) NOT NULL DEFAULT 0 COMMENT '警告消息目标用户id 非空 外键约束参照user(id) 默认0表示为指向用户',
+  `type` int(255) NOT NULL COMMENT '1-通知公告 2-管理员警告 3-首页滚动消息',
+  `pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '图片地址 通知公告或警告等可能有图片 \'+\'分隔',
   `time` datetime(0) NULL DEFAULT NULL COMMENT '发布时间',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `9`(`target_id`) USING BTREE,
-  CONSTRAINT `fk_9` FOREIGN KEY (`target_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `9`(`target_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of message
+-- ----------------------------
+INSERT INTO `message` VALUES (1, '旧时王谢堂前燕', '飞入寻常百姓家', 0, 0, 1, 'xxx-yyy+zzz', '2020-03-10 16:29:24');
+INSERT INTO `message` VALUES (2, '儿童放学归来早', '忙趁东风放纸鸢', 0, 0, 1, '222+333+111+000', '2020-03-28 16:31:26');
+INSERT INTO `message` VALUES (3, '落红不是无情物', '化作春泥更护花', 0, 6, 2, '111+111', '2020-03-20 16:32:26');
+INSERT INTO `message` VALUES (4, '满园春色关不住', '一枝红杏出墙来', 0, 0, 1, '000', '2020-03-03 16:33:14');
+INSERT INTO `message` VALUES (5, '阡陌交通', '鸡犬相闻', 0, 0, 2, '020+101', '2020-04-04 16:33:46');
+INSERT INTO `message` VALUES (6, '采菊东篱下', '悠然见南山', 0, 0, 1, '11123', '2020-03-10 16:34:15');
+INSERT INTO `message` VALUES (7, '会当凌绝顶', '一览众山小', 0, 0, 3, NULL, '2020-03-26 17:12:17');
+INSERT INTO `message` VALUES (8, '众里寻他千百度', '蓦然回首那人却在灯火阑珊处', 0, 0, 3, NULL, '2020-04-01 17:12:55');
 
 -- ----------------------------
 -- Table structure for pick
@@ -108,7 +138,7 @@ CREATE TABLE `pick`  (
   `picker_id` int(11) NULL DEFAULT NULL COMMENT '拾取者id',
   `pick_time` datetime(0) NULL DEFAULT NULL COMMENT '拾取时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pick
@@ -159,6 +189,8 @@ INSERT INTO `tag_admin` VALUES (1, '文艺青年', '#FFFFFF');
 INSERT INTO `tag_admin` VALUES (2, '斜杠青年', '#FFFFFF');
 INSERT INTO `tag_admin` VALUES (3, '屌丝青年', '#FFFFFF');
 INSERT INTO `tag_admin` VALUES (4, '大咖', '#FFFFFF');
+INSERT INTO `tag_admin` VALUES (5, '密码', '#FFFFFF');
+INSERT INTO `tag_admin` VALUES (6, '咳咳', '#FFFFFF');
 
 -- ----------------------------
 -- Table structure for tag_user
@@ -177,6 +209,13 @@ CREATE TABLE `tag_user`  (
 INSERT INTO `tag_user` VALUES (4, 6, 1);
 INSERT INTO `tag_user` VALUES (5, 6, 2);
 INSERT INTO `tag_user` VALUES (6, 6, 4);
+INSERT INTO `tag_user` VALUES (7, 2, 4);
+INSERT INTO `tag_user` VALUES (8, 1, 1);
+INSERT INTO `tag_user` VALUES (9, 1, 2);
+INSERT INTO `tag_user` VALUES (10, 7, 1);
+INSERT INTO `tag_user` VALUES (11, 7, 2);
+INSERT INTO `tag_user` VALUES (12, 7, 4);
+INSERT INTO `tag_user` VALUES (13, 8, 6);
 
 -- ----------------------------
 -- Table structure for tree_comment
@@ -323,7 +362,7 @@ CREATE TABLE `user`  (
   `ban` int(255) NOT NULL DEFAULT 1 COMMENT '封禁状态(由管理员操作) 0-封禁 1-正常',
   `my_pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '个性化背景图片地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
@@ -332,6 +371,7 @@ INSERT INTO `user` VALUES (1, '红红', '000', 0, 18, '哈哈哈', '北京', NUL
 INSERT INTO `user` VALUES (2, '绿绿', '000', 0, 18, '切切切', '北京', NULL, NULL, 1, NULL);
 INSERT INTO `user` VALUES (6, '00', 'ds', 0, 38, '孤帆远影碧空净', 'wh', NULL, NULL, 1, 'wh---------wh');
 INSERT INTO `user` VALUES (7, '游客', 'zzz', 0, 18, NULL, '北京', NULL, NULL, 1, NULL);
+INSERT INTO `user` VALUES (8, '游客ccc', 'xxx', 0, 18, NULL, '北京', NULL, NULL, 1, NULL);
 
 -- ----------------------------
 -- Table structure for wishbottle
@@ -350,7 +390,7 @@ CREATE TABLE `wishbottle`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `0`(`writer_id`) USING BTREE,
   CONSTRAINT `fk_0` FOREIGN KEY (`writer_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of wishbottle

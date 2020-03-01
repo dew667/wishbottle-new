@@ -6,23 +6,13 @@ import java.util.List;
 
 public interface MessageService {
 
-    //获取系统消息
-    public List<Message> getSysMessage();
+    //获取管理员警告和通知公告 用于小程序通知页面
+     List<Message> getMessage(int userId);
 
-    //获取管理员警告，心愿消息，树洞消息
-    public List<Message> getMessage(int userId);
+     //读取指定消息
+     Message readMessage(Integer id);
 
-    //发布系统消息
-    public int releaseSysMessage(Message message);
-
-    //发布警告
-    public int releaseWarnMessage(Message message);
-
-    //发布心愿消息
-    public int releaseWishbottleMessage(Message message);
-
-    //发布树洞消息
-    public int releaseTreeholeMessage(Message message);
-
+     //获取主页滚动通知
+     List<Message> getIndexMsg();
 
 }

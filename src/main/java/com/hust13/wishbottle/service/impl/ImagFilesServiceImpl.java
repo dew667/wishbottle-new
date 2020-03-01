@@ -4,6 +4,9 @@ import com.hust13.wishbottle.service.ImagFilesService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 图片文件服务实现类
  * created by wzy on 2020/2/22
@@ -35,5 +38,16 @@ public class ImagFilesServiceImpl implements ImagFilesService {
         String imagFilesUrl = stringBuffer.substring(0, i);
 
         return imagFilesUrl;
+    }
+
+    /**
+     * 逆向操作上述过程
+     * @param imagUrl 拼接的图片链接
+     * @return
+     */
+    @Override
+    public String[] spiltImagFilesUrl(String imagUrl) {
+        String[] imagUrlList = imagUrl.split("\\+");
+        return imagUrlList;
     }
 }

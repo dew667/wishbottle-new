@@ -1,4 +1,4 @@
-package com.hust13.wishbottle.controller;
+package com.hust13.wishbottle.controller.weixin;
 
 import com.hust13.wishbottle.model.Model;
 import com.hust13.wishbottle.service.TagService;

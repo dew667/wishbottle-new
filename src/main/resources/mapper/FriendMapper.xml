@@ -137,4 +137,30 @@
     from friend
     where mine_id=#{mineId} and friend_id=#{userId}
   </select>
+
+  <!--获取推荐用户-->
+  <select id="getRecommend" resultType="User" parameterType="java.lang.Integer">
+    select u.id, u.name, u.avatar, u.gender
+    from user u
+    inner join (
+        select user_id, count(*) as tag_num
+        from tag_user
+        where tag_id in(
+            select tag_id
+            from tag_user
+            where user_id=#{mineId}
+        )
+        and user_id!=#{mineId}
+        group by user_id
+    ) t on u.id=t.user_id
+    order by t.tag_num desc limit 8
+  </select>
+
+  <!--随机推荐用户-->
+  <select id="getRandUsers" resultType="User" parameterType="java.lang.Integer">
+    select id, name, avatar, gender
+    from user
+    where id!=#{mineId}
+    order by rand() limit 8
+  </select>
 </mapper>

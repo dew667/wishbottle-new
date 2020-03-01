@@ -1,4 +1,4 @@
-package com.hust13.wishbottle.controller;
+package com.hust13.wishbottle.controller.weixin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -179,6 +179,29 @@ public class FriendController {
         {
             model.setCode(1);
             model.setMsg("查询失败");
+        }
+        return model;
+    }
+
+    /**
+     * 获取推荐好友
+     * @param request
+     * @return
+     */
+    @GetMapping("/getRecommend")
+    public Model getRecommend(HttpServletRequest request) {
+        Model model = new Model();
+        try {
+            //获取我的id
+            String openid = (String) request.getAttribute("openid");
+            Integer mineId = userService.getUserIdByOpenId(openid);
+            model.setData(friendService.getRecommend(mineId));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            model.setCode(1);
+            model.setMsg("获取失败");
         }
         return model;
     }

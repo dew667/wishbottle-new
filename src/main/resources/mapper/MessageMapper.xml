@@ -3,16 +3,16 @@
 <mapper namespace="com.hust13.wishbottle.mapper.MessageMapper" >
   <resultMap id="BaseResultMap" type="com.hust13.wishbottle.entity.Message" >
     <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="flag" property="flag" jdbcType="INTEGER" />
     <result column="target_id" property="targetId" jdbcType="INTEGER" />
     <result column="type" property="type" jdbcType="INTEGER" />
-    <result column="source_id" property="sourceId" jdbcType="INTEGER" />
     <result column="pic" property="pic" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, content, flag, target_id, type, source_id, pic, time
+    id, title, content, flag, target_id, type, pic, time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -25,11 +25,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.hust13.wishbottle.entity.Message" >
-    insert into message (id, content, flag,
-      target_id, type, source_id, 
+    insert into message (id, title, content, flag,
+      target_id, type,
       pic, time)
-    values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, 
-      #{targetId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{sourceId,jdbcType=INTEGER}, 
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER},
+      #{targetId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
       #{pic,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.hust13.wishbottle.entity.Message" >
@@ -37,6 +37,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="title != null" >
+        title,
       </if>
       <if test="content != null" >
         content,
@@ -50,9 +53,6 @@
       <if test="type != null" >
         type,
       </if>
-      <if test="sourceId != null" >
-        source_id,
-      </if>
       <if test="pic != null" >
         pic,
       </if>
@@ -63,6 +63,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
       </if>
       <if test="content != null" >
         #{content,jdbcType=VARCHAR},
@@ -76,9 +79,6 @@
       <if test="type != null" >
         #{type,jdbcType=INTEGER},
       </if>
-      <if test="sourceId != null" >
-        #{sourceId,jdbcType=INTEGER},
-      </if>
       <if test="pic != null" >
         #{pic,jdbcType=VARCHAR},
       </if>
@@ -90,6 +90,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.hust13.wishbottle.entity.Message" >
     update message
     <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
       <if test="content != null" >
         content = #{content,jdbcType=VARCHAR},
       </if>
@@ -102,9 +105,6 @@
       <if test="type != null" >
         type = #{type,jdbcType=INTEGER},
       </if>
-      <if test="sourceId != null" >
-        source_id = #{sourceId,jdbcType=INTEGER},
-      </if>
       <if test="pic != null" >
         pic = #{pic,jdbcType=VARCHAR},
       </if>
@@ -116,13 +116,29 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.hust13.wishbottle.entity.Message" >
     update message
-    set content = #{content,jdbcType=VARCHAR},
+    set title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
       flag = #{flag,jdbcType=INTEGER},
       target_id = #{targetId,jdbcType=INTEGER},
       type = #{type,jdbcType=INTEGER},
-      source_id = #{sourceId,jdbcType=INTEGER},
       pic = #{pic,jdbcType=VARCHAR},
       time = #{time,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--获取通知公告和警告消息-->
+  <select id="getAllMessage" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from message
+    where type=1 or (type=2 and target_id=#{userId})
+  </select>
+
+  <!--获取主页滚动通知-->
+  <select id="getIndexMessage" resultMap="BaseResultMap" >
+    select
+    id, title, content, time
+    from message
+    where type=3
+  </select>
 </mapper>

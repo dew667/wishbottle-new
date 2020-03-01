@@ -1,4 +1,4 @@
-package com.hust13.wishbottle.controller;
+package com.hust13.wishbottle.controller.weixin;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

@@ -23,4 +23,7 @@ public interface FriendService {
 
     //判断是否关注某一用户
     Map<String, Integer> isConcernOneUser(Integer mineId, Integer userId);
+
+    //获取推荐用户
+    List<User> getRecommend(Integer mineId);
 }

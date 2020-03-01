@@ -1,4 +1,4 @@
-package com.hust13.wishbottle.controller;
+package com.hust13.wishbottle.controller.admin;
 
 import com.hust13.wishbottle.entity.Manager;
 import com.hust13.wishbottle.model.Model;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/manager")
-public class ManagerController {
+public class ManagerAdminController {
 
     @Autowired
     ManagerService managerService;
