@@ -146,14 +146,16 @@ public class UserServiceImpl implements UserService {
         //更新user表
         User user = record;
         Integer ret1 = userMapper.updateByPrimaryKeySelective(record);
-        //先清除用户所有的标签
-        Integer ret2 = tagUserMapper.deleteAllByUserId(record.getId());
-        //循环向tag_user表中插入记录
-        for (Tag tag : record.getTags()){
-            Map<String, Integer> map = new HashMap<>();
-            map.put("userId", record.getId());
-            map.put("tagId", tag.getId());
-            Integer ret3 = tagUserMapper.insertRecord(map);
+        if(record.getTags() != null) {
+            //先清除用户所有的标签
+            Integer ret2 = tagUserMapper.deleteAllByUserId(record.getId());
+            //循环向tag_user表中插入记录
+            for (Tag tag : record.getTags()) {
+                Map<String, Integer> map = new HashMap<>();
+                map.put("userId", record.getId());
+                map.put("tagId", tag.getId());
+                Integer ret3 = tagUserMapper.insertRecord(map);
+            }
         }
         return record;
     }
