@@ -131,14 +131,9 @@ public class TreeholeController {
      * @return
      */
     @GetMapping("/getOneArticle/{id}")
-    public Model getArticle(@PathVariable("id") Integer treeholeId, HttpServletRequest request){
+    public Model getArticle(@PathVariable("id") Integer treeholeId){
         Model model = new Model();
         try {
-            //获取本人id 用于存储历史记录
-            String openid = (String) request.getAttribute("openid");
-            Integer userId = userService.getUserIdByOpenId(openid);
-            //存储历史记录
-            Integer ret = treeholeService.saveHistory(userId, treeholeId);
             //获取文章信息
             model.setData(treeholeService.getOneArticle(treeholeId));
         }

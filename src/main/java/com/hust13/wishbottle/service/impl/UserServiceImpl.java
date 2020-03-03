@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
      * @throws Exception
      */
     @Override
-    public String userLogin(String js_code) throws Exception{
+    public Object userLogin(String js_code) throws Exception{
         String result = "";
         String key = "";
         result = HttpUtil.doGet(
@@ -59,6 +59,12 @@ public class UserServiceImpl implements UserService {
         //读取json数据
         ObjectMapper mapper = new ObjectMapper();
         OpenIdJson openIdJson = mapper.readValue(result,OpenIdJson.class);
+        //如果用户登录状态已存在 则直接返回用户信息
+        if(redisTemplate.hasKey(openIdJson.getOpenid())){
+            String openid = openIdJson.getOpenid();
+            Integer userId = userMapper.findUserIdByOpenId((String) redisTemplate.opsForValue().get(openid));
+            return userMapper.selectByPrimaryKey(userId);
+        }
         //生成身份标识
         key = UUID.randomUUID().toString();
         //以k-v形式存入redis缓存，key为身份标识，value为openIdJson，同时设置缓存过期时间为35分钟

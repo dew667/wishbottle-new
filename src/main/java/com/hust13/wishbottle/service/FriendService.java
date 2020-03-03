@@ -17,7 +17,7 @@ public interface FriendService {
 
     List<ConcernVO> searchAllIConcern(Integer mineId);
 
-    List<User> searchAllConcernMe(Integer mineId);
+    List<ConcernVO> searchAllConcernMe(Integer mineId);
 
     String removeConcernItem(Integer friendId, Integer mineId);
 

@@ -17,7 +17,7 @@ public class IndexPic {
 
     private String url;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="GMT+8")
     private Date time;
 
     public Date getTime() {

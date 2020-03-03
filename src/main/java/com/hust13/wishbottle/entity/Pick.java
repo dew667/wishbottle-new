@@ -14,7 +14,7 @@ public class Pick {
 
     private Integer pickerId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="GMT+8")
     private Date pickTime;
 
     public Integer getId() {

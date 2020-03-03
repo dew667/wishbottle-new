@@ -4,9 +4,11 @@ import com.hust13.wishbottle.entity.TreeHistory;
 import com.hust13.wishbottle.entity.Treehole;
 import com.hust13.wishbottle.mapper.TreeHistoryMapper;
 import com.hust13.wishbottle.mapper.TreeholeMapper;
+import com.hust13.wishbottle.mapper.UserMapper;
 import com.hust13.wishbottle.model.vo.HistoryVO;
 import com.hust13.wishbottle.model.vo.TreeholeVO;
 import com.hust13.wishbottle.service.TreeholeService;
+import com.hust13.wishbottle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,9 @@ public class TreeholeServiceImpl implements TreeholeService {
 
     @Autowired
     private TreeHistoryMapper treeHistoryMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 搜索所有文章列表
@@ -121,8 +126,15 @@ public class TreeholeServiceImpl implements TreeholeService {
         record.setTreeholeId(treeholeId);
         record.setTime(new Date());
         record.setUserId(userId);
+        //看是否已存在该项记录
+        Integer count = treeHistoryMapper.findIfExist(treeholeId, userId);
+        //若存在则修改记录时间
+        Integer ret = 0;
+        if(count > 0)
+            ret = treeHistoryMapper.updateHistoryDate(record);
+        else
         //插入数据
-        Integer ret = treeHistoryMapper.insertSelective(record);
+            ret = treeHistoryMapper.insertSelective(record);
         if(ret > 0)
             return 1;
         else

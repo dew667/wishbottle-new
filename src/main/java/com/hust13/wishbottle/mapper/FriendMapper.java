@@ -30,7 +30,7 @@ public interface FriendMapper {
      * @param mineId
      * @return
      */
-    List<User> searchAllConcernMe(Integer mineId);
+    List<ConcernVO> searchAllConcernMe(Integer mineId);
 
     int updateByPrimaryKeySelective(Friend record);
 

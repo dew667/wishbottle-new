@@ -13,7 +13,7 @@ public class TreeHistory {
 
     private Integer userId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="GMT+8")
     private Date time;
 
     public Integer getUserId() {

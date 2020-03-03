@@ -143,7 +143,7 @@ public class FriendController {
             List<ConcernVO> iConcern = friendService.searchAllIConcern(userId);
             Integer iConcernNum = iConcern.size();
             //获取我的粉丝数目
-            List<User> concernMe = friendService.searchAllConcernMe(userId);
+            List<ConcernVO> concernMe = friendService.searchAllConcernMe(userId);
             Integer concernMeNum = concernMe.size();
             //封装数据
             Map<String, Integer> map = new HashMap<>();

@@ -69,9 +69,9 @@
   </select>
   <!--通过树洞文章id查询是否已存在该项记录-->
   <select id="findIfExist" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-    select count(1)
+    select count(*)
     from tree_history
-    where treehole_id=#{treeholeId}
+    where treehole_id=#{treeholeId} and user_id=#{userId}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tree_history
@@ -136,4 +136,12 @@
       user_id = #{userId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--更新历史记录阅读时间-->
+  <update id="updateHistoryDate" parameterType="TreeHistory">
+    update tree_history
+    set time = #{time,jdbcType=TIMESTAMP}
+    where user_id = #{userId} and treehole_id = #{treeholeId}
+  </update>
+
 </mapper>

@@ -22,5 +22,8 @@ public interface TreeHistoryMapper {
     int updateByPrimaryKey(TreeHistory record);
 
     //查表 看是否已存在该项记录
-    Integer findIfExist(Integer treeholeId);
+    Integer findIfExist(Integer treeholeId, Integer userId);
+
+    //更新记录的时间
+    Integer updateHistoryDate(TreeHistory record);
 }

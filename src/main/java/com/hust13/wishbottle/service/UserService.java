@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface UserService {
 
-    String userLogin(String js_code) throws Exception;
+    Object userLogin(String js_code) throws Exception;
 
     User saveUserInfo(User userInfo, String openid);
 

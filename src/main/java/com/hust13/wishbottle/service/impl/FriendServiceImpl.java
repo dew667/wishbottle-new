@@ -66,7 +66,7 @@ public class FriendServiceImpl implements FriendService {
      * @return
      */
     @Override
-    public List<User> searchAllConcernMe(Integer mineId) {
+    public List<ConcernVO> searchAllConcernMe(Integer mineId) {
         return friendMapper.searchAllConcernMe(mineId);
     }
 

@@ -12,11 +12,11 @@ public class Wishbottle {
     private Integer writerId;
 
     //抛掷时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="GMT+8")
     private Date throwTime;
 
     //修改草稿时间
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="GMT+8")
     private Date updateTime;
 
     private String title;

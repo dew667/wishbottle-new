@@ -11,7 +11,7 @@ public class Treehole {
 
     private Integer writerId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone="GMT+8")
     private Date time;
 
     private String content;
