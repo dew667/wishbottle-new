@@ -30,4 +30,6 @@ public interface UserMapper {
     User getUserInfo(Integer userId);
 
     List<User> getAllUser();
+
+    Integer ifExist(Integer userId);
 }

@@ -200,4 +200,11 @@
     <include refid="Base_Column_List" />
     from user
   </select>
+
+  <!--查询是否存在条目-->
+  <select id="ifExist" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(*)
+    from user
+    where id=#{userId}
+  </select>
 </mapper>

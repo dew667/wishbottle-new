@@ -102,7 +102,15 @@ public class UserServiceImpl implements UserService {
         //查找userid
         int userid = userMapper.findUserIdByOpenId(openid);
         userInfo.setId(userid);
-        int ret = userMapper.insertSelective(userInfo);
+        int ret = 0;
+        //查询是否存在用户条目
+        Integer count = userMapper.ifExist(userid);
+        //存在则更新用户信息
+        if(count > 0)
+            ret = userMapper.updateByPrimaryKeySelective(userInfo);
+        else //否则插入条目
+            ret = userMapper.insertSelective(userInfo);
+
         if(ret > 0)
             return userMapper.selectByPrimaryKey(userid); //返回User给前端
         else
