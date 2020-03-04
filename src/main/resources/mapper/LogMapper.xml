@@ -127,7 +127,7 @@
 
   <!--获取本人所有日记-->
   <select id="getMyLogs" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, title, content, time
+    select id, title, weather, time
     from log
     where writer_id = #{writerId,jdbcType=INTEGER}
   </select>

@@ -22,7 +22,7 @@ public interface WishbottleMapper {
     List<WishbottleVO> selectPickList(Integer userId);
 
     //获取一条心愿瓶信息
-    Wishbottle selectOne(Integer userId);
+    WishbottleVO selectOne(Integer userId);
 
     //判断是否还剩有未捞的瓶子
     Integer hasBottle(Integer userId);

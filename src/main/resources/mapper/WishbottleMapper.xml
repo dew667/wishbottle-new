@@ -187,18 +187,28 @@
   </select>
   
   <!--随机返回一个瓶子信息-->
-  <select id="selectOne" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select
-    id, title, content, type
-    from wishbottle
-    where id not in (
-      select
-      wishbottle_id
-      from pick
-      where picker_id=#{userId}
-    )
-    and (status=1 or status=2)
-    and writer_id!=#{userId}
+  <select id="selectOne" resultMap="WishbottleResultMap" parameterType="java.lang.Integer" >
+    select w.id as wishbottle_id,
+    w.title as wishbottle_title,
+    w.content as wishbottle_content,
+    w.type as wishbottle_type,
+    u.id as user_id,
+    u.avatar as user_avatar,
+    u.city as user_city
+    from (
+        select
+        id, title, content, type, writer_id
+        from wishbottle
+        where id not in (
+          select
+          wishbottle_id
+          from pick
+          where picker_id=6
+        )
+        and (status=1 or status=2)
+        and writer_id!=6
+    ) w
+    inner join user u on w.writer_id=u.id
     order by rand() LIMIT 1
   </select>
 

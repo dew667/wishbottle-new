@@ -54,11 +54,11 @@ public class WishbottleServiceImpl implements WishbottleService {
      * @return
      */
     @Override
-    public Wishbottle pickOneBottle(Integer userId) {
+    public WishbottleVO pickOneBottle(Integer userId) {
         //查询心愿池中是否还有瓶子
         //Integer count = wishbottleMapper.hasBottle(userId);
         //捞取一个瓶子
-        Wishbottle aBottle =  wishbottleMapper.selectOne(userId);
+        WishbottleVO aBottle =  wishbottleMapper.selectOne(userId);
         if(aBottle != null) {
             //更新pick表信息
             Pick record = new Pick();

@@ -14,7 +14,7 @@ public interface WishbottleService {
     List<WishbottleVO> getPickList(Integer userId);
 
     //捡一个瓶子
-    Wishbottle pickOneBottle(Integer userId);
+    WishbottleVO pickOneBottle(Integer userId);
 
     //根据本人id查询已投放列表 返回wishbottle封装类
     List<WishbottleVO> getThrowList(Integer userId);
