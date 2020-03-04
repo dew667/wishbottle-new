@@ -86,7 +86,7 @@ public class LogController {
             String openid = (String) request.getAttribute("openid");
             Integer writerId = userService.getUserIdByOpenId(openid);
             //按时间升序排列
-            String sort = "time asc";
+            String sort = "time desc";
             PageHelper.startPage(pageNum,pageSize,sort);
             //通过作者id获取所有文章
             PageInfo pageInfo=new PageInfo(logService.getMyLogs(writerId));

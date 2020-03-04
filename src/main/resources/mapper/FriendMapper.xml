@@ -70,7 +70,7 @@
     u.gender as user_gender,
     u.name as user_name
     from (
-		select distinct T1.id, T1.friend_id,T1.mine_id,if(T1.mine_id=T2.friend_id,2,1) as `status`
+		select distinct T1.id, T1.friend_id,T1.mine_id,if(T1.mine_id=T2.friend_id,2,0) as `status`
 		from (select * from friend where friend_id = #{mineId}) as T1
 		left join (select * from friend where mine_id = #{mineId}) as T2
 		on T1.friend_id=T2.mine_id

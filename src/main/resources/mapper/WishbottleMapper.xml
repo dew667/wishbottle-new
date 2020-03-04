@@ -205,14 +205,12 @@
   <!--根据用户id获取已投放列表 返回WishbottleData封装类List-->
   <select id="selectThrowList" resultMap="WishbottleResultMap" parameterType="java.lang.Integer">
     select w.id as wishbottle_id,
+    w.writer_id,
     w.throw_time as wishbottle_throw_time,
-    w.type as wishbottle_type,
-    count(*) as wishbottle_count
-    from pick p
-    inner join wishbottle w
-    on p.wishbottle_id=w.id
-    where writer_id=#{userId} and status=1
-    group by w.id
+    `type` as wishbottle_type,
+    (select count(*) from pick where wishbottle_id=w.id) as wishbottle_count
+    from wishbottle as w
+    where writer_id=#{userId} and `status`=1;
   </select>
 
   <!--根据用户id获取草稿列表-->

@@ -107,9 +107,6 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public List<User> getRecommend(Integer mineId) {
         List<User> users = friendMapper.getRecommend(mineId);
-        //若推荐用户为空则随机推荐
-        if(users.size() <= 0)
-            users = friendMapper.getRandUsers(mineId);
         return users;
     }
 }

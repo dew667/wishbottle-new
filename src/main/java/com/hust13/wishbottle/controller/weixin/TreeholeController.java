@@ -203,7 +203,7 @@ public class TreeholeController {
             String openid = (String) request.getAttribute("openid");
             Integer userId = userService.getUserIdByOpenId(openid);
             //按时间升序排列
-            String sort = "h.time asc";
+            String sort = "h.time desc";
             PageHelper.startPage(pageNum,pageSize,sort);
             PageInfo pageInfo=new PageInfo(treeholeService.getHistory(userId));
             model.setData(pageInfo);
