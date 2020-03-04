@@ -82,6 +82,7 @@ public class UserController {
         }
         catch (Exception e)
         {
+            e.printStackTrace();
             model.setCode(1);
             model.setMsg("获取用户信息请求失败");
         }
