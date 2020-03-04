@@ -172,7 +172,11 @@
   <select id="getRandUsers" resultType="User" parameterType="java.lang.Integer">
     select id, name, avatar, gender
     from user
-    where id!=#{mineId}
+    where id!=#{mineId} and id not in (
+        select friend_id
+        from friend
+        where mine_id=#{mineId}
+    )
     order by rand() limit 8
   </select>
 </mapper>
