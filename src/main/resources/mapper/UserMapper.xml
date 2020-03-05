@@ -207,4 +207,36 @@
     from user
     where id=#{userId}
   </select>
+
+  <select id="genderCount" resultType="java.util.HashMap">
+    select gender,count(gender) as 'sum'
+    from user
+    GROUP BY gender
+  </select>
+  <select id="ageCount" resultType="java.util.HashMap">
+    SELECT
+    CASE
+    WHEN age &lt;= 20 THEN '小于20岁'
+    WHEN age &gt; 20 AND age &lt;= 30 THEN '20岁到30岁'
+    WHEN age &gt; 30 AND age &lt;= 40 THEN '30岁到40岁'
+    WHEN age &gt; 40 AND age &lt;= 50 THEN '40岁到50岁'
+    WHEN age &gt; 50 THEN '50岁以上'
+    END AS scope,
+    count(*) AS sum
+    FROM
+    user
+    GROUP BY
+    CASE
+    WHEN age &lt;= 20 THEN '小于20岁'
+    WHEN age &gt; 20 AND age &lt;= 30 THEN '20岁到30岁'
+    WHEN age &gt; 30 AND age &lt;= 40 THEN '30岁到40岁'
+    WHEN age &gt; 40 AND age &lt;= 50 THEN '40岁到50岁'
+    WHEN age &gt; 50 THEN '50岁以上'
+    END;
+  </select>
+  <select id="cityCount" resultType="java.util.HashMap">
+    select city,count(city) as 'sum'
+    from user
+    group by city
+  </select>
 </mapper>

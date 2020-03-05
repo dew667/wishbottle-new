@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>性别比例</title>
+    <link rel="stylesheet" href="../lib/localhost:8080ui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+
+</head>
+<body>
+<div class="layuimini-container">
+    </br>
+    <div id="gender" style="width:700px;height:450px;" ></div>
+
+</div>
+<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../js/lay-module/echarts/echarts.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $.ajax({
+            url: 'http://localhost:8080/admin/user/gender',
+            dataType: 'json',
+            type: 'GET',
+            success:function (data) {
+
+
+                var myChart = echarts.init(document.getElementById('gender'));
+
+                option = {
+                    title: {
+                        text: '心愿瓶小程序用户性别比例',
+                        subtext: '---------------------------------------',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{b} : {c} ({d}%)'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'right',
+                        data: ['女', '男']
+                    },
+                    series: [
+                        {
+                            name: '具体数值',
+                            type: 'pie',
+                            radius: '60%',
+                            center: ['50%', '60%'],
+                            data: [
+                                {value: data.data[1]['sum'], name: '女'},
+                                {value: data.data[0]['sum'], name: '男'},
+                            ],
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+            },
+            error: function () {
+                layui.use(['form'], function () {
+                    var form = layui.form,
+                        layer = layui.layer;
+                    layer.open({
+                        content: '服务器异常'
+                        ,btn: ['确定']
+                    });
+                });
+
+            }
+        })
+    });
+
+</script>
+</body>
+</html>

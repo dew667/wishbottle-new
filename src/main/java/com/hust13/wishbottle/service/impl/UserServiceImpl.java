@@ -180,16 +180,43 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 管理删除
+     * 解封用户
      * @param id
      * @return
      */
     @Override
-    public String deleteById(Integer id) {
-        Integer ret = userMapper.deleteByPrimaryKey(id);
-        if(ret > 0)
-            return "删除成功";
-        else
-            throw new RuntimeException("删除失败");
+    public String openById(Integer id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        user.setBan(1);
+        userMapper.updateByPrimaryKeySelective(user);
+        return null;
+    }
+
+    /**
+     * 封禁用户
+     * @param id
+     * @return
+     */
+    @Override
+    public String closeById(Integer id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        user.setBan(0);
+        userMapper.updateByPrimaryKeySelective(user);
+        return null;
+    }
+
+    @Override
+    public List<HashMap<Integer, Integer>> genderCount() {
+        return userMapper.genderCount();
+    }
+
+    @Override
+    public List<HashMap<String, Integer>> ageCount() {
+        return userMapper.ageCount();
+    }
+
+    @Override
+    public List<HashMap<String, Integer>> cityCount() {
+        return userMapper.cityCount();
     }
 }

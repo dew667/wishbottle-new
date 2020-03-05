@@ -32,4 +32,33 @@ public class ManagerServiceImpl implements ManagerService {
         else
             throw new RuntimeException("删除失败");
     }
+
+    @Override
+    public int addManager(Manager manager) {
+        managerMapper.insert(manager);
+        return 1;
+    }
+
+    @Override
+    public int judgeManager(int id){
+        int type = managerMapper.judgeManager(id);
+        if(type==1){
+            return 1;
+        }
+        return 0;
+    }
+
+    @Override
+    public int managerLogin(String account, String psd) {
+        Manager manager = managerMapper.selectByAccount(account);
+        if(manager==null){
+            return 0;
+        }else {
+            if(manager.getPsd().equals(psd)){
+
+                return 1;
+            }
+            return 2;
+        }
+    }
 }

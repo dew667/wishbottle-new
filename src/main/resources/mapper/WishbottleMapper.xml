@@ -245,4 +245,26 @@
     <include refid="Base_Column_List" />
     from wishbottle
   </select>
+
+  <select id="activeCount" resultType="java.util.HashMap">
+    SELECT
+    CASE
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 0 AND DATE_FORMAT(throw_time,'%H') &lt;= 6 THEN '凌晨'
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 6 AND DATE_FORMAT(throw_time,'%H') &lt;= 10 THEN '上午'
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 10 AND DATE_FORMAT(throw_time,'%H') &lt;= 14 THEN '中午 '
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 14 AND DATE_FORMAT(throw_time,'%H') &lt;= 18 THEN '下午'
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 18 AND DATE_FORMAT(throw_time,'%H') &lt;= 24 THEN '晚上'
+    END AS scope,
+    count(*) AS sum
+    FROM
+    wishbottle
+    GROUP BY
+    CASE
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 0 AND DATE_FORMAT(throw_time,'%H') &lt;= 6 THEN '凌晨'
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 6 AND DATE_FORMAT(throw_time,'%H') &lt;= 10 THEN '上午'
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 10 AND DATE_FORMAT(throw_time,'%H') &lt;= 14 THEN '中午 '
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 14 AND DATE_FORMAT(throw_time,'%H') &lt;= 18 THEN '下午'
+    WHEN DATE_FORMAT(throw_time,'%H') &gt; 18 AND DATE_FORMAT(throw_time,'%H') &lt;= 24 THEN '晚上'
+    END;
+  </select>
 </mapper>

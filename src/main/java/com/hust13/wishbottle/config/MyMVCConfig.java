@@ -6,6 +6,8 @@ import com.hust13.wishbottle.interceptor.MyInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -30,8 +32,20 @@ public class MyMVCConfig implements WebMvcConfigurer {
         registry.addInterceptor(myInterceptor).addPathPatterns("/**")
                 .excludePathPatterns("/user/login", "/treehole/getArticleList/**", "/treehole/getRecommend/**",
                         "/treehole/getOneArticle/**", "/treeReply/getAllComments/**", "/treeReply/getCommentsOfAuthor/**",
-                        "/treeReply/getAllReplies/**", "/admin/**");
+                        "/treeReply/getAllReplies/**", "/index/get/**", "/message/getIndexMsg/**", "/admin/**", "/static/**");
         registry.addInterceptor(bottleInterceptor).addPathPatterns("/wishbottle/pick");
         registry.addInterceptor(historyInterceptor).addPathPatterns("/treehole/getOneArticle/**");
     }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/admin").setViewName("redirect:/static/web_admin/page/login.html");
+    }
+
 }

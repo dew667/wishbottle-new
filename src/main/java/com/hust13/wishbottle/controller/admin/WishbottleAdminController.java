@@ -5,11 +5,14 @@ import com.hust13.wishbottle.service.WishbottleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 心愿瓶管理控制器
  */
 @RestController
 @RequestMapping("/admin/wishbottle")
+@CrossOrigin(origins = "*")
 public class WishbottleAdminController {
 
     @Autowired
@@ -45,6 +48,26 @@ public class WishbottleAdminController {
             e.printStackTrace();
             model.setCode(1);
             model.setMsg("删除失败");
+        }
+        return model;
+    }
+
+    /**
+     * 统计用户活跃时段
+     * @param request
+     * @return
+     */
+    @GetMapping("/active")
+    public Model activeCount(HttpServletRequest request) {
+        Model model = new Model();
+        try{
+
+            model.setData(wishbottleService.activeCount());
+        }
+        catch (Exception e)
+        {
+            model.setCode(1);
+            model.setMsg("请求失败");
         }
         return model;
     }

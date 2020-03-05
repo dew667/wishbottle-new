@@ -19,4 +19,8 @@ public interface ManagerMapper {
 
     //获取所有
     List<Manager> getAllManager();
+
+    int judgeManager(int id);
+
+    Manager selectByAccount(String username);
 }

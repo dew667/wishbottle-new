@@ -19,6 +19,22 @@
         from tag_admin
         order by rand() limit 20
     </select>
+    <!--获取所有-->
+    <select id="getAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tag_admin
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from tag_admin
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.hust13.wishbottle.entity.Tag" >
+        insert into tag_admin (id, tag, color)
+        values (#{id,jdbcType=INTEGER}, #{tag,jdbcType=VARCHAR}, #{color,jdbcType=VARCHAR})
+    </insert>
 
 
 </mapper>

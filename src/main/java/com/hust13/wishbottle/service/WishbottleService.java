@@ -3,6 +3,7 @@ package com.hust13.wishbottle.service;
 import com.hust13.wishbottle.entity.Wishbottle;
 import com.hust13.wishbottle.model.vo.WishbottleVO;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface WishbottleService {
@@ -39,4 +40,7 @@ public interface WishbottleService {
 
     //管理员删除
     String deleteById(Integer id);
+
+    //统计用户活跃时段
+    List<HashMap<Integer,Integer>> activeCount();
 }

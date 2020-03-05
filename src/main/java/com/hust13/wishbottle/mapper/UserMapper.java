@@ -2,6 +2,7 @@ package com.hust13.wishbottle.mapper;
 
 import com.hust13.wishbottle.entity.User;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,4 +33,10 @@ public interface UserMapper {
     List<User> getAllUser();
 
     Integer ifExist(Integer userId);
+
+    List<HashMap<Integer,Integer >> genderCount();
+
+    List<HashMap<String,Integer >> ageCount();
+
+    List<HashMap<String,Integer >> cityCount();
 }

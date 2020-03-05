@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/admin/treehole")
+@CrossOrigin(origins = "*")
 public class TreeholeAdminController {
 
     @Autowired

@@ -178,4 +178,9 @@ public class WishbottleServiceImpl implements WishbottleService {
             throw new RuntimeException("删除失败");
     }
 
+    @Override
+    public List<HashMap<Integer, Integer>> activeCount() {
+        return wishbottleMapper.activeCount();
+    }
+
 }

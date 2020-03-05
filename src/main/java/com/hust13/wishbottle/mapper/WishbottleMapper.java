@@ -3,6 +3,7 @@ package com.hust13.wishbottle.mapper;
 import com.hust13.wishbottle.entity.Wishbottle;
 import com.hust13.wishbottle.model.vo.WishbottleVO;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface WishbottleMapper {
@@ -36,4 +37,6 @@ public interface WishbottleMapper {
 
     //获取所有
     List<Wishbottle> getAll();
+
+    List<HashMap<Integer,Integer >> activeCount();
 }

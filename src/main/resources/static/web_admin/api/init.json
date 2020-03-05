@@ -1,0 +1,107 @@
+{
+  "clearInfo": {
+    "clearUrl": "api/clear.json"
+  },
+  "homeInfo": {
+    "title": "首页",
+    "icon": "fa fa-home",
+    "href": "page/welcome-1.html?t=1"
+  },
+  "logoInfo": {
+    "title": "心愿瓶管理",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": {
+    "currency": {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "child": [
+        {
+          "title": "心愿瓶列表",
+          "href": "page/wishbottle.html",
+          "icon": "fa fa-tachometer",
+          "target": "_self"
+        },
+        {
+          "title": "树洞列表",
+          "href": "page/treehole.html",
+          "icon": "fa fa-anchor",
+          "target": "_self"
+        },
+		{
+		  "title": "消息管理",
+		  "href": "page/message.html",
+		  "icon": "fa fa-window-maximize",
+		  "target": "_self"
+		},
+		{
+		  "title": "用户管理",
+		  "href": "page/user.html",
+		  "icon": "fa fa-arrows",
+          "target": "_self"
+		},
+        {
+          "title": "标签管理",
+          "href": "page/tag.html",
+          "icon": "fa fa-bullseye",
+          "target": "_self"
+        },
+        {
+          "title": "轮播图上传",
+          "href": "page/upload.html",
+          "icon": "fa fa-bookmark",
+          "target": "_self"
+        }
+      ]
+    },
+    "component": {
+      "title": "数据统计",
+      "icon": "fa fa-lemon-o",
+      "child": [
+        {
+          "title": "性别统计",
+          "href": "page/gender.html",
+          "icon": "fa fa-dot-circle-o",
+          "target": "_self"
+        },
+        {
+          "title": "年龄统计",
+          "href": "page/age.html",
+          "icon": "fa fa-adn",
+          "target": "_self"
+        },
+        {
+          "title": "城市分布",
+          "href": "page/city.html",
+          "icon": "fa fa-dashboard",
+          "target": "_self"
+        },
+        {
+          "title": "活跃时段",
+          "href": "page/active.html",
+          "icon": "fa fa-adjust",
+          "target": "_self"
+        }
+      ]
+    },
+    "other": {
+      "title": "权限管理",
+      "icon": "fa fa-slideshare",
+      "child": [
+        {
+          "title": "添加管理员",
+          "href": "page/add.html",
+          "icon": "fa fa-meetup",
+          "target": "_self"
+        },
+        {
+          "title": "删除管理员",
+          "href": "page/delete.html",
+          "icon": "fa fa-superpowers",
+          "target": "_self"
+        }
+      ]
+    }
+  }
+}

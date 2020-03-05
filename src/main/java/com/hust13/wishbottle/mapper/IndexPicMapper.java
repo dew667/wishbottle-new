@@ -8,4 +8,6 @@ public interface IndexPicMapper {
 
     List<IndexPic> getAll();
 
+    int insert(IndexPic indexPic);
+
 }

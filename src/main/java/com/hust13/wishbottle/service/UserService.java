@@ -3,6 +3,7 @@ package com.hust13.wishbottle.service;
 import com.hust13.wishbottle.entity.User;
 import com.hust13.wishbottle.model.vo.UserVO;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -27,6 +28,16 @@ public interface UserService {
     //获取所有用户信息
     List<User> getAllUser();
 
-    //删除用户
-    String deleteById(Integer id);
+    //解封用户
+    String openById(Integer id);
+
+    //封禁用户
+    String closeById(Integer id);
+
+    //统计用户性别
+    List<HashMap<Integer,Integer>> genderCount();
+    //统计用户年龄
+    List<HashMap<String,Integer>> ageCount();
+    //统计用户所属城市
+    List<HashMap<String,Integer>> cityCount();
 }

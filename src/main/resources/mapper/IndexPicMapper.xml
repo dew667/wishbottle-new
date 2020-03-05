@@ -20,4 +20,11 @@
         from index_pic
     </select>
 
+    <insert id="insert" parameterType="com.hust13.wishbottle.entity.IndexPic" >
+        insert into index_pic (id, pic, url,time
+          )
+        values (#{id,jdbcType=INTEGER}, #{pic,jdbcType=INTEGER}, #{url,jdbcType=INTEGER},#{time,jdbcType=TIMESTAMP}
+          )
+  </insert>
+
 </mapper>
